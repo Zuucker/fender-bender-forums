@@ -1,3 +1,6 @@
+using backend.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -21,6 +24,10 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -33,7 +40,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-// Apply CORS policy before authorization and routing
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
