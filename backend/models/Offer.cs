@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.models
 {
@@ -9,6 +10,14 @@ namespace backend.models
 
         [Required]
         public float Price { get; set; }
+
+        [Required]
+        [ForeignKey("Car")]
+        public int CarId { get; set; }
+
+        [Required]
+        [ForeignKey("AplicationUser")]
+        public int AuthorId { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
@@ -32,5 +41,8 @@ namespace backend.models
 
         [Required]
         public int AdditionalContentId { get; set; }
+
+        public virtual Car Car { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
     }
 }

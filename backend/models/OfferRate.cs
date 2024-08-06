@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.models
 {
@@ -8,9 +9,11 @@ namespace backend.models
         public int OfferRateId { get; set; }
 
         [Required]
+        [ForeignKey("ApplicationUser")]
         public int UserId { get; set; }
 
         [Required]
+        [ForeignKey("Offer")]
         public int OfferId { get; set; }
 
         [Required]

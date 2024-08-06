@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.models
 {
@@ -16,5 +17,16 @@ namespace backend.models
 
         [Required]
         public int ParentId { get; set; }
+
+        [Required]
+        [ForeignKey("Post")]
+        public int PostId { get; set; }
+
+        [Required]
+        [ForeignKey("Offer")]
+        public int OfferId { get; set; }
+
+        public virtual Post Post { get; set; }
+        public virtual Offer Offer { get; set; }
     }
 }

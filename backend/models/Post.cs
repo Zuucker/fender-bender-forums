@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.models
 {
@@ -8,6 +9,11 @@ namespace backend.models
         public int Id { get; set; }
 
         [Required]
+        [ForeignKey("ApplicationUser")]
+        public int AuthorId { get; set; }
+
+        [Required]
+        [ForeignKey("Section")]
         public int SectionId { get; set; }
 
         [Required]
@@ -27,5 +33,8 @@ namespace backend.models
 
         [Required]
         public int AdditionalContentId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
+        public virtual Section Section { get; set; }
     }
 }
