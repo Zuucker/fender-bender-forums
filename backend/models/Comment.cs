@@ -16,7 +16,7 @@ namespace backend.models
         public int Upvotes { get; set; }
 
         [Required]
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
 
         [Required]
         [ForeignKey("Post")]

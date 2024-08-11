@@ -1,25 +1,29 @@
-import { Component, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { Component, inject, Input } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'test',
   standalone: true,
-  imports: [HttpClientModule, NgIf],
+  imports: [HttpClientModule, NgIf, NgFor],
   templateUrl: './test.component.html',
   styleUrl: './test.component.css',
 })
 export class TestComponent {
-  data: any = {};
-  private url: string = 'http://localhost:5286/api/testController/getString';
-
-  //constructor(private http: HttpClient) {}
+  @Input() url: string = '';
+  @Input() num: number = 0;
+  dataArray: any[] = [];
 
   httpClient = inject(HttpClient);
   ngOnInit(): void {
     this.httpClient.get(this.url).subscribe((data) => {
-      console.log(data);
-      this.data = data;
+      // console.log(data);
+      if (Array.isArray(data)) this.dataArray = data;
     });
+  }
+
+  getFirstPropertyValue(item: any): any {
+    const key = Object.keys(item)[this.num];
+    return item[key];
   }
 }

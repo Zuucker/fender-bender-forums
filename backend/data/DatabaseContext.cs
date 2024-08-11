@@ -15,8 +15,8 @@ namespace backend.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Offer> Offers { get; set; }
-        public DbSet<Car> OfferRates { get; set; }
-        public DbSet<OfferRate> Posts { get; set; }
+        public DbSet<OfferRate> OfferRates { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Section> Sections { get; set; }
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240806173355_AddForeignKeys")]
-    partial class AddForeignKeys
+    [Migration("20240811090628_ReCreate")]
+    partial class ReCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -303,7 +303,7 @@ namespace backend.Migrations
 
                     b.HasKey("CarId");
 
-                    b.ToTable("Car");
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("backend.models.Comment", b =>
@@ -322,7 +322,8 @@ namespace backend.Migrations
                     b.Property<int>("OfferId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ParentId")
+                    b.Property<int?>("ParentId")
+                        .IsRequired(false)
                         .HasColumnType("integer");
 
                     b.Property<int>("PostId")
@@ -449,7 +450,7 @@ namespace backend.Migrations
 
                     b.HasKey("OfferRateId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("OfferRates");
                 });
 
             modelBuilder.Entity("backend.models.Post", b =>
@@ -495,7 +496,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("backend.models.Section", b =>

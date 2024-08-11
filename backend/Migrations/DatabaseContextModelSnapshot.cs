@@ -300,7 +300,7 @@ namespace backend.Migrations
 
                     b.HasKey("CarId");
 
-                    b.ToTable("Car");
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("backend.models.Comment", b =>
@@ -319,7 +319,8 @@ namespace backend.Migrations
                     b.Property<int>("OfferId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ParentId")
+                    b.Property<int?>("ParentId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int>("PostId")
@@ -446,7 +447,7 @@ namespace backend.Migrations
 
                     b.HasKey("OfferRateId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("OfferRates");
                 });
 
             modelBuilder.Entity("backend.models.Post", b =>
@@ -492,7 +493,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("backend.models.Section", b =>

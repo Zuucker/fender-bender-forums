@@ -1,4 +1,12 @@
-<p>test works!</p>
-<div *ngIf="data">
-  <pre>{{ data.status }}</pre>
+<div class="m-10 bg-warning">
+  @if(dataArray !=null){
+  <div>
+    <pre>{{ url }}</pre>
+  </div>
+  }
+  <div>
+    @for(item of dataArray; track item.id){
+    <p>{{ getFirstPropertyValue(item) }}</p>
+    }
+  </div>
 </div>

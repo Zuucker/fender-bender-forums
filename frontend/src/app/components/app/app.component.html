@@ -1,6 +1,21 @@
 <main class="main">
   <h2>Hello!</h2>
   <h4>This is the main page</h4>
-  <test></test>
+  <test
+    [url]="'http://localhost:5286/api/testController/getUsers'"
+    [num]="1"
+  ></test>
+  <test
+    [url]="'http://localhost:5286/api/testController/getCars'"
+    [num]="2"
+  ></test>
+  <test
+    [url]="'http://localhost:5286/api/testController/getCities'"
+    [num]="1"
+  ></test>
+  <test
+    [url]="'http://localhost:5286/api/testController/getOffers'"
+    [num]="1"
+  ></test>
   <router-outlet />
 </main>
