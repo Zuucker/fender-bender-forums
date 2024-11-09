@@ -18,5 +18,7 @@ namespace backend.models
 
         [Required]
         public int Score { get; set; }
+
+        public virtual Offer Owner { get; set; } = null!;
     }
 }

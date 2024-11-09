@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using backend.Data;
 
 namespace backend.models
 {
@@ -16,6 +17,10 @@ namespace backend.models
         public int CarId { get; set; }
 
         [Required]
+        [ForeignKey("City")]
+        public int CityId { get; set; }
+
+        [Required]
         [ForeignKey("AplicationUser")]
         public int AuthorId { get; set; }
 
@@ -30,19 +35,22 @@ namespace backend.models
 
         [Required]
         [StringLength(100)]
-        public string Color { get; set; }
+        public string Color { get; set; } = string.Empty;
 
         [Required]
         public int Mileage { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Tags { get; set; }
+        public string Tags { get; set; } = string.Empty;
 
         [Required]
         public int AdditionalContentId { get; set; }
 
-        public virtual Car Car { get; set; }
-        public virtual ApplicationUser Owner { get; set; }
+        public virtual Car Car { get; set; } = null!;
+
+        public virtual ApplicationUser Owner { get; set; } = null!;
+
+        public virtual City City { get; set; } = null!;
     }
 }

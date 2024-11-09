@@ -15,7 +15,6 @@ namespace backend.models
         [Required]
         public int Upvotes { get; set; }
 
-        [Required]
         public int? ParentId { get; set; }
 
         [Required]
