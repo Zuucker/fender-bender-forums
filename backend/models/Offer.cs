@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using backend.Data;
 
-namespace backend.models
+namespace Models
 {
     public class Offer
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.models
+namespace Models
 {
     public class Section
     {
@@ -9,10 +9,10 @@ namespace backend.models
 
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
     }
 }

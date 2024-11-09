@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.models
+namespace Models
 {
     public class Car
     {
@@ -9,21 +9,21 @@ namespace backend.models
 
         [Required]
         [StringLength(100)]
-        public string Manufacturer { get; set; }
+        public string Manufacturer { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
-        public string Model { get; set; }
+        public string Model { get; set; } = string.Empty;
 
         [DataType(DataType.Date)]
         public DateTime Year { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Generation { get; set; }
+        public string Generation { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
-        public string Type { get; set; }
+        public string Type { get; set; } = string.Empty;
     }
 }

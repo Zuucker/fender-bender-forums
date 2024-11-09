@@ -1,4 +1,5 @@
-using backend.Data;
+using Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace backend.Controllers
             this.context = context;
         }
 
+        [Authorize]
         [HttpGet("getString")]
         public IActionResult GetString()
         {

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.models
+namespace Models
 {
     public class Comment
     {
@@ -10,7 +10,7 @@ namespace backend.models
 
         [Required]
         [StringLength(100)]
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
 
         [Required]
         public int Upvotes { get; set; }
@@ -25,7 +25,7 @@ namespace backend.models
         [ForeignKey("Offer")]
         public int OfferId { get; set; }
 
-        public virtual Post Post { get; set; }
-        public virtual Offer Offer { get; set; }
+        public virtual Post Post { get; set; } = null!;
+        public virtual Offer Offer { get; set; } = null!;
     }
 }

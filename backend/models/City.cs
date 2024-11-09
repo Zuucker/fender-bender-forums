@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.Data
+namespace Models
 {
     public class City
     {
@@ -9,7 +9,7 @@ namespace backend.Data
 
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         public float Altitude { get; set; }

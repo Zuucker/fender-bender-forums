@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.models
+namespace Models
 {
     public class Like
     {
@@ -24,9 +24,9 @@ namespace backend.models
         [ForeignKey("Comment")]
         public int CommentId { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
-        public virtual Post Post { get; set; }
-        public virtual Offer Offer { get; set; }
-        public virtual Comment Comment { get; set; }
+        public virtual ApplicationUser User { get; set; } = null!;
+        public virtual Post Post { get; set; } = null!;
+        public virtual Offer Offer { get; set; } = null!;
+        public virtual Comment Comment { get; set; } = null!;
     }
 }

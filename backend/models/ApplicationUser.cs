@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 
-public class ApplicationUser : IdentityUser
+namespace Models
 {
-    // Additional properties can go here
+    public class ApplicationUser : IdentityUser
+    {
+        // Additional properties can go here
+
+        public string Guid { get; set; } = string.Empty;
+    }
 }

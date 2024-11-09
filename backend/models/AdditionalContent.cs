@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.models
+namespace Models
 {
     public class AdditionalContent
     {
