@@ -17,7 +17,24 @@ namespace Data
         public async Task<List<T>> GetAllAsync<T>()
             where T : class
         {
-            return await _context.Set<T>().ToListAsync();
+            var query = _context.Set<T>().AsQueryable();
+
+            foreach (var property in typeof(T).GetProperties())
+            {
+                if (
+                    property.GetMethod?.IsVirtual == true
+                    && (
+                        typeof(IEnumerable<object>).IsAssignableFrom(property.PropertyType)
+                        || !property.PropertyType.IsValueType
+                            && property.PropertyType != typeof(string)
+                    )
+                )
+                {
+                    query = query.Include(property.Name);
+                }
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<T?> GetByIdAsync<T>(int id)
