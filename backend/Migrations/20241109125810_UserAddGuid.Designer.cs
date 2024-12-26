@@ -9,7 +9,7 @@ using Data;
 
 #nullable disable
 
-namespace backend.Migrations
+namespace Backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20241109125810_UserAddGuid")]
@@ -225,7 +225,7 @@ namespace backend.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("backend.Data.City", b =>
+            modelBuilder.Entity("Backend.Data.City", b =>
                 {
                     b.Property<int>("CityId")
                         .ValueGeneratedOnAdd()
@@ -249,7 +249,7 @@ namespace backend.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("backend.models.AdditionalContent", b =>
+            modelBuilder.Entity("Backend.Models.AdditionalContent", b =>
                 {
                     b.Property<int>("AdditionalContentId")
                         .ValueGeneratedOnAdd()
@@ -274,7 +274,7 @@ namespace backend.Migrations
                     b.ToTable("AdditionalContents");
                 });
 
-            modelBuilder.Entity("backend.models.Car", b =>
+            modelBuilder.Entity("Backend.Models.Car", b =>
                 {
                     b.Property<int>("CarId")
                         .ValueGeneratedOnAdd()
@@ -310,7 +310,7 @@ namespace backend.Migrations
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("backend.models.Comment", b =>
+            modelBuilder.Entity("Backend.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
@@ -344,7 +344,7 @@ namespace backend.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("backend.models.Like", b =>
+            modelBuilder.Entity("Backend.Models.Like", b =>
                 {
                     b.Property<int>("LikeId")
                         .ValueGeneratedOnAdd()
@@ -380,7 +380,7 @@ namespace backend.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("backend.models.Offer", b =>
+            modelBuilder.Entity("Backend.Models.Offer", b =>
                 {
                     b.Property<int>("OfferId")
                         .ValueGeneratedOnAdd()
@@ -439,7 +439,7 @@ namespace backend.Migrations
                     b.ToTable("Offers");
                 });
 
-            modelBuilder.Entity("backend.models.OfferRate", b =>
+            modelBuilder.Entity("Backend.Models.OfferRate", b =>
                 {
                     b.Property<int>("OfferRateId")
                         .ValueGeneratedOnAdd()
@@ -463,7 +463,7 @@ namespace backend.Migrations
                     b.ToTable("OfferRates");
                 });
 
-            modelBuilder.Entity("backend.models.Post", b =>
+            modelBuilder.Entity("Backend.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -509,7 +509,7 @@ namespace backend.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("backend.models.Section", b =>
+            modelBuilder.Entity("Backend.Models.Section", b =>
                 {
                     b.Property<int>("SectionId")
                         .ValueGeneratedOnAdd()
@@ -583,15 +583,15 @@ namespace backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("backend.models.Comment", b =>
+            modelBuilder.Entity("Backend.Models.Comment", b =>
                 {
-                    b.HasOne("backend.models.Offer", "Offer")
+                    b.HasOne("Backend.Models.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.models.Post", "Post")
+                    b.HasOne("Backend.Models.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -602,21 +602,21 @@ namespace backend.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("backend.models.Like", b =>
+            modelBuilder.Entity("Backend.Models.Like", b =>
                 {
-                    b.HasOne("backend.models.Comment", "Comment")
+                    b.HasOne("Backend.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.models.Offer", "Offer")
+                    b.HasOne("Backend.Models.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.models.Post", "Post")
+                    b.HasOne("Backend.Models.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -635,15 +635,15 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.models.Offer", b =>
+            modelBuilder.Entity("Backend.Models.Offer", b =>
                 {
-                    b.HasOne("backend.models.Car", "Car")
+                    b.HasOne("Backend.Models.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Data.City", "City")
+                    b.HasOne("Backend.Data.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -660,9 +660,9 @@ namespace backend.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("backend.models.OfferRate", b =>
+            modelBuilder.Entity("Backend.Models.OfferRate", b =>
                 {
-                    b.HasOne("backend.models.Offer", "Owner")
+                    b.HasOne("Backend.Models.Offer", "Owner")
                         .WithMany()
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -671,9 +671,9 @@ namespace backend.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("backend.models.Post", b =>
+            modelBuilder.Entity("Backend.Models.Post", b =>
                 {
-                    b.HasOne("backend.models.Section", "Section")
+                    b.HasOne("Backend.Models.Section", "Section")
                         .WithMany()
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)

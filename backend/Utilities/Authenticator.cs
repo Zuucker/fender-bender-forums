@@ -1,7 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using backend.apiModels;
+using Backend.ApiModels.Requests;
 using Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Utilities
@@ -17,9 +18,9 @@ namespace Utilities
             _configuration = configuration;
         }
 
-        public async Task<bool> IsValidUser(LoginRequest request)
+        public bool IsValidUser(LoginRequest request)
         {
-            var user = await _dataRepository.GetUser(request.Login);
+            var user = _dataRepository.GetUser(request.Login);
 
             if (user == null)
                 return false;
@@ -27,12 +28,12 @@ namespace Utilities
             return request.PasswordHash == user.PasswordHash;
         }
 
-        public async Task<string> GenerateToken(string login)
+        public string GenerateToken(string login)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var user = await _dataRepository.GetUser(login) ?? throw new Exception("User is null");
+            var user = _dataRepository.GetUser(login) ?? throw new Exception("User is null");
 
             var claims = new[]
             {
@@ -40,7 +41,7 @@ namespace Utilities
                 new System.Security.Claims.Claim("userName", user.UserName!)
             };
 
-            await _dataRepository.UpdateAsync(user);
+            _dataRepository.Update(user);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
@@ -51,6 +52,14 @@ namespace Utilities
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public string HashPassword(string password)
+        {
+            var passwordHasher = new PasswordHasher<object>();
+
+            //user is not necesarry
+            return passwordHasher.HashPassword(null!, password);
         }
     }
 }

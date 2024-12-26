@@ -1,4 +1,5 @@
 using System.Text;
+using Backend.Services;
 using Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Models;
+using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +86,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 );
 
 builder.Services.AddScoped<DataRepository>();
+builder.Services.AddScoped<Authenticator>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

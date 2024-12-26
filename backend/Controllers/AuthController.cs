@@ -1,25 +1,27 @@
-using backend.apiModels;
+using Backend.ApiModels.Dtos;
+using Backend.ApiModels.Requests;
+using Backend.Services;
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using Utilities;
 
-namespace backend.Controllers
+namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/testController")]
     public class AuthController : ControllerBase
     {
-        private readonly DataRepository _dataRepository;
-        private readonly IConfiguration _configuration;
+        private readonly UserService _userService;
+        private readonly Authenticator _authenticator;
 
-        public AuthController(DataRepository repository, IConfiguration configuration)
+        public AuthController(Authenticator authenticator, UserService userService)
         {
-            _dataRepository = repository;
-            _configuration = configuration;
+            _userService = userService;
+            _authenticator = authenticator;
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] LoginRequest request)
         {
             if (string.IsNullOrEmpty(request.Login))
                 return BadRequest("Login is required");
@@ -27,15 +29,46 @@ namespace backend.Controllers
             if (string.IsNullOrEmpty(request.PasswordHash))
                 return BadRequest("Password is required");
 
-            Authenticator authenticator = new(_dataRepository, _configuration);
-
-            if (await authenticator.IsValidUser(request))
+            if (_authenticator.IsValidUser(request))
             {
-                var token = authenticator.GenerateToken(request.Login);
+                var token = _authenticator.GenerateToken(request.Login);
                 return Ok(new { token });
             }
 
             return BadRequest("Invalid credentials");
+        }
+
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(request.Email))
+                    throw new Exception("Email is required");
+
+                if (string.IsNullOrEmpty(request.Username))
+                    throw new Exception("Username is required");
+
+                if (string.IsNullOrEmpty(request.Password))
+                    throw new Exception("Password is required");
+
+                if (string.IsNullOrEmpty(request.ConfirmPassword))
+                    throw new Exception("ConfirmPassword is required");
+
+                if (request.Password != request.ConfirmPassword)
+                    throw new Exception("Password and ConfirmPassword don't match");
+
+
+                var user = _userService.RegisterUser(request.Username, request.Email, request.Password);
+
+                //no reply message needed, the user needs to login anyways
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

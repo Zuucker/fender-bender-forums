@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
-namespace backend.Controllers
+namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/offerController")]
@@ -20,11 +20,11 @@ namespace backend.Controllers
 
         [Authorize]
         [HttpGet("getOffers")]
-        public async Task<IActionResult> GetOffers()
+        public IActionResult GetOffers()
         {
             try
             {
-                var offers = await _dataRepository.GetAllAsync<Offer>();
+                var offers = _dataRepository.GetAll<Offer>();
                 return Ok(offers);
             }
             catch (Exception ex)
