@@ -4,7 +4,7 @@ using backend.apiModels;
 using Data;
 using Microsoft.IdentityModel.Tokens;
 
-namespace utilities
+namespace Utilities
 {
     public class Authenticator
     {

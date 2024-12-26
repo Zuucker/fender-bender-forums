@@ -1,7 +1,7 @@
 using backend.apiModels;
 using Data;
 using Microsoft.AspNetCore.Mvc;
-using utilities;
+using Utilities;
 
 namespace backend.Controllers
 {

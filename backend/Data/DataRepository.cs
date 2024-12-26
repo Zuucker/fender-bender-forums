@@ -50,6 +50,13 @@ namespace Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddListAsync<T>(List<T> entities)
+            where T : class
+        {
+            await _context.Set<T>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync<T>(T entity)
             where T : class
         {
