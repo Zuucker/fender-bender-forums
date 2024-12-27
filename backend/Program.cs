@@ -88,6 +88,7 @@ builder.Services.AddScoped<Authenticator>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<OfferService>();
 builder.Services.AddScoped<CarService>();
+builder.Services.AddScoped<CityService>();
 
 var app = builder.Build();
 

@@ -16,5 +16,14 @@ namespace Models
 
         [Required]
         public float Latitude { get; set; }
+
+        public City() { }
+
+        public City(AddCityRequest dto)
+        {
+            Name = dto.Name;
+            Altitude = dto.Altitude;
+            Latitude = dto.Latitude;
+        }
     }
 }
