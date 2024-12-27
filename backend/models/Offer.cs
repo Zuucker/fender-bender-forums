@@ -1,3 +1,4 @@
+using Backend.ApiModels.Requests;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,8 +21,8 @@ namespace Models
         public int CityId { get; set; }
 
         [Required]
-        [ForeignKey("AplicationUser")]
-        public int AuthorId { get; set; }
+        [ForeignKey("Owner")]
+        public string AuthorId { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
@@ -50,5 +51,26 @@ namespace Models
         public virtual City City { get; set; } = null!;
 
         public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
+
+
+#pragma warning disable CS8618 // Remove warning rule
+        //constructor for EF
+        public Offer() { }
+#pragma warning restore CS8618 // Restore warning rule
+
+
+        public Offer(AddOfferRequest dto)
+        {
+            Price = dto.Price;
+            CarId = dto.CarId;
+            CityId = dto.CityId;
+            AuthorId = dto.AuthorId;
+            Date = dto.Date;
+            Condition = dto.Condition;
+            Fuel = dto.Fuel;
+            Color = dto.Color;
+            Mileage = dto.Mileage;
+            Tags = dto.Tags;
+        }
     }
 }
