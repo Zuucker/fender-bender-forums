@@ -43,13 +43,12 @@ namespace Models
         [StringLength(100)]
         public string Tags { get; set; } = string.Empty;
 
-        [Required]
-        public int AdditionalContentId { get; set; }
-
         public virtual Car Car { get; set; } = null!;
 
         public virtual ApplicationUser Owner { get; set; } = null!;
 
         public virtual City City { get; set; } = null!;
+
+        public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
     }
 }

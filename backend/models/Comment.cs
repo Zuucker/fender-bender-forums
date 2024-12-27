@@ -26,6 +26,7 @@ namespace Models
         public int OfferId { get; set; }
 
         public virtual Post Post { get; set; } = null!;
+
         public virtual Offer Offer { get; set; } = null!;
     }
 }

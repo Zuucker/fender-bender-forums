@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -6,6 +7,14 @@ namespace Models
     {
         [Key]
         public int AdditionalContentId { get; set; }
+
+        [Required]
+        [ForeignKey("Post")]
+        public int PostId { get; set; }
+
+        [Required]
+        [ForeignKey("Offer")]
+        public int OfferId { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -18,5 +27,9 @@ namespace Models
         [Required]
         [StringLength(100)]
         public int Path { get; set; }
+
+        public virtual Offer Offer { get; set; } = null!;
+
+        public virtual Post Post { get; set; } = null!;
     }
 }
