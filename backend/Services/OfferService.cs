@@ -2,9 +2,6 @@
 using Backend.ApiModels.Requests;
 using Data;
 using Models;
-using System.Drawing;
-using Utilities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Backend.Services
 {
