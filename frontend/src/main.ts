@@ -1,7 +1,5 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/components/app/app.component';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { createApp } from 'vue'
+import './style.css'
+import App from './App.vue'
 
-bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(withFetch())],
-}).catch((err) => console.error(err));
+createApp(App).mount('#app')
