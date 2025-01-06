@@ -31,8 +31,8 @@ namespace Backend.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return BadRequest(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

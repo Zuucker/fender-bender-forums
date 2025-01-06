@@ -28,5 +28,28 @@ namespace Backend.Services
 
             return _repository.AddUser(newUser);
         }
+
+        public ApplicationUser? UpdateUser(string userId, string? username, string? email)
+        {
+            var user = _repository.GetById<ApplicationUser>(userId);
+
+            if (user == null)
+                return null;
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                user.UserName = username;
+                user.NormalizedUserName = username.ToUpper();
+            }
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                user.Email = email;
+                user.NormalizedEmail = email.ToUpper();
+            }
+
+            _repository.Update(user);
+            return user;
+        }
     }
 }

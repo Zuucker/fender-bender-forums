@@ -1,7 +1,5 @@
-using Backend.ApiModels.Dtos;
 using Backend.ApiModels.Requests;
 using Backend.Services;
-using Data;
 using Microsoft.AspNetCore.Mvc;
 using Utilities;
 
@@ -23,19 +21,26 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            if (string.IsNullOrEmpty(request.Login))
-                return BadRequest("Login is required");
-
-            if (string.IsNullOrEmpty(request.PasswordHash))
-                return BadRequest("Password is required");
-
-            if (_authenticator.IsValidUser(request))
+            try
             {
-                var token = _authenticator.GenerateToken(request.Login);
-                return Ok(new { token });
-            }
+                if (string.IsNullOrEmpty(request.Login))
+                    return BadRequest("Login is required");
 
-            return BadRequest("Invalid credentials");
+                if (string.IsNullOrEmpty(request.PasswordHash))
+                    return BadRequest("Password is required");
+
+                if (_authenticator.IsValidUser(request))
+                {
+                    var token = _authenticator.GenerateToken(request.Login);
+                    return Ok(new { token });
+                }
+
+                return BadRequest("Invalid credentials");
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -65,9 +70,10 @@ namespace Backend.Controllers
                 //no reply message needed, the user needs to login anyways
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(e.Message);
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }

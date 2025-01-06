@@ -37,6 +37,12 @@ namespace Data
             return query.ToList();
         }
 
+        public T? GetById<T>(string id)
+            where T : class
+        {
+            return _context.Set<T>().Find(id);
+        }
+
         public T? GetById<T>(int id)
             where T : class
         {

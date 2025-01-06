@@ -1,9 +1,6 @@
 using Backend.ApiModels.Requests;
 using Backend.Services;
-using Data;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 
 namespace Backend.Controllers
 {
@@ -28,8 +25,8 @@ namespace Backend.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return BadRequest(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -48,8 +45,8 @@ namespace Backend.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return BadRequest(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }
