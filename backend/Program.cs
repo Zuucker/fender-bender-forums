@@ -89,6 +89,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<OfferService>();
 builder.Services.AddScoped<CarService>();
 builder.Services.AddScoped<CityService>();
+builder.Services.AddScoped<PostService>();
 
 var app = builder.Build();
 

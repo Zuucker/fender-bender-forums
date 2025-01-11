@@ -4,6 +4,24 @@ namespace Backend.ApiModels.Dtos
 {
     public class OfferDto
     {
+        public OfferDto(Offer original)
+        {
+            Price = original.Price;
+            CarId = original.CarId;
+            CityId = original.CityId;
+            AuthorId = original.AuthorId;
+            Date = original.Date;
+            Condition = original.Condition;
+            Fuel = original.Fuel;
+            Color = original.Color;
+            Mileage = original.Mileage;
+            Tags = original.Tags;
+            Car = original.Car;
+            City = original.City;
+            Owner = new UserDto(original.Owner);
+            AdditionalContents = original.AdditionalContents;
+        }
+
         public int OfferId { get; set; }
 
         public float Price { get; set; }
@@ -33,24 +51,5 @@ namespace Backend.ApiModels.Dtos
         public virtual City City { get; set; } = null!;
 
         public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
-
-
-        public OfferDto(Offer original)
-        {
-            Price = original.Price;
-            CarId = original.CarId;
-            CityId = original.CityId;
-            AuthorId = original.AuthorId;
-            Date = original.Date;
-            Condition = original.Condition;
-            Fuel = original.Fuel;
-            Color = original.Color;
-            Mileage = original.Mileage;
-            Tags = original.Tags;
-            Car = original.Car;
-            City = original.City;
-            Owner = new UserDto(original.Owner);
-            AdditionalContents = original.AdditionalContents;
-        }
     }
 }
