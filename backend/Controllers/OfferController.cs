@@ -49,5 +49,24 @@ namespace Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("rating/add")]
+        public IActionResult AddOfferRating([FromBody] AddOfferRatingRequest requestDto)
+        {
+            try
+            {
+                if (requestDto == null)
+                    throw new Exception("The request is empty of null");
+
+                _offerService.AddOfferRating(requestDto);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

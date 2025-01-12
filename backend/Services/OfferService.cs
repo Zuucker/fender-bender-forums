@@ -31,11 +31,20 @@ namespace Backend.Services
         public ICollection<OfferDto> GetAllOffers()
         {
             var offers = _repository
-                .GetAll<Offer>()
+                .GetOfferList()
                 .Select(o => new OfferDto(o))
                 .ToList();
 
             return offers;
+        }
+
+        public OfferRate AddOfferRating(AddOfferRatingRequest ratingRequest)
+        {
+            OfferRate newRating = new(ratingRequest);
+
+            _repository.Add(newRating);
+
+            return newRating;
         }
     }
 }

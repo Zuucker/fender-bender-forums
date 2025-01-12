@@ -6,6 +6,7 @@ namespace Backend.ApiModels.Dtos
     {
         public OfferDto(Offer original)
         {
+            OfferId = original.OfferId;
             Price = original.Price;
             CarId = original.CarId;
             CityId = original.CityId;
@@ -18,8 +19,14 @@ namespace Backend.ApiModels.Dtos
             Tags = original.Tags;
             Car = original.Car;
             City = original.City;
+            Rating = original.Rating;
+            RatingCount = original.RatingCount;
             Owner = new UserDto(original.Owner);
             AdditionalContents = original.AdditionalContents;
+            Ratings = original.Ratings
+                .Select(r => new OfferRateDto(r))
+                .OrderBy(r => r.CreatedAt)
+                .ToList();
         }
 
         public int OfferId { get; set; }
@@ -44,6 +51,10 @@ namespace Backend.ApiModels.Dtos
 
         public string Tags { get; set; } = string.Empty;
 
+        public float Rating { get; set; }
+
+        public int RatingCount { get; set; }
+
         public virtual Car Car { get; set; } = null!;
 
         public virtual UserDto Owner { get; set; } = null!;
@@ -51,5 +62,7 @@ namespace Backend.ApiModels.Dtos
         public virtual City City { get; set; } = null!;
 
         public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
+
+        public virtual ICollection<OfferRateDto> Ratings { get; set; } = [];
     }
 }

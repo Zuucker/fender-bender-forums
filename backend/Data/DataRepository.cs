@@ -117,5 +117,29 @@ namespace Data
         }
 
         #endregion
+
+
+        #region OFFER
+
+        public List<Offer> GetOfferList()
+        {
+            try
+            {
+                return _context.Offers
+                .Include(o => o.Ratings)
+                .Include(o => o.Owner)
+                .Include(o => o.Car)
+                .Include(o => o.AdditionalContents)
+                .Include(o => o.City)
+                .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        #endregion
     }
 }

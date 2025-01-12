@@ -6,6 +6,26 @@ namespace Models
 {
     public class Offer
     {
+#pragma warning disable CS8618 // Remove warning rule
+        //constructor for EF
+        public Offer() { }
+#pragma warning restore CS8618 // Restore warning rule
+
+
+        public Offer(AddOfferRequest dto)
+        {
+            Price = dto.Price;
+            CarId = dto.CarId;
+            CityId = dto.CityId;
+            AuthorId = dto.AuthorId;
+            Date = dto.Date;
+            Condition = dto.Condition;
+            Fuel = dto.Fuel;
+            Color = dto.Color;
+            Mileage = dto.Mileage;
+            Tags = dto.Tags;
+        }
+
         [Key]
         public int OfferId { get; set; }
 
@@ -44,6 +64,12 @@ namespace Models
         [StringLength(100)]
         public string Tags { get; set; } = string.Empty;
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public float Rating { get; private set; }//db should manage it
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int RatingCount { get; private set; }//db should manage it
+
         public virtual Car Car { get; set; } = null!;
 
         public virtual ApplicationUser Owner { get; set; } = null!;
@@ -52,25 +78,6 @@ namespace Models
 
         public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
 
-
-#pragma warning disable CS8618 // Remove warning rule
-        //constructor for EF
-        public Offer() { }
-#pragma warning restore CS8618 // Restore warning rule
-
-
-        public Offer(AddOfferRequest dto)
-        {
-            Price = dto.Price;
-            CarId = dto.CarId;
-            CityId = dto.CityId;
-            AuthorId = dto.AuthorId;
-            Date = dto.Date;
-            Condition = dto.Condition;
-            Fuel = dto.Fuel;
-            Color = dto.Color;
-            Mileage = dto.Mileage;
-            Tags = dto.Tags;
-        }
+        public virtual ICollection<OfferRate> Ratings { get; set; } = [];
     }
 }
