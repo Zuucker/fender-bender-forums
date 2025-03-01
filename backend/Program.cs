@@ -49,6 +49,13 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Fender Bender Forums API",
+        Version = "v1",
+        Description = "External API responsible for handling user requests",
+    });
+
     options.AddSecurityDefinition(
         "Bearer",
         new OpenApiSecurityScheme
