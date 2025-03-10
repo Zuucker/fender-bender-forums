@@ -1,7 +1,6 @@
 using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Models;
 
 namespace Infrastructure.Persistance.Data
 {
@@ -27,19 +26,5 @@ namespace Infrastructure.Persistance.Data
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<Section> Sections { get; set; }
-
-
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.Entity<ApplicationUser>().HasKey(e => e.Id);
-        //     modelBuilder.Entity<Car>().HasKey(e => e.CarId);
-        //     modelBuilder.Entity<Offer>(entity =>
-        //     {
-        //         entity.HasKey(e => e.OfferId);
-        //         entity.HasOne(e => e.Owner);
-        //         entity.WithMany(b => b.Posts);
-        //         entity.HasForeignKey(p => p.BlogId);
-        //     });
-        // }
     }
 }

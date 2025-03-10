@@ -1,5 +1,4 @@
-﻿using Backend.ApiModels.Dtos;
-using Domain.Models;
+﻿using Domain.Models;
 
 namespace Application.Dtos.ModelDtos
 {

@@ -7,6 +7,6 @@ namespace Application.Interfaces.ServiceInterfaces
     {
         IEnumerable<City> GettAllCities();
 
-        City AddCity(AddCityRequest cityRequest)
+        City AddCity(AddCityRequest cityRequest);
     }
 }

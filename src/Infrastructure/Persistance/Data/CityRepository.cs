@@ -1,8 +1,9 @@
-﻿using Domain.Models;
+﻿using Application.Interfaces.RepositoryInterfaces;
+using Domain.Models;
 
 namespace Infrastructure.Persistance.Data
 {
-    public class CityRepository
+    public class CityRepository : ICityRepository
     {
         private readonly DatabaseContext _context;
 

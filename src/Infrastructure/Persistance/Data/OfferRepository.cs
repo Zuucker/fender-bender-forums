@@ -1,8 +1,9 @@
-﻿using Domain.Models;
+﻿using Application.Interfaces.RepositoryInterfaces;
+using Domain.Models;
 
 namespace Infrastructure.Persistance.Data
 {
-    public class OfferRepository
+    public class OfferRepository : IOfferRepository
     {
         private readonly DatabaseContext _context;
 

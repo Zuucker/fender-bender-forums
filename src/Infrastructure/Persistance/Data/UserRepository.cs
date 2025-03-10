@@ -92,12 +92,12 @@ namespace Infrastructure.Persistance.Data
 
         #region IUserRepository
 
-        public ApplicationUser? GetByLogin(string login)
+        public ApplicationUser? GetByUserName(string userName)
         {
             try
             {
                 return _context.Users
-                    .FirstOrDefault(u => u.UserName == login);
+                    .FirstOrDefault(u => u.UserName == userName);
             }
             catch (Exception e)
             {
