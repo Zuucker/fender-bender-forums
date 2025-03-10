@@ -5,21 +5,6 @@ namespace Domain.Models
 {
     public class Post
     {
-        //public Post(AddPostRequest request)
-        //{
-        //    AuthorId = request.AuthorId;
-        //    SectionId = request.SectionId;
-        //    Title = request.Title;
-        //    CreationDate = request.CreationDate;
-        //    Content = request.Content;
-        //    Tags = request.Tags;
-        //    AdditionalContents = request.AdditionalContents
-        //        .Select(ac => new AdditionalContent(ac))
-        //        .ToList();
-        //}
-
-        public Post() { }
-
         [Key]
         public int Id { get; set; }
 

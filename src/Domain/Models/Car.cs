@@ -25,16 +25,5 @@ namespace Domain.Models
         [Required]
         [StringLength(150)]
         public string Type { get; set; } = string.Empty;
-
-        public Car() { }
-
-        //public Car(AddCarRequest dto)
-        //{
-        //    Manufacturer = dto.Manufacturer;
-        //    Model = dto.Model;
-        //    Year = dto.Year;
-        //    Generation = dto.Generation;
-        //    Type = dto.Type;
-        //}
     }
 }

@@ -21,34 +21,16 @@ namespace Domain.Models
 
         [Required]
         [StringLength(100)]
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
-        public string Path { get; set; }
+        public string Path { get; set; } = string.Empty;
 
         [JsonIgnore]
         public virtual Offer Offer { get; set; } = null!;
 
         [JsonIgnore]
         public virtual Post Post { get; set; } = null!;
-
-
-#pragma warning disable CS8618 // Remove warning rule
-        //constructor for EF
-        public AdditionalContent() { }
-#pragma warning restore CS8618 // Restore warning rule
-
-
-        //needs to be in another place idk services or something? xd
-        //sum mappers or as a service method
-        //public AdditionalContent(AdditionalContentDto dto)
-        //{
-        //    PostId = dto.PostId;
-        //    OfferId = dto.OfferId;
-        //    Type = dto.Type;
-        //    Content = dto.Content;
-        //    Path = dto.Path;
-        //}
     }
 }

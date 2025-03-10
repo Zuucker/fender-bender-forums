@@ -5,16 +5,6 @@ namespace Domain.Models
 {
     public class OfferRate
     {
-        //public OfferRate(AddOfferRatingRequest dto)
-        //{
-        //    UserId = dto.UserId;
-        //    OfferId = dto.OfferId;
-        //    Rating = dto.Rating;
-        //    Comment = dto.Comment;
-        //    CreatedAt = DateTime.UtcNow;
-        //}
-        public OfferRate() { }
-
         [Key]
         public int OfferRateId { get; set; }
 
