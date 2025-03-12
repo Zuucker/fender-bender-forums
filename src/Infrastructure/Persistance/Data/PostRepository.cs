@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistance.Data
 {
@@ -49,6 +50,9 @@ namespace Infrastructure.Persistance.Data
             try
             {
                 return _context.Posts
+                    .Include(p=>p.User)
+                    .Include(p=>p.AdditionalContents)
+                    .Include(p=>p.Section)
                     .ToList();
             }
             catch (Exception e)

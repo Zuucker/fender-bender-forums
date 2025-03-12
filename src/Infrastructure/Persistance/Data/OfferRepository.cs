@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistance.Data
 {
@@ -49,6 +50,11 @@ namespace Infrastructure.Persistance.Data
             try
             {
                 return _context.Offers
+                    .Include(o=>o.Owner)
+                    .Include(o=>o.Car)
+                    .Include(o=>o.City)
+                    .Include(o=>o.AdditionalContents)
+                    .Include(o=>o.Ratings)
                     .ToList();
             }
             catch (Exception e)
