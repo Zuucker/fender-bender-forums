@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
     public class CarRepository : ICarRepository
     {

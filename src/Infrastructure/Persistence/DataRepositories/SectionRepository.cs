@@ -1,27 +1,27 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class AdditionalContentRepository : IAdditionalContentRepository
+    public class SectionRepository : ISectionRepository
     {
         private readonly DatabaseContext _context;
 
-        public AdditionalContentRepository(DatabaseContext context)
+        public SectionRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public AdditionalContent Add(AdditionalContent additionalContent)
+        public Section Add(Section section)
         {
             try
             {
-                _context.AdditionalContents.Add(additionalContent);
+                _context.Sections.Add(section);
                 _context.SaveChanges();
 
-                return additionalContent;
+                return section;
             }
             catch (Exception e)
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public AdditionalContent? GetById(int id)
+        public Section? GetById(int id)
         {
             try
             {
-                return _context.AdditionalContents
-                    .FirstOrDefault(ac => ac.AdditionalContentId == id);
+                return _context.Sections
+                    .FirstOrDefault(s => s.SectionId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<AdditionalContent> GetAll()
+        public IEnumerable<Section> GetAll()
         {
             try
             {
-                return _context.AdditionalContents
+                return _context.Sections
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +58,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public AdditionalContent Update(AdditionalContent additionalContent)
+        public Section Update(Section section)
         {
             try
             {
-                _context.Update(additionalContent);
+                _context.Update(section);
                 _context.SaveChanges();
 
-                return additionalContent;
+                return section;
             }
             catch (Exception e)
             {
@@ -73,11 +73,11 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(AdditionalContent additionalContent)
+        public void Delete(Section section)
         {
             try
             {
-                _context.Remove(additionalContent);
+                _context.Remove(section);
                 _context.SaveChanges();
             }
             catch (Exception e)

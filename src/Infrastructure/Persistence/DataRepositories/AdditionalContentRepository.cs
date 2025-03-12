@@ -1,27 +1,27 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class LikeRepository : ILikeRepository
+    public class AdditionalContentRepository : IAdditionalContentRepository
     {
         private readonly DatabaseContext _context;
 
-        public LikeRepository(DatabaseContext context)
+        public AdditionalContentRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public Like Add(Like like)
+        public AdditionalContent Add(AdditionalContent additionalContent)
         {
             try
             {
-                _context.Likes.Add(like);
+                _context.AdditionalContents.Add(additionalContent);
                 _context.SaveChanges();
 
-                return like;
+                return additionalContent;
             }
             catch (Exception e)
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public Like? GetById(int id)
+        public AdditionalContent? GetById(int id)
         {
             try
             {
-                return _context.Likes
-                    .FirstOrDefault(l => l.LikeId == id);
+                return _context.AdditionalContents
+                    .FirstOrDefault(ac => ac.AdditionalContentId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<Like> GetAll()
+        public IEnumerable<AdditionalContent> GetAll()
         {
             try
             {
-                return _context.Likes
+                return _context.AdditionalContents
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +58,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public Like Update(Like like)
+        public AdditionalContent Update(AdditionalContent additionalContent)
         {
             try
             {
-                _context.Update(like);
+                _context.Update(additionalContent);
                 _context.SaveChanges();
 
-                return like;
+                return additionalContent;
             }
             catch (Exception e)
             {
@@ -73,11 +73,11 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(Like like)
+        public void Delete(AdditionalContent additionalContent)
         {
             try
             {
-                _context.Remove(like);
+                _context.Remove(additionalContent);
                 _context.SaveChanges();
             }
             catch (Exception e)

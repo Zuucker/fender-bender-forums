@@ -1,27 +1,28 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class CommentRepository : ICommentRepository
+    public class OfferRepository : IOfferRepository
     {
         private readonly DatabaseContext _context;
 
-        public CommentRepository(DatabaseContext context)
+        public OfferRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public Comment Add(Comment comment)
+        public Offer Add(Offer offer)
         {
             try
             {
-                _context.Comments.Add(comment);
+                _context.Offers.Add(offer);
                 _context.SaveChanges();
 
-                return comment;
+                return offer;
             }
             catch (Exception e)
             {
@@ -30,12 +31,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public Comment? GetById(int id)
+        public Offer? GetById(int id)
         {
             try
             {
-                return _context.Comments
-                    .FirstOrDefault(c => c.CommentId == id);
+                return _context.Offers
+                    .FirstOrDefault(o => o.OfferId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +45,16 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<Comment> GetAll()
+        public IEnumerable<Offer> GetAll()
         {
             try
             {
-                return _context.Comments
+                return _context.Offers
+                    .Include(o=>o.Owner)
+                    .Include(o=>o.Car)
+                    .Include(o=>o.City)
+                    .Include(o=>o.AdditionalContents)
+                    .Include(o=>o.Ratings)
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +64,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public Comment Update(Comment comment)
+        public Offer Update(Offer offer)
         {
             try
             {
-                _context.Update(comment);
+                _context.Update(offer);
                 _context.SaveChanges();
 
-                return comment;
+                return offer;
             }
             catch (Exception e)
             {
@@ -73,11 +79,11 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(Comment comment)
+        public void Delete(Offer offer)
         {
             try
             {
-                _context.Remove(comment);
+                _context.Remove(offer);
                 _context.SaveChanges();
             }
             catch (Exception e)

@@ -1,27 +1,27 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class OfferRateRepository : IOfferRateRepository
+    public class CityRepository : ICityRepository
     {
         private readonly DatabaseContext _context;
 
-        public OfferRateRepository(DatabaseContext context)
+        public CityRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public OfferRate Add(OfferRate offerRate)
+        public City Add(City city)
         {
             try
             {
-                _context.OfferRates.Add(offerRate);
+                _context.Cities.Add(city);
                 _context.SaveChanges();
 
-                return offerRate;
+                return city;
             }
             catch (Exception e)
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public OfferRate? GetById(int id)
+        public City? GetById(int id)
         {
             try
             {
-                return _context.OfferRates
-                    .FirstOrDefault(or => or.OfferRateId == id);
+                return _context.Cities
+                    .FirstOrDefault(c => c.CityId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<OfferRate> GetAll()
+        public IEnumerable<City> GetAll()
         {
             try
             {
-                return _context.OfferRates
+                return _context.Cities
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +58,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public OfferRate Update(OfferRate offerRate)
+        public City Update(City cities)
         {
             try
             {
-                _context.Update(offerRate);
+                _context.Update(cities);
                 _context.SaveChanges();
 
-                return offerRate;
+                return cities;
             }
             catch (Exception e)
             {
@@ -73,11 +73,11 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(OfferRate offerRate)
+        public void Delete(City cities)
         {
             try
             {
-                _context.Remove(offerRate);
+                _context.Remove(cities);
                 _context.SaveChanges();
             }
             catch (Exception e)

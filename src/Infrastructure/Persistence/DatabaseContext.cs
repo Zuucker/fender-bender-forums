@@ -2,10 +2,10 @@ using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance
 {
     public class DatabaseContext : IdentityDbContext<ApplicationUser>
-    {
+    {   
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options) { }
 

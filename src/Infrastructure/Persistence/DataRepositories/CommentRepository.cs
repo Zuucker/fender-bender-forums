@@ -1,27 +1,27 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class UserRepository : IUserRepository
+    public class CommentRepository : ICommentRepository
     {
         private readonly DatabaseContext _context;
 
-        public UserRepository(DatabaseContext context)
+        public CommentRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public ApplicationUser Add(ApplicationUser newUser)
+        public Comment Add(Comment comment)
         {
             try
             {
-                _context.Users.Add(newUser);
+                _context.Comments.Add(comment);
                 _context.SaveChanges();
 
-                return newUser;
+                return comment;
             }
             catch (Exception e)
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public ApplicationUser? GetById(string id)
+        public Comment? GetById(int id)
         {
             try
             {
-                return _context.Users
-                    .FirstOrDefault(u => u.Id == id);
+                return _context.Comments
+                    .FirstOrDefault(c => c.CommentId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<ApplicationUser> GetAll()
+        public IEnumerable<Comment> GetAll()
         {
             try
             {
-                return _context.Users
+                return _context.Comments
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +58,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public ApplicationUser Update(ApplicationUser user)
+        public Comment Update(Comment comment)
         {
             try
             {
-                _context.Update(user);
+                _context.Update(comment);
                 _context.SaveChanges();
 
-                return user;
+                return comment;
             }
             catch (Exception e)
             {
@@ -73,31 +73,12 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(ApplicationUser user)
+        public void Delete(Comment comment)
         {
             try
             {
-                _context.Remove(user);
+                _context.Remove(comment);
                 _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw;
-            }
-        }
-
-        #endregion
-
-
-        #region IUserRepository
-
-        public ApplicationUser? GetByUserName(string userName)
-        {
-            try
-            {
-                return _context.Users
-                    .FirstOrDefault(u => u.UserName == userName);
             }
             catch (Exception e)
             {

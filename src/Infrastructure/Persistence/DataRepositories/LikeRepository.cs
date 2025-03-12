@@ -1,27 +1,27 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class SectionRepository : ISectionRepository
+    public class LikeRepository : ILikeRepository
     {
         private readonly DatabaseContext _context;
 
-        public SectionRepository(DatabaseContext context)
+        public LikeRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public Section Add(Section section)
+        public Like Add(Like like)
         {
             try
             {
-                _context.Sections.Add(section);
+                _context.Likes.Add(like);
                 _context.SaveChanges();
 
-                return section;
+                return like;
             }
             catch (Exception e)
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public Section? GetById(int id)
+        public Like? GetById(int id)
         {
             try
             {
-                return _context.Sections
-                    .FirstOrDefault(s => s.SectionId == id);
+                return _context.Likes
+                    .FirstOrDefault(l => l.LikeId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<Section> GetAll()
+        public IEnumerable<Like> GetAll()
         {
             try
             {
-                return _context.Sections
+                return _context.Likes
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +58,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public Section Update(Section section)
+        public Like Update(Like like)
         {
             try
             {
-                _context.Update(section);
+                _context.Update(like);
                 _context.SaveChanges();
 
-                return section;
+                return like;
             }
             catch (Exception e)
             {
@@ -73,11 +73,11 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(Section section)
+        public void Delete(Like like)
         {
             try
             {
-                _context.Remove(section);
+                _context.Remove(like);
                 _context.SaveChanges();
             }
             catch (Exception e)

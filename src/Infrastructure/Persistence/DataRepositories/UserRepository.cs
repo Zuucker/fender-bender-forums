@@ -1,27 +1,27 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
-    public class CityRepository : ICityRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseContext _context;
 
-        public CityRepository(DatabaseContext context)
+        public UserRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public City Add(City city)
+        public ApplicationUser Add(ApplicationUser newUser)
         {
             try
             {
-                _context.Cities.Add(city);
+                _context.Users.Add(newUser);
                 _context.SaveChanges();
 
-                return city;
+                return newUser;
             }
             catch (Exception e)
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public City? GetById(int id)
+        public ApplicationUser? GetById(string id)
         {
             try
             {
-                return _context.Cities
-                    .FirstOrDefault(c => c.CityId == id);
+                return _context.Users
+                    .FirstOrDefault(u => u.Id == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public IEnumerable<City> GetAll()
+        public IEnumerable<ApplicationUser> GetAll()
         {
             try
             {
-                return _context.Cities
+                return _context.Users
                     .ToList();
             }
             catch (Exception e)
@@ -58,14 +58,14 @@ namespace Infrastructure.Persistance.Data
             }
         }
 
-        public City Update(City cities)
+        public ApplicationUser Update(ApplicationUser user)
         {
             try
             {
-                _context.Update(cities);
+                _context.Update(user);
                 _context.SaveChanges();
 
-                return cities;
+                return user;
             }
             catch (Exception e)
             {
@@ -73,12 +73,31 @@ namespace Infrastructure.Persistance.Data
                 throw;
             }
         }
-        public void Delete(City cities)
+        public void Delete(ApplicationUser user)
         {
             try
             {
-                _context.Remove(cities);
+                _context.Remove(user);
                 _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        #endregion
+
+
+        #region IUserRepository
+
+        public ApplicationUser? GetByUserName(string userName)
+        {
+            try
+            {
+                return _context.Users
+                    .FirstOrDefault(u => u.UserName == userName);
             }
             catch (Exception e)
             {

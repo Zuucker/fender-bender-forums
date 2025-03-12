@@ -2,7 +2,7 @@
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance.Data
+namespace Infrastructure.Persistance.DataRepositories
 {
     public class PostRepository : IPostRepository
     {
