@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces.RepositoryInterfaces
 {
-    public interface IAdditionalContentRepository : IRepository<AdditionalContent, int>
+    public interface IContentRepository : IRepository<Content, int>
     {
     }
 }

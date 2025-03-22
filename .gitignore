@@ -83,8 +83,12 @@ src/Domain/bin
 src/Infrastructure/bin
 src/Presentation/bin
 src/Application/obj
+src/Application/src/obj
 src/Domain/obj
+src/Domain/src/obj
 src/Infrastructure/obj
+src/Infrastructure/src/obj
 src/Presentation/obj
+src/Presentation/src/obj
 
 /obj

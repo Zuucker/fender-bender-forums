@@ -3,22 +3,22 @@ using Domain.Models;
 
 namespace Infrastructure.Persistance.DataRepositories
 {
-    public class AdditionalContentRepository : IAdditionalContentRepository
+    public class ContentRepository : IContentRepository
     {
         private readonly DatabaseContext _context;
 
-        public AdditionalContentRepository(DatabaseContext context)
+        public ContentRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         #region IRepository
 
-        public AdditionalContent Add(AdditionalContent additionalContent)
+        public Content Add(Content additionalContent)
         {
             try
             {
-                _context.AdditionalContents.Add(additionalContent);
+                _context.Contents.Add(additionalContent);
                 _context.SaveChanges();
 
                 return additionalContent;
@@ -30,12 +30,12 @@ namespace Infrastructure.Persistance.DataRepositories
             }
         }
 
-        public AdditionalContent? GetById(int id)
+        public Content? GetById(int id)
         {
             try
             {
-                return _context.AdditionalContents
-                    .FirstOrDefault(ac => ac.AdditionalContentId == id);
+                return _context.Contents
+                    .FirstOrDefault(ac => ac.ContentId == id);
             }
             catch (Exception e)
             {
@@ -44,11 +44,11 @@ namespace Infrastructure.Persistance.DataRepositories
             }
         }
 
-        public IEnumerable<AdditionalContent> GetAll()
+        public IEnumerable<Content> GetAll()
         {
             try
             {
-                return _context.AdditionalContents
+                return _context.Contents
                     .ToList();
             }
             catch (Exception e)
@@ -58,7 +58,7 @@ namespace Infrastructure.Persistance.DataRepositories
             }
         }
 
-        public AdditionalContent Update(AdditionalContent additionalContent)
+        public Content Update(Content additionalContent)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Infrastructure.Persistance.DataRepositories
                 throw;
             }
         }
-        public void Delete(AdditionalContent additionalContent)
+        public void Delete(Content additionalContent)
         {
             try
             {

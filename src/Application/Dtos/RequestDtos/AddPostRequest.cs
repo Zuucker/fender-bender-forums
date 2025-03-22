@@ -16,6 +16,6 @@ namespace Application.Dtos.RequestDtos
 
         public string Tags { get; set; } = string.Empty;
 
-        public List<AdditionalContentDto> AdditionalContents { get; set; } = [];
+        public List<ContentDto> AdditionalContents { get; set; } = [];
     }
 }

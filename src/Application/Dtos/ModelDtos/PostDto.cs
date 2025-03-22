@@ -36,6 +36,6 @@ namespace Application.Dtos.ModelDtos
 
         public UserDto Author { get; set; }
 
-        public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
+        public virtual ICollection<Content> AdditionalContents { get; set; } = [];
     }
 }

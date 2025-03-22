@@ -9,7 +9,7 @@ namespace Infrastructure.Persistance
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options) { }
 
-        public DbSet<AdditionalContent> AdditionalContents { get; set; }
+        public DbSet<Content> Contents { get; set; }
 
         public DbSet<Car> Cars { get; set; }
 

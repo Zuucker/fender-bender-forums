@@ -20,7 +20,7 @@ namespace Application.Factories
                 Price = request.Price,
                 Tags = request.Tags,
                 AdditionalContents = request.AdditionalContents
-                    .Select(ac => AdditionalContentFactory.Create(ac))
+                    .Select(ac => ContentFactory.Create(ac))
                     .ToList()
             };
         }

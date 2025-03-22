@@ -31,7 +31,7 @@ namespace Domain.Models
         [StringLength(100)]
         public string Tags { get; set; } = string.Empty;
 
-        public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
+        public virtual ICollection<Content> AdditionalContents { get; set; } = [];
 
         public virtual ApplicationUser User { get; set; } = null!;
 

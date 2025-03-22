@@ -55,7 +55,7 @@ namespace Domain.Models
 
         public virtual City City { get; set; } = null!;
 
-        public virtual ICollection<AdditionalContent> AdditionalContents { get; set; } = [];
+        public virtual ICollection<Content> AdditionalContents { get; set; } = [];
 
         public virtual ICollection<OfferRate> Ratings { get; set; } = [];
     }

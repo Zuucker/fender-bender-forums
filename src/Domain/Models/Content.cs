@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
-    public class AdditionalContent
+    public class Content
     {
         [Key]
-        public int AdditionalContentId { get; set; }
+        public int ContentId { get; set; }
 
         [ForeignKey("Post")]
         public int? PostId { get; set; }
@@ -16,21 +16,25 @@ namespace Domain.Models
         public int? OfferId { get; set; }
 
         [Required]
-        [StringLength(100)]
         public int Type { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string Content { get; set; } = string.Empty;
+        [StringLength(1000)]
+        public string TextContent { get; set; } = string.Empty;
+
+        [Required]
+        public int Position { get; set; }
+
+        public int? GalleryPosition { get; set; }
 
         [Required]
         [StringLength(100)]
         public string Path { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public virtual Offer Offer { get; set; } = null!;
+        public virtual Offer? Offer { get; set; }
 
         [JsonIgnore]
-        public virtual Post Post { get; set; } = null!;
+        public virtual Post? Post { get; set; }
     }
 }
