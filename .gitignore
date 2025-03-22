@@ -3,8 +3,6 @@ backend/obj
 *.sln
 .vs
 
-oldFront/*
-
 
 backend/bin
 
@@ -77,3 +75,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# clean arch
+src/Application/bin
+src/Domain/bin
+src/Infrastructure/bin
+src/Presentation/bin
+src/Application/obj
+src/Domain/obj
+src/Infrastructure/obj
+src/Presentation/obj
