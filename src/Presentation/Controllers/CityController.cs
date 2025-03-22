@@ -9,12 +9,10 @@ namespace Presentation.Controllers
     public class CityController : ControllerBase
     {
         private readonly ICityService _cityService;
-        private readonly IAuthenticatorService _authenticator;
 
-        public CityController(IAuthenticatorService authenticator, ICityService cityService)
+        public CityController(ICityService cityService)
         {
             _cityService = cityService;
-            _authenticator = authenticator;
         }
 
         [HttpGet("get")]
@@ -23,11 +21,12 @@ namespace Presentation.Controllers
             try
             {
                 var cities = _cityService.GettAllCities();
+
                 return Ok(cities);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"GetCities {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -37,16 +36,13 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(request.Name))
-                    throw new Exception("Name is required");
-
                 var newCity = _cityService.AddCity(request);
 
-                return Ok(new { newCity });
+                return Ok(newCity);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"AddCity {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

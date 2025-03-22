@@ -17,21 +17,18 @@ namespace Presentation.Controllers
 
 
         [HttpPost("edit")]
-        public IActionResult AddCity([FromBody] EditUserRequest request)
+        public IActionResult EditUser([FromBody] EditUserRequest request)
         {
             try
             {
-                if (string.IsNullOrEmpty(request.UserId))
-                    throw new Exception("UserId is required");
-
                 var updatedUser = _userService.UpdateUser(request.UserId, request.Username, request.Email)
                     ?? throw new Exception("User cannot be updated");
 
-                return Ok(new { updatedUser });
+                return Ok(updatedUser);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"GetOffers {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

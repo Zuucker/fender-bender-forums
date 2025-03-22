@@ -21,11 +21,12 @@ namespace Presentation.Controllers
             try
             {
                 var offers = _offerService.GetAllOffers();
+
                 return Ok(offers);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"GetOffers {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -36,16 +37,13 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (requestDto == null)
-                    throw new Exception("The request is empty of null");
-
                 _offerService.AddOffer(requestDto);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"AddOffer {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -55,16 +53,13 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (requestDto == null)
-                    throw new Exception("The request is empty of null");
-
                 _offerService.AddOfferRating(requestDto);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"AddOfferRating {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

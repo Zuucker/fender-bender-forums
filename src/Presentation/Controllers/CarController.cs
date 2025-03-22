@@ -9,12 +9,10 @@ namespace Presentation.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;
-        private readonly IAuthenticatorService _authenticator;
 
-        public CarController(IAuthenticatorService authenticator, ICarService carService)
+        public CarController(ICarService carService)
         {
             _carService = carService;
-            _authenticator = authenticator;
         }
 
         [HttpGet("get")]
@@ -23,11 +21,12 @@ namespace Presentation.Controllers
             try
             {
                 var cars = _carService.GetAllCars();
+
                 return Ok(cars);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"GetCars {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -37,20 +36,14 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(request.Model))
-                    throw new Exception("Model is required");
-
-                if (string.IsNullOrEmpty(request.Manufacturer))
-                    throw new Exception("Manufacturer is required");
-
                 var car = _carService.AddCar(request);
 
-                return Ok(new { car });
+                return Ok(car);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return BadRequest(ex.ToString());
+                Console.WriteLine($"AddCar {ex.Message}");
+                return BadRequest(ex.Message);
             }
         }
     }

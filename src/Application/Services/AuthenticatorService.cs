@@ -27,7 +27,7 @@ namespace Application.Services
             if (user == null)
                 return false;
 
-            return request.PasswordHash == user.PasswordHash;
+            return request.Password == user.PasswordHash;
         }
 
         public string GenerateToken(string login)

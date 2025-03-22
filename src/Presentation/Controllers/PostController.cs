@@ -21,11 +21,12 @@ namespace Presentation.Controllers
             try
             {
                 var posts = _postService.GetAllPosts();
+
                 return Ok(posts);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"GetPosts {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -36,16 +37,13 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (requestDto == null)
-                    throw new Exception("The request is empty of null");
-
                 _postService.AddPost(requestDto);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"AddPost {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
