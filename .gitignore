@@ -86,3 +86,5 @@ src/Application/obj
 src/Domain/obj
 src/Infrastructure/obj
 src/Presentation/obj
+
+/obj
