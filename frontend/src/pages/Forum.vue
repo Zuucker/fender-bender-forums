@@ -1,0 +1,1 @@
+<template>Forum here</template>

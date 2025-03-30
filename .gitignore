@@ -92,3 +92,4 @@ src/Presentation/obj
 src/Presentation/src/obj
 
 /obj
+*.json

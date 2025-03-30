@@ -1,0 +1,10 @@
+.side-menu-select {
+	height: fit-content;
+	background-color: var(--white);
+	border: 3px solid var(--black);
+	margin-top: 1rem;
+	cursor: pointer;
+	&:hover {
+		background-color: var(--blight);
+	}
+}
