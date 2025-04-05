@@ -1,7 +1,11 @@
 {
-	"files": [],
-	"references": [
-		{ "path": "./tsconfig.app.json" },
-		{ "path": "./tsconfig.node.json" }
-	]
+	"compilerOptions": {
+		"lib": ["ES2015", "DOM"],
+		"types": ["vuetify"],
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"vuetify/*": ["./node_modules/vuetify/lib/*"]
+		}
+	}
 }
