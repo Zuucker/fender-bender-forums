@@ -49,6 +49,9 @@ namespace Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int RatingCount { get; private set; }//db should manage it
 
+        [Required]
+        public string Title { get; set; } = string.Empty;
+
         public virtual Car Car { get; set; } = null!;
 
         public virtual ApplicationUser Owner { get; set; } = null!;

@@ -7,5 +7,7 @@ namespace Application.Interfaces.ServiceInterfaces
         ApplicationUser RegisterUser(string username, string email, string password);
 
         ApplicationUser? UpdateUser(string userId, string? username, string? email);
+
+        ApplicationUser? GetUserById(string userId);
     }
 }

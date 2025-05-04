@@ -51,5 +51,10 @@ namespace Application.Services
             _userRepository.Update(user);
             return user;
         }
+
+        public ApplicationUser? GetUserById(string userId)
+        {
+            return _userRepository.GetById(userId);
+        }
     }
 }

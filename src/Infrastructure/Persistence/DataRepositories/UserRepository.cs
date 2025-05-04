@@ -106,6 +106,20 @@ namespace Infrastructure.Persistance.DataRepositories
             }
         }
 
+        public ApplicationUser? GetByEmail(string email)
+        {
+            try
+            {
+                return _context.Users
+                    .FirstOrDefault(u => u.Email == email);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         #endregion
     }
 }

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 	import axios from 'axios'
 	import { onMounted, ref } from 'vue'
-	import { ICar } from '../models/interfaces/ICar'
-	import { ICity } from '../models/interfaces/ICity'
+	import { ICar, ICity } from '../Intefaces'
 
 	const cars = ref(<ICar[]>[])
 	const cities = ref(<ICity[]>[])

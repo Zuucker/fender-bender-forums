@@ -6,12 +6,14 @@
 
 <script setup lang="ts">
 	import OfferItemComponent from '../components/OfferItemComponent.vue'
-	import { ICar } from '../models/interfaces/ICar'
-	import { ICity } from '../models/interfaces/ICity'
-	import { IContent } from '../models/interfaces/IContent'
-	import { IOffer } from '../models/interfaces/IOffer'
-	import { IOfferRate } from '../models/interfaces/IRating'
-	import { IUser } from '../models/interfaces/IUser'
+	import {
+		ICar,
+		ICity,
+		IContent,
+		IOffer,
+		IOfferRate,
+		IUser,
+	} from '../Intefaces'
 
 	const exampleOffer = {
 		Title: 'title1',

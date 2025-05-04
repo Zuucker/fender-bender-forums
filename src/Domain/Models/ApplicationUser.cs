@@ -7,5 +7,7 @@ namespace Domain.Models
         // Additional properties can go here
 
         public string Guid { get; set; } = string.Empty;
+
+        public string AvatarUrl { get; set; } = string.Empty;
     }
 }

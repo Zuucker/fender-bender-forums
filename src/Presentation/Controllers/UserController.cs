@@ -1,6 +1,10 @@
 ﻿using Application.Dtos.RequestDtos;
+using Application.Dtos.ModelDtos;
 using Application.Interfaces.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Application.Common;
 
 namespace Presentation.Controllers
 {
@@ -13,6 +17,33 @@ namespace Presentation.Controllers
         public UserController(IUserService userService)
         {
             _userService = userService;
+        }
+
+        [HttpGet("get")]
+        [Authorize]
+        public IActionResult GetUserData()
+        {
+            try
+            {
+                var userId = User?.FindFirst(Constants.ClaimsConstants.UserIdClaim)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized();
+                
+
+                var user = _userService.GetUserById(userId);
+
+                if (user is null)
+                    return NotFound("user not found");
+
+
+                return Ok(new UserDto(user));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetOffers {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
         }
 
 

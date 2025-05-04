@@ -21,8 +21,8 @@ namespace Application.Dtos.ModelDtos
             City = original.City;
             Rating = original.Rating;
             RatingCount = original.RatingCount;
-            Owner = new UserDto(original.Owner);
-            AdditionalContents = original.AdditionalContents;
+            Author = new UserDto(original.Owner);
+            Contents = original.AdditionalContents;
             Ratings = original.Ratings
                 .Select(r => new OfferRateDto(r))
                 .OrderBy(r => r.CreatedAt)
@@ -53,15 +53,15 @@ namespace Application.Dtos.ModelDtos
 
         public float Rating { get; set; }
 
-        public int RatingCount { get; set; }
+        public int RatingCount { get; set; }    
 
         public virtual Car Car { get; set; } = null!;
 
-        public virtual UserDto Owner { get; set; } = null!;
+        public virtual UserDto Author { get; set; } = null!;
 
         public virtual City City { get; set; } = null!;
 
-        public virtual ICollection<Content> AdditionalContents { get; set; } = [];
+        public virtual ICollection<Content> Contents { get; set; } = [];
 
         public virtual ICollection<OfferRateDto> Ratings { get; set; } = [];
     }

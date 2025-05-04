@@ -14,7 +14,7 @@ namespace Application.Dtos.ModelDtos
             CreationDate = org.CreationDate;
             Content = org.Content;
             Tags = org.Tags;
-            AdditionalContents = org.AdditionalContents;
+            AdditionalContents = org.Contents;
             Author = new UserDto(org.User);
         }
 

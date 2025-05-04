@@ -51,7 +51,7 @@ namespace Infrastructure.Persistance.DataRepositories
             {
                 return _context.Posts
                     .Include(p=>p.User)
-                    .Include(p=>p.AdditionalContents)
+                    .Include(p=>p.Contents)
                     .Include(p=>p.Section)
                     .ToList();
             }

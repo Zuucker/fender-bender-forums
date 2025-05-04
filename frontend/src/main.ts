@@ -17,6 +17,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify/dist/vuetify'
 import * as components from 'vuetify/lib/components/index'
 import * as directives from 'vuetify/lib/directives/index'
+import { createPinia } from 'pinia'
+import piniaPersist from 'pinia-plugin-persistedstate'
 
 const vuetify = createVuetify({
 	components,
@@ -27,7 +29,8 @@ const vuetify = createVuetify({
 library.add(faThumbsUp, faMessage, faMagnifyingGlass)
 
 const app = createApp(App)
-app.use(router)
+app.use(createPinia().use(piniaPersist))
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(vuetify)
+app.use(router)
 app.mount('#app')
