@@ -1,4 +1,4 @@
-﻿using Application.Dtos.ModelDtos;
+﻿using Application.Common;
 using Application.Dtos.RequestDtos;
 using Application.Factories;
 using Application.Interfaces.RepositoryInterfaces;
@@ -18,32 +18,30 @@ namespace Application.Services
             _offerRepository = offerRepository;
         }
 
-        public Offer AddOffer(AddOfferRequest offerRequest)
+        public ServiceResult<Offer?> AddOffer(AddOfferRequest offerRequest)
         {
             Offer newOffer = OfferFactory.Create(offerRequest);
 
             _offerRepository.Add(newOffer);
 
-            return newOffer;
+            return ServiceResult<Offer?>.Success(newOffer);
         }
 
-        public ICollection<OfferDto> GetAllOffers()
+        public ServiceResult<IEnumerable<Offer>?> GetAllOffers()
         {
             var offers = _offerRepository
-                .GetAll()
-                .Select(o => new OfferDto(o))
-                .ToList();
+                .GetAll();
 
-            return offers;
+            return ServiceResult<IEnumerable<Offer>?>.Success(offers);
         }
 
-        public OfferRate AddOfferRating(AddOfferRatingRequest ratingRequest)
+        public ServiceResult<OfferRate?> AddOfferRating(AddOfferRatingRequest ratingRequest)
         {
             OfferRate newRating = OfferRateFactory.Create(ratingRequest);
 
             _offerRateRepository.Add(newRating);
 
-            return newRating;
+            return ServiceResult<OfferRate?>.Success(newRating);
         }
     }
 }

@@ -10,14 +10,21 @@
 					label="Email"
 					variant="outlined"
 					v-model="loginData.Email"
-					:error-messages="getErrorMessage('Email')"></v-text-field>
+					:error-messages="
+						getErrorMessage('Email') ||
+						(isEmailInvalid ? ['No user for this email found'] : [])
+					"
+					:error="isEmailInvalid"></v-text-field>
 				<h4>Password</h4>
 				<v-text-field
 					type="password"
 					label="Password"
 					variant="outlined"
 					v-model="loginData.Password"
-					:error-messages="getErrorMessage('Password')"
+					:error-messages="
+						getErrorMessage('Password') ||
+						(isPasswordInvalid ? ['Wrong password'] : [])
+					"
 					@keydown="handleEnterPress"></v-text-field>
 				<div class="d-flex justify-content-between col-12">
 					<v-btn
@@ -44,12 +51,15 @@
 	import { Login } from '../setup/Endpoints'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { useUserStore } from '../setup/stores/UserStore'
+	import { ApiErrors } from '../constants'
 
 	const props = defineModel<ILoginDialogProps>()
 	const loginData = ref<ILoginData>({} as ILoginData)
 	const errors = ref<Record<string, string>>({})
 	const snackBarStore = useSnackBarStore()
 	const userStore = useUserStore()
+	const isEmailInvalid = ref<boolean>(false)
+	const isPasswordInvalid = ref<boolean>(false)
 
 	const loginValidationSchema = yup.object({
 		Email: yup
@@ -66,9 +76,12 @@
 				abortEarly: false,
 			})
 
+			isEmailInvalid.value = false
+			isPasswordInvalid.value = false
+
 			await Login(loginData.value)
-				.then((response) => {
-					userStore.setToken(response.data)
+				.then((token) => {
+					userStore.setToken(token)
 
 					snackBarStore.addMessage({
 						text: 'Successfully logged in!',
@@ -79,11 +92,24 @@
 				})
 				.catch((error) => {
 					console.log(error)
-					snackBarStore.addMessage({
-						text: 'Server error! Please try again!',
-						color: 'error',
-						timeout: 2000,
-					})
+
+					if (!error.response || error.status === 500) {
+						snackBarStore.addMessage({
+							text: 'Server error! Please try again!',
+							color: 'error',
+							timeout: 2000,
+						})
+						return
+					}
+
+					if (error.response.data.Error === ApiErrors[ApiErrors.UserNotFound])
+						isEmailInvalid.value = true
+
+					if (
+						error.response.data.Error ===
+						ApiErrors[ApiErrors.PasswordsDontMatch]
+					)
+						isPasswordInvalid.value = true
 				})
 		} catch (err: any) {
 			if (err.inner) {

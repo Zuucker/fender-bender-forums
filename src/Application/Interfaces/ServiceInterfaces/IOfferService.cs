@@ -1,4 +1,4 @@
-﻿using Application.Dtos.ModelDtos;
+﻿using Application.Common;
 using Application.Dtos.RequestDtos;
 using Domain.Models;
 
@@ -6,10 +6,10 @@ namespace Application.Interfaces.ServiceInterfaces
 {
     public interface IOfferService
     {
-        Offer AddOffer(AddOfferRequest offerRequest);
+        public ServiceResult<Offer?> AddOffer(AddOfferRequest offerRequest);
 
-        ICollection<OfferDto> GetAllOffers();
+        public ServiceResult<IEnumerable<Offer>?> GetAllOffers();
 
-        OfferRate AddOfferRating(AddOfferRatingRequest ratingRequest);
+        public ServiceResult<OfferRate?> AddOfferRating(AddOfferRatingRequest ratingRequest);
     }
 }

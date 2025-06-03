@@ -19,35 +19,71 @@
 				@click="showDialogs.showLogin = true">
 				Login
 			</v-btn>
-			<v-btn
-				class="text-dark h-100 px-1"
-				v-if="user !== null"
-				variant="outlined"
-				density="compact">
-				<v-btn
-					class="px-1"
-					style="min-width: 0px"
-					variant=""
+
+			<v-menu v-if="user !== null">
+				<template v-slot:activator="{ props }">
+					<v-btn
+						v-bind="props"
+						class="px-1"
+						style="min-width: 0px"
+						density="compact">
+						<img :src="user.Avatar" style="max-height: 20px" />
+						<span>{{ user.UserName.charAt(0) }}</span>
+						<template v-slot:append>
+							<v-btn
+								class="px-1"
+								style="border-left: 1px solid black; border-radius: 0px"
+								variant="text"
+								density="compact"
+								@click="handleLogout()">
+								Logout
+							</v-btn>
+						</template>
+					</v-btn>
+				</template>
+
+				<v-list
 					density="compact"
-					@click="console.log('show profile menu')">
-					<img src="../assets/vue.svg" style="max-height: 20px" />
-					<span>{{ user.UserName.charAt(0) }}</span>
-				</v-btn>
-				<v-btn
-					class="px-1"
-					style="border-left: 1px solid black; border-radius: 0px"
-					variant=""
-					density="compact"
-					@click="handleLogout()">
-					Logout
-				</v-btn>
-			</v-btn>
+					class="py-0 d-flex flex-column align-items-center"
+					style="border: 2px solid var(--black); border-radius: 0px">
+					<v-list-item class="p-1" style="min-height: 20px">
+						<v-btn
+							class="px-1 mx-1"
+							variant="text"
+							density="compact"
+							@click="goToPage(`/post/add`)">
+							Add Post
+						</v-btn>
+					</v-list-item>
+					<v-list-item class="p-1" style="min-height: 20px">
+						<v-btn
+							class="px-1 mx-1"
+							variant="text"
+							density="compact"
+							@click="goToPage(`/offer/add`)">
+							Add Offer
+						</v-btn>
+					</v-list-item>
+					<v-list-item class="p-1" style="min-height: 20px">
+						<v-btn
+							class="px-1 mx-1"
+							variant="text"
+							density="compact"
+							@click="goToPage(`/user/${user.Id}`)">
+							Profile
+						</v-btn>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 		</div>
 	</div>
 	<v-dialog v-model="showDialogs.showLogin" width="auto"
 		><LoginComponent class="login-modal" v-model="showDialogs"
 	/></v-dialog>
 	<v-dialog v-model="showDialogs.showRegister" width="auto"
+		><RegisterComponent class="login-modal" v-model="showDialogs"
+	/></v-dialog>
+	<v-dialog v-model="showDialogs.showProfileMenu" width="auto"
 		><RegisterComponent class="login-modal" v-model="showDialogs"
 	/></v-dialog>
 	<SnackBarComponent />
@@ -62,7 +98,7 @@
 	import { useUserStore } from '../setup/stores/UserStore'
 	import { GetUserData } from '../setup/Endpoints'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
-	import { IUser } from '../Intefaces'
+	import { goToPage } from '../setup/Router'
 
 	const sortOptions = ['Sort by new', 'Sort by price']
 	const selectedSort = sortOptions[0]
@@ -72,15 +108,15 @@
 	const showDialogs = ref<ILoginDialogProps>({
 		showLogin: false,
 		showRegister: false,
+		showProfileMenu: false,
 	})
 
 	const user = userStore.getUser
 
 	watch(userStore.getToken, async () => {
-		console.log('now fetch data with', userStore.getUser)
 		await GetUserData()
-			.then((response) => {
-				userStore.setUser(response.data as IUser)
+			.then((userResponse) => {
+				userStore.setUser(userResponse)
 			})
 			.catch((error) => {
 				console.log(error)
@@ -98,6 +134,14 @@
 
 	const handleLogout = () => {
 		userStore.setUser(null)
+
+		snackBarStore.addMessage({
+			text: 'User successfully logged out!',
+			color: 'success',
+			timeout: 2000,
+		})
+
+		goToPage('/')
 	}
 </script>
 

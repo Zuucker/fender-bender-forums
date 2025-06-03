@@ -1,6 +1,6 @@
 <template>
 	<div class="d-flex flex-column justify-content-center align-items-center">
-		<OfferItemComponent v-for="o in offers" :key="o.OfferId" :offer="o" />
+		<OfferItemComponent v-for="o in offers" :key="o.OfferId" :data="o" />
 	</div>
 </template>
 
@@ -21,9 +21,8 @@
 		Ratings: [] as IOfferRate[],
 		Author: {
 			Id: 'id1',
-			Username: 'user1',
-			FirstName: 'name',
-			LastName: 'nastname',
+			UserName: 'user1',
+			Email: 'user1@gmail.com',
 		} as IUser,
 		CarId: 1,
 		Car: {} as ICar,

@@ -3,6 +3,7 @@
 	--blight: #d9d9d9;
 	--white: #ffff;
 	--black: #000000;
+	--tag-blue: #00757c;
 
 	--nav-act-height: 30px;
 }
@@ -25,4 +26,26 @@
 html,
 body {
 	overflow-y: hidden !important;
+}
+
+.v-field {
+	background-color: white;
+	padding-left: 5px;
+}
+
+.hide-scrollbar > * {
+	overflow: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar > * {
+	display: none;
+}
+
+.thicc-border {
+	background-color: var(--white);
+	border: 3px solid var(--black);
+	margin-bottom: 1rem;
+	padding: 0.5rem;
 }

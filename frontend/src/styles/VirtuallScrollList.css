@@ -1,0 +1,9 @@
+.v-virtual-scroll__container {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	overflow-y: auto;
+}
+
+.v-virtual-scroll__container::-webkit-scrollbar {
+	display: none;
+}

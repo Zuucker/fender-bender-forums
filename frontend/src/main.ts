@@ -4,14 +4,21 @@ import { router } from './setup/Router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
-import { faMessage } from '@fortawesome/free-regular-svg-icons'
+import {
+	faThumbsUp,
+	faMessage,
+	faStar as faStarR,
+} from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome/index'
 import './styles/Main.css'
 import './styles/SideMenu.css'
 import './styles/Offers.css'
 import './styles/Content.css'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import {
+	faMagnifyingGlass,
+	faStar,
+	faStarHalfStroke,
+} from '@fortawesome/free-solid-svg-icons'
 import 'vuetify/styles'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify/dist/vuetify'
@@ -26,7 +33,14 @@ const vuetify = createVuetify({
 })
 
 // Add specific icons
-library.add(faThumbsUp, faMessage, faMagnifyingGlass)
+library.add(
+	faThumbsUp,
+	faMessage,
+	faMagnifyingGlass,
+	faStar,
+	faStarR,
+	faStarHalfStroke
+)
 
 const app = createApp(App)
 app.use(createPinia().use(piniaPersist))

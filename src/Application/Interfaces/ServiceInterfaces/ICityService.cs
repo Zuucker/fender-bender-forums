@@ -1,12 +1,13 @@
-﻿using Application.Dtos.RequestDtos;
+﻿using Application.Common;
+using Application.Dtos.RequestDtos;
 using Domain.Models;
 
 namespace Application.Interfaces.ServiceInterfaces
 {
     public interface ICityService
     {
-        IEnumerable<City> GettAllCities();
+        public ServiceResult<IEnumerable<City>?> GettAllCities();
 
-        City AddCity(AddCityRequest cityRequest);
+        public ServiceResult<City?> AddCity(AddCityRequest cityRequest);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Dtos.ModelDtos;
+﻿using Application.Common;
+using Application.Dtos.ModelDtos;
 using Application.Dtos.RequestDtos;
 using Application.Factories;
 using Application.Interfaces.RepositoryInterfaces;
@@ -16,21 +17,21 @@ namespace Application.Services
             _postRepository = repository;
         }
 
-        public Post AddPost(AddPostRequest postRequest)
+        public ServiceResult<Post?> AddPost(AddPostRequest postRequest)
         {
             Post newPost = PostFactory.Create(postRequest);
 
             _postRepository.Add(newPost);
 
-            return newPost;
+            return ServiceResult<Post?>.Success(newPost);
         }
 
-        public ICollection<PostDto> GetAllPosts()
+        public ServiceResult<IEnumerable<Post>?> GetAllPosts()
         {
-            return _postRepository
-                .GetAll()
-                .Select(p => new PostDto(p))
-                .ToList();
+            var posts = _postRepository
+                .GetAll();
+
+            return ServiceResult<IEnumerable<Post>?>.Success(posts);
         }
     }
 }

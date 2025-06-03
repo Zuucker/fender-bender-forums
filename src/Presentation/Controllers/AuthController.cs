@@ -1,6 +1,8 @@
 using Application.Dtos.RequestDtos;
 using Application.Interfaces.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Responses;
+using Domain.Errors;
 
 namespace Presentation.Controllers
 {
@@ -22,18 +24,26 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (_authenticator.IsValidUser(request))
-                {
-                    var token = _authenticator.GenerateToken(request.Login);
-                    return Ok(token);
-                }
+                var validationResult = _authenticator.IsValidUser(request);
 
-                return BadRequest("Invalid credentials");
+                if (validationResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(validationResult);
+
+
+
+                var generateResult = _authenticator.GenerateToken(request.Login);
+
+                if (generateResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(generateResult.Error);
+
+
+
+                return ResponseHelper.PrepareResponse(generateResult);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Login {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -44,16 +54,23 @@ namespace Presentation.Controllers
             try
             {
                 if (request.Password != request.ConfirmPassword)
-                    throw new Exception("Password and ConfirmPassword don't match");
+                    return ResponseHelper.PrepareResponse(ApiErrors.PasswordsDontMatch);
 
-                var user = _userService.RegisterUser(request.Username, request.Email, request.Password);
+
+
+                var registerResult = _userService.RegisterUser(request.Username, request.Email, request.Password);
+
+                if (registerResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(registerResult.Error);
+
+
 
                 return Ok();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Register {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
     }

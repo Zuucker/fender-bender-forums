@@ -1,13 +1,15 @@
-﻿using Domain.Models;
+﻿using Application.Common;
+using Application.Dtos.ModelDtos;
+using Domain.Models;
 
 namespace Application.Interfaces.ServiceInterfaces
 {
     public interface IUserService
     {
-        ApplicationUser RegisterUser(string username, string email, string password);
+        ServiceResult<ApplicationUser?> RegisterUser(string username, string email, string password);
 
-        ApplicationUser? UpdateUser(string userId, string? username, string? email);
+        ServiceResult<ApplicationUser?> UpdateUser(ApplicationUser user, UserDto userDto);
 
-        ApplicationUser? GetUserById(string userId);
+        ServiceResult<ApplicationUser?> GetUserById(string userId);
     }
 }

@@ -1,13 +1,16 @@
-﻿using Application.Dtos.RequestDtos;
+﻿using Application.Common;
+using Application.Dtos.RequestDtos;
 
 namespace Application.Interfaces.ServiceInterfaces
 {
     public interface IAuthenticatorService
     {
-        bool IsValidUser(LoginRequest request);
+        ServiceResult<bool?> IsValidUser(LoginRequest request);
 
-        string GenerateToken(string login);
+        ServiceResult<string?> GenerateToken(string login);
 
-        string HashPassword(string password);
+        ServiceResult<string?> HashPassword(string password);
+
+        ServiceResult<bool?> VerifyPassword(string password, string hash);
     }
 }

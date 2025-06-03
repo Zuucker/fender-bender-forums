@@ -1,4 +1,5 @@
-﻿using Application.Dtos.RequestDtos;
+﻿using Application.Common;
+using Application.Dtos.RequestDtos;
 using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
 using Domain.Models;
@@ -15,12 +16,12 @@ namespace Application.Services
         }
 
         //TODO add filtering
-        public IEnumerable<City> GettAllCities()
+        public ServiceResult<IEnumerable<City>?> GettAllCities()
         {
-            return _cityRepository.GetAll();
+            return ServiceResult<IEnumerable<City>?>.Success(_cityRepository.GetAll());
         }
 
-        public City AddCity(AddCityRequest cityRequest)
+        public ServiceResult<City?> AddCity(AddCityRequest cityRequest)
         {
             City newCity = new()
             {
@@ -31,7 +32,8 @@ namespace Application.Services
 
             _cityRepository.Add(newCity);
 
-            return newCity;
+            return ServiceResult<City?>.Success(newCity);
+
         }
     }
 }

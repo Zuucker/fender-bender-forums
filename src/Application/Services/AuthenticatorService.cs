@@ -7,6 +7,9 @@ using Application.Interfaces.RepositoryInterfaces;
 using Microsoft.Extensions.Configuration;
 using Application.Dtos.RequestDtos;
 using System.Security.Claims;
+using Application.Common;
+using Domain.Errors;
+using Domain.Models;
 
 namespace Application.Services
 {
@@ -21,33 +24,43 @@ namespace Application.Services
             _configuration = configuration;
         }
 
-        public bool IsValidUser(LoginRequest request)
+        public ServiceResult<bool?> IsValidUser(LoginRequest request)
         {
             var user = _userRepository.GetByUserName(request.Login)
                 ?? _userRepository.GetByEmail(request.Login);
 
             if (user == null)
-                return false;
+                return ServiceResult<bool?>.Failure(ApiErrors.UserNotFound);
 
-            return VerifyPassword(request.Password, user.PasswordHash ?? string.Empty);
+
+
+            var verifyResult = VerifyPassword(request.Password, user.PasswordHash ?? string.Empty);
+
+            if(verifyResult.HasFailed())
+                return ServiceResult<bool?>.Failure(verifyResult.Error!.Value);
+
+
+            return ServiceResult<bool?>.Success(verifyResult.Data);
         }
 
-        public string GenerateToken(string login)
+        public ServiceResult<string?> GenerateToken(string login)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var user = _userRepository.GetByUserName(login)
-                ?? _userRepository.GetByEmail(login) 
-                ?? throw new Exception("User is null");
+                ?? _userRepository.GetByEmail(login);
+
+            if (user == null)
+                return ServiceResult<string?>.Failure(ApiErrors.UserNotFound);
 
             var claims = new[]
             {
-                new Claim("userId", user.Id),
-                new Claim("userName", user.UserName!)
+                new Claim(Constants.ClaimsConstants.UserIdClaim, user.Id),
+                new Claim(Constants.ClaimsConstants.UserNameClaim, user.UserName!)
             };
 
-            var token = new JwtSecurityToken(
+            var tokenData = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 expires: DateTime.Now.AddHours(20),
@@ -55,49 +68,32 @@ namespace Application.Services
                 claims: claims
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenData);
+
+            return ServiceResult<string?>.Success(token);
         }
 
-        public ClaimsPrincipal GetClaimsFromToken(string token)
+        public ServiceResult<string?> HashPassword(string password)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Convert.FromBase64String(_configuration["Jwt:Key"]!);
-
-            try
-            {
-                var validationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
-                };
-
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-
-                return principal;
-            }
-            catch (Exception ex)
-            {
-                throw new UnauthorizedAccessException("Invalid or expired token", ex);
-            }
-        }
-
-        public string HashPassword(string password)
-        {
-            var passwordHasher = new PasswordHasher<object>();
+            var passwordHasher = new PasswordHasher<ApplicationUser>();
 
             //user is not necesarry
-            return passwordHasher.HashPassword(null!, password);
+            var hashedPassword = passwordHasher.HashPassword(null!, password);
+
+            return ServiceResult<string?>.Success(hashedPassword);
         }
 
-        private bool VerifyPassword(string password, string hash)
+        public ServiceResult<bool?> VerifyPassword(string password, string hash)
         {
-            var passwordHasher = new PasswordHasher<object>();
+            var passwordHasher = new PasswordHasher<ApplicationUser>();
 
-            return passwordHasher.VerifyHashedPassword(null!, hash, password) == PasswordVerificationResult.Success;
+            var result = passwordHasher
+                .VerifyHashedPassword(null!, hash, password) == PasswordVerificationResult.Success;
+
+            if (!result)
+                return ServiceResult<bool?>.Failure(ApiErrors.PasswordsDontMatch);
+
+            return ServiceResult<bool?>.Success(result);
         }
     }
 }

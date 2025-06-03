@@ -8,6 +8,6 @@ namespace Domain.Models
 
         public string Guid { get; set; } = string.Empty;
 
-        public string AvatarUrl { get; set; } = string.Empty;
+        public string AvatarUrl { get; set; } = "/src/assets/vue.svg"; // default value for now
     }
 }

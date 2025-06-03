@@ -5,6 +5,7 @@
         public static class ClaimsConstants
         {
             public const string UserIdClaim = "userId";
+            public const string UserNameClaim = "userName";
         }
     }
 }

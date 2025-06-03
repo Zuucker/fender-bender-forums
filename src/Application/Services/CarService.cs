@@ -1,9 +1,10 @@
-﻿using Application.Dtos.RequestDtos;
+﻿using Application.Common;
+using Application.Dtos.RequestDtos;
 using Application.Factories;
 using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
-using Domain.Models;
-
+ using Domain.Models;
+ 
 namespace Application.Services
 {
     public class CarService : ICarService
@@ -16,18 +17,18 @@ namespace Application.Services
         }
 
         //TODO add filtering
-        public IEnumerable<Car> GetAllCars()
+        public ServiceResult<IEnumerable<Car>?> GetAllCars()
         {
-            return _carRepository.GetAll();
+            return ServiceResult<IEnumerable<Car>?>.Success(_carRepository.GetAll());
         }
 
-        public Car AddCar(AddCarRequest carRequest)
+        public ServiceResult<Car?> AddCar(AddCarRequest carRequest)
         {
             Car newCar = CarFactory.Create(carRequest);
 
             _carRepository.Add(newCar);
 
-            return newCar;
+            return ServiceResult<Car?>.Success(newCar);
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using Application.Interfaces.RepositoryInterfaces;
+﻿using Application.Common;
+using Application.Dtos.ModelDtos;
+using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
+using Domain.Errors;
 using Domain.Models;
 
 namespace Application.Services
@@ -15,46 +18,78 @@ namespace Application.Services
             _authenticator = authenticator;
         }
 
-        public ApplicationUser RegisterUser(string username, string email, string password)
+        public ServiceResult<ApplicationUser?> RegisterUser(string username, string email, string password)
         {
+            var hashResult = _authenticator.HashPassword(password);
+
+            if (hashResult.HasFailed())
+                return ServiceResult<ApplicationUser?>.Failure(hashResult.Error!.Value);
+
             ApplicationUser newUser = new()
             {
                 UserName = username,
                 NormalizedUserName = username.ToUpper(),
                 Email = email,
                 NormalizedEmail = email.ToUpper(),
-                PasswordHash = _authenticator.HashPassword(password)
+                PasswordHash = hashResult.Data,
             };
 
-            return _userRepository.Add(newUser);
+            _userRepository.Add(newUser);
+
+            return ServiceResult<ApplicationUser?>.Success(newUser);
         }
 
-        public ApplicationUser? UpdateUser(string userId, string? username, string? email)
+        public ServiceResult<ApplicationUser?> UpdateUser(ApplicationUser user, UserDto editedUser)
+        {
+            var isUniqueResult = IsUsernameOrEmailAreInUse(user, editedUser.UserName, editedUser.Email);
+
+            if(isUniqueResult.HasFailed())
+                return ServiceResult<ApplicationUser?>.Failure(isUniqueResult.Error!.Value);
+
+
+            user.UserName = editedUser.UserName;
+            user.NormalizedUserName = editedUser.UserName.ToUpper();
+
+            user.Email = editedUser.Email;
+            user.NormalizedEmail = editedUser.Email.ToUpper();
+
+            if (!string.IsNullOrEmpty(editedUser.NewPassword) && !string.IsNullOrEmpty(editedUser.ConfirmPassword))
+            {
+                var hashResult = _authenticator.HashPassword(editedUser.NewPassword);
+
+                if (hashResult.HasFailed())
+                    return ServiceResult<ApplicationUser?>.Failure(hashResult.Error!.Value);
+
+                user.PasswordHash = hashResult.Data;
+            }
+
+            _userRepository.Update(user);
+
+            return ServiceResult<ApplicationUser?>.Success(user);
+        }
+
+        public ServiceResult<ApplicationUser?> GetUserById(string userId)
         {
             var user = _userRepository.GetById(userId);
 
             if (user == null)
-                return null;
+                return ServiceResult<ApplicationUser?>.Failure(ApiErrors.UserNotFound);
 
-            if (!string.IsNullOrEmpty(username))
-            {
-                user.UserName = username;
-                user.NormalizedUserName = username.ToUpper();
-            }
-
-            if (!string.IsNullOrEmpty(email))
-            {
-                user.Email = email;
-                user.NormalizedEmail = email.ToUpper();
-            }
-
-            _userRepository.Update(user);
-            return user;
+            return ServiceResult<ApplicationUser?>.Success(user);
         }
 
-        public ApplicationUser? GetUserById(string userId)
+        public ServiceResult<bool?> IsUsernameOrEmailAreInUse(ApplicationUser user, string userName, string email)
         {
-            return _userRepository.GetById(userId);
+            var userByUsername = _userRepository.GetByUserName(userName);
+            var userByEmail = _userRepository.GetByEmail(email);
+
+            if (userByUsername != null && userByUsername.Id != user.Id)
+                return ServiceResult<bool?>.Failure(ApiErrors.UsernameAlreadyInUse);
+
+            if (userByEmail != null && userByEmail.Id != user.Id)
+                return ServiceResult<bool?>.Failure(ApiErrors.EmailAlreadyInUse);
+
+            return ServiceResult<bool?>.Success(false);
         }
     }
 }
