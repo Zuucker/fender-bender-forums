@@ -6,9 +6,9 @@ namespace Presentation.Responses
 {
     public class ResponseHelper
     {
-        public static IActionResult PrepareResponse<T>(ServiceResult<T?> result)
+        public static IActionResult PrepareResponse<T>(ServiceResult<T> result)
         {
-            if (result.Data != null)
+            if (!result.HasFailed())
             {
                 ApiResponseDto<T> responseData = new() { Data = result.Data };
 

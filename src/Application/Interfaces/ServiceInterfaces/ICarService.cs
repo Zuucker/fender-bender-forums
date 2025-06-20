@@ -6,8 +6,8 @@ namespace Application.Interfaces.ServiceInterfaces
 {
     public interface ICarService
     {
-        public ServiceResult<IEnumerable<Car>?> GetAllCars();
+        public ServiceResult<IEnumerable<Car>> GetAllCars();
 
-        public ServiceResult<Car?> AddCar(AddCarRequest carRequest);
+        public ServiceResult<Car> AddCar(AddCarRequest carRequest);
     }
 }

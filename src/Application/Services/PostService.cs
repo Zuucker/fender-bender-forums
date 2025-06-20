@@ -17,21 +17,21 @@ namespace Application.Services
             _postRepository = repository;
         }
 
-        public ServiceResult<Post?> AddPost(AddPostRequest postRequest)
+        public ServiceResult<Post> AddPost(AddPostRequest postRequest)
         {
             Post newPost = PostFactory.Create(postRequest);
 
             _postRepository.Add(newPost);
 
-            return ServiceResult<Post?>.Success(newPost);
+            return ServiceResult<Post>.Success(newPost);
         }
 
-        public ServiceResult<IEnumerable<Post>?> GetAllPosts()
+        public ServiceResult<IEnumerable<Post>> GetAllPosts()
         {
             var posts = _postRepository
                 .GetAll();
 
-            return ServiceResult<IEnumerable<Post>?>.Success(posts);
+            return ServiceResult<IEnumerable<Post>>.Success(posts);
         }
     }
 }

@@ -6,8 +6,8 @@ namespace Application.Interfaces.ServiceInterfaces
 {
     public interface ICityService
     {
-        public ServiceResult<IEnumerable<City>?> GettAllCities();
+        public ServiceResult<IEnumerable<City>> GettAllCities();
 
-        public ServiceResult<City?> AddCity(AddCityRequest cityRequest);
+        public ServiceResult<City> AddCity(AddCityRequest cityRequest);
     }
 }

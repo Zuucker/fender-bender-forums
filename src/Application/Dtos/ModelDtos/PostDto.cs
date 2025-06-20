@@ -4,8 +4,6 @@ namespace Application.Dtos.ModelDtos
 {
     public class PostDto
     {
-        public PostDto() { }
-
         public PostDto(Post org)
         {
             AuthorId = org.AuthorId;

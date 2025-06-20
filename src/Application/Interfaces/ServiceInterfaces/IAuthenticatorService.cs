@@ -5,12 +5,12 @@ namespace Application.Interfaces.ServiceInterfaces
 {
     public interface IAuthenticatorService
     {
-        ServiceResult<bool?> IsValidUser(LoginRequest request);
+        ServiceResult<bool> IsValidUser(LoginRequest request);
 
-        ServiceResult<string?> GenerateToken(string login);
+        ServiceResult<string> GenerateToken(string login);
 
-        ServiceResult<string?> HashPassword(string password);
+        ServiceResult<string> HashPassword(string password);
 
-        ServiceResult<bool?> VerifyPassword(string password, string hash);
+        ServiceResult<bool> VerifyPassword(string password, string hash);
     }
 }

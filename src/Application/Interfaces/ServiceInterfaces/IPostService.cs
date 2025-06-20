@@ -7,8 +7,8 @@ namespace Application.Interfaces.ServiceInterfaces
 {
     public interface IPostService
     {
-        public ServiceResult<Post?> AddPost(AddPostRequest postRequest);
+        public ServiceResult<Post> AddPost(AddPostRequest postRequest);
 
-        public ServiceResult<IEnumerable<Post>?> GetAllPosts();
+        public ServiceResult<IEnumerable<Post>> GetAllPosts();
     }
 }

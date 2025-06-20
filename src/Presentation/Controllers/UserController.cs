@@ -76,14 +76,14 @@ namespace Presentation.Controllers
 
 
                 var verificationResult = _authenticatorService
-                    .VerifyPassword(editedUser.Password, userResult.Data?.PasswordHash ?? string.Empty);
+                    .VerifyPassword(editedUser.Password, userResult.Data.PasswordHash ?? string.Empty);
 
                 if (verificationResult.HasFailed())
                     return ResponseHelper.PrepareResponse(verificationResult);
 
 
 
-                var updateResult = _userService.UpdateUser(userResult.Data!, editedUser);
+                var updateResult = _userService.UpdateUser(userResult.Data, editedUser);
 
                 if (updateResult.HasFailed())
                     return ResponseHelper.PrepareResponse(updateResult);

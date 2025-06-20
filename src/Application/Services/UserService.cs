@@ -18,12 +18,12 @@ namespace Application.Services
             _authenticator = authenticator;
         }
 
-        public ServiceResult<ApplicationUser?> RegisterUser(string username, string email, string password)
+        public ServiceResult<ApplicationUser> RegisterUser(string username, string email, string password)
         {
             var hashResult = _authenticator.HashPassword(password);
 
             if (hashResult.HasFailed())
-                return ServiceResult<ApplicationUser?>.Failure(hashResult.Error!.Value);
+                return ServiceResult<ApplicationUser>.Fail(hashResult.Error.GetValueOrDefault());
 
             ApplicationUser newUser = new()
             {
@@ -36,15 +36,15 @@ namespace Application.Services
 
             _userRepository.Add(newUser);
 
-            return ServiceResult<ApplicationUser?>.Success(newUser);
+            return ServiceResult<ApplicationUser>.Success(newUser);
         }
 
-        public ServiceResult<ApplicationUser?> UpdateUser(ApplicationUser user, UserDto editedUser)
+        public ServiceResult<ApplicationUser> UpdateUser(ApplicationUser user, UserDto editedUser)
         {
             var isUniqueResult = IsUsernameOrEmailAreInUse(user, editedUser.UserName, editedUser.Email);
 
             if(isUniqueResult.HasFailed())
-                return ServiceResult<ApplicationUser?>.Failure(isUniqueResult.Error!.Value);
+                return ServiceResult<ApplicationUser>.Fail(isUniqueResult.Error.GetValueOrDefault());
 
 
             user.UserName = editedUser.UserName;
@@ -58,38 +58,38 @@ namespace Application.Services
                 var hashResult = _authenticator.HashPassword(editedUser.NewPassword);
 
                 if (hashResult.HasFailed())
-                    return ServiceResult<ApplicationUser?>.Failure(hashResult.Error!.Value);
+                    return ServiceResult<ApplicationUser>.Fail(hashResult.Error.GetValueOrDefault());
 
                 user.PasswordHash = hashResult.Data;
             }
 
             _userRepository.Update(user);
 
-            return ServiceResult<ApplicationUser?>.Success(user);
+            return ServiceResult<ApplicationUser>.Success(user);
         }
 
-        public ServiceResult<ApplicationUser?> GetUserById(string userId)
+        public ServiceResult<ApplicationUser> GetUserById(string userId)
         {
             var user = _userRepository.GetById(userId);
 
             if (user == null)
-                return ServiceResult<ApplicationUser?>.Failure(ApiErrors.UserNotFound);
+                return ServiceResult<ApplicationUser>.Fail(ApiErrors.UserNotFound);
 
-            return ServiceResult<ApplicationUser?>.Success(user);
+            return ServiceResult<ApplicationUser>.Success(user);
         }
 
-        public ServiceResult<bool?> IsUsernameOrEmailAreInUse(ApplicationUser user, string userName, string email)
+        public ServiceResult<bool> IsUsernameOrEmailAreInUse(ApplicationUser user, string userName, string email)
         {
             var userByUsername = _userRepository.GetByUserName(userName);
             var userByEmail = _userRepository.GetByEmail(email);
 
             if (userByUsername != null && userByUsername.Id != user.Id)
-                return ServiceResult<bool?>.Failure(ApiErrors.UsernameAlreadyInUse);
+                return ServiceResult<bool>.Fail(ApiErrors.UsernameAlreadyInUse);
 
             if (userByEmail != null && userByEmail.Id != user.Id)
-                return ServiceResult<bool?>.Failure(ApiErrors.EmailAlreadyInUse);
+                return ServiceResult<bool>.Fail(ApiErrors.EmailAlreadyInUse);
 
-            return ServiceResult<bool?>.Success(false);
+            return ServiceResult<bool>.Success(false);
         }
     }
 }

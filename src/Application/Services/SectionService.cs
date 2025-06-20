@@ -21,7 +21,7 @@ namespace Application.Services
             var sections = _sectionRepository.GetAllSectionsWithSubSections();
 
             if (sections.Count() == 0)
-                return ServiceResult<List<Section>>.Failure(ApiErrors.EmptyList);
+                return ServiceResult<List<Section>>.Fail(ApiErrors.EmptyList);
 
             return ServiceResult<List<Section>>.Success(sections);
         }

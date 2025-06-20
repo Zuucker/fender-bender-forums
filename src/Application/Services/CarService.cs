@@ -17,18 +17,18 @@ namespace Application.Services
         }
 
         //TODO add filtering
-        public ServiceResult<IEnumerable<Car>?> GetAllCars()
+        public ServiceResult<IEnumerable<Car>> GetAllCars()
         {
-            return ServiceResult<IEnumerable<Car>?>.Success(_carRepository.GetAll());
+            return ServiceResult<IEnumerable<Car>>.Success(_carRepository.GetAll());
         }
 
-        public ServiceResult<Car?> AddCar(AddCarRequest carRequest)
+        public ServiceResult<Car> AddCar(AddCarRequest carRequest)
         {
             Car newCar = CarFactory.Create(carRequest);
 
             _carRepository.Add(newCar);
 
-            return ServiceResult<Car?>.Success(newCar);
+            return ServiceResult<Car>.Success(newCar);
         }
     }
 }

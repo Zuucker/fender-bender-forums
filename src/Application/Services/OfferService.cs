@@ -18,30 +18,30 @@ namespace Application.Services
             _offerRepository = offerRepository;
         }
 
-        public ServiceResult<Offer?> AddOffer(AddOfferRequest offerRequest)
+        public ServiceResult<Offer> AddOffer(AddOfferRequest offerRequest)
         {
             Offer newOffer = OfferFactory.Create(offerRequest);
 
             _offerRepository.Add(newOffer);
 
-            return ServiceResult<Offer?>.Success(newOffer);
+            return ServiceResult<Offer>.Success(newOffer);
         }
 
-        public ServiceResult<IEnumerable<Offer>?> GetAllOffers()
+        public ServiceResult<IEnumerable<Offer>> GetAllOffers()
         {
             var offers = _offerRepository
                 .GetAll();
 
-            return ServiceResult<IEnumerable<Offer>?>.Success(offers);
+            return ServiceResult<IEnumerable<Offer>>.Success(offers);
         }
 
-        public ServiceResult<OfferRate?> AddOfferRating(AddOfferRatingRequest ratingRequest)
+        public ServiceResult<OfferRate> AddOfferRating(AddOfferRatingRequest ratingRequest)
         {
             OfferRate newRating = OfferRateFactory.Create(ratingRequest);
 
             _offerRateRepository.Add(newRating);
 
-            return ServiceResult<OfferRate?>.Success(newRating);
+            return ServiceResult<OfferRate>.Success(newRating);
         }
     }
 }

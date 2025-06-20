@@ -6,10 +6,10 @@ namespace Application.Interfaces.ServiceInterfaces
 {
     public interface IOfferService
     {
-        public ServiceResult<Offer?> AddOffer(AddOfferRequest offerRequest);
+        public ServiceResult<Offer> AddOffer(AddOfferRequest offerRequest);
 
-        public ServiceResult<IEnumerable<Offer>?> GetAllOffers();
+        public ServiceResult<IEnumerable<Offer>> GetAllOffers();
 
-        public ServiceResult<OfferRate?> AddOfferRating(AddOfferRatingRequest ratingRequest);
+        public ServiceResult<OfferRate> AddOfferRating(AddOfferRatingRequest ratingRequest);
     }
 }

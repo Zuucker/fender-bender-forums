@@ -1,27 +1,37 @@
 ﻿using Domain.Errors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Application.Common
 {
     public class ServiceResult<T>
     {
-        public T? Data { get; set; }
+        public T? Data { get; set; } = default!;
 
         public ApiErrors? Error { get; set; }
 
 
-        private ServiceResult(T? data, ApiErrors? error)
+        private ServiceResult() { }
+
+        public static ServiceResult<T> Success(T data)
         {
-            Data = data;
-            Error = error;
+            return new ServiceResult<T>()
+            {
+                Data = data,
+            };
         }
 
-        public static ServiceResult<T> Success(T data) => new(data, null);
+        public static ServiceResult<T> Fail(ApiErrors error)
+        {
+            return new ServiceResult<T>()
+            {
+                Error = error,
+            };
+        }
 
-        public static ServiceResult<T> Failure(ApiErrors error) => new(default, error);
-
+        [MemberNotNullWhen(false, nameof(Data))]
         public bool HasFailed()
         {
-            return Error.HasValue;
+            return Error.HasValue || Data == null;
         }
 
         public bool HasError(ApiErrors error)

@@ -263,9 +263,9 @@
 		z-index: 10;
 	}
 
-	/* .v-list.v-theme--light.v-list--density-default > * {
-		min-height: 20px;
-	} */
+	.v-list {
+		overflow-y: hidden !important;
+	}
 
 	.v-list-item {
 		height: 20px;

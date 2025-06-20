@@ -16,12 +16,12 @@ namespace Application.Services
         }
 
         //TODO add filtering
-        public ServiceResult<IEnumerable<City>?> GettAllCities()
+        public ServiceResult<IEnumerable<City>> GettAllCities()
         {
-            return ServiceResult<IEnumerable<City>?>.Success(_cityRepository.GetAll());
+            return ServiceResult<IEnumerable<City>>.Success(_cityRepository.GetAll());
         }
 
-        public ServiceResult<City?> AddCity(AddCityRequest cityRequest)
+        public ServiceResult<City> AddCity(AddCityRequest cityRequest)
         {
             City newCity = new()
             {
@@ -32,7 +32,7 @@ namespace Application.Services
 
             _cityRepository.Add(newCity);
 
-            return ServiceResult<City?>.Success(newCity);
+            return ServiceResult<City>.Success(newCity);
 
         }
     }
