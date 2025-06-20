@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistance.DataRepositories
 {
@@ -88,5 +89,21 @@ namespace Infrastructure.Persistance.DataRepositories
         }
 
         #endregion
+
+        public List<Section> GetAllSectionsWithSubSections()
+        {
+            try
+            {
+                return _context.Sections
+                    .Where(s => s.ParentSectionId == null)
+                    .Include(s => s.SubSections)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

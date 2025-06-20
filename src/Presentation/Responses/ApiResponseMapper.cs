@@ -12,6 +12,7 @@ namespace Presentation.Responses
             ApiErrors.EmailAlreadyInUse => HttpStatusCode.BadRequest,
             ApiErrors.UsernameAlreadyInUse => HttpStatusCode.BadRequest,
             ApiErrors.PasswordsDontMatch => HttpStatusCode.BadRequest,
+            ApiErrors.Unauthorized => HttpStatusCode.Unauthorized,
 
             _ => HttpStatusCode.InternalServerError
         };

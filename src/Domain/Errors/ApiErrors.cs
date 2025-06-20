@@ -8,5 +8,7 @@
         CantAccessDifferentUser = 3,
         PasswordsDontMatch = 4,
         UsernameAlreadyInUse = 5,
+        Unauthorized = 6,
+        EmptyList = 7,
     }
 }

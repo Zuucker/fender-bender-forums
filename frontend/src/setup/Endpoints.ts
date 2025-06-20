@@ -1,4 +1,4 @@
-import { IApiResponse, IUser } from '../Intefaces'
+import { IApiResponse, ISection, IUser } from '../Intefaces'
 import ILoginData from '../Intefaces/ComponentInterfaces/ILoginData'
 import IRegisterData from '../Intefaces/ComponentInterfaces/IRegisterData'
 import { api } from './Axios'
@@ -26,6 +26,12 @@ export const GetUserData = async (id?: string): Promise<IUser> => {
 
 export const EditUser = async (data: IUser): Promise<IUser> => {
 	const response = await api.post<IApiResponse<IUser>>('/user/edit', data)
+
+	return response.data.Data
+}
+
+export const GetMenuSections = async (): Promise<ISection[]> => {
+	const response = await api.get<IApiResponse<ISection[]>>('/section/get-list')
 
 	return response.data.Data
 }

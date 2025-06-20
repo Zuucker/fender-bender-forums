@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
@@ -14,5 +16,15 @@ namespace Domain.Models
         [Required]
         [StringLength(100)]
         public string Description { get; set; } = string.Empty;
+
+        public int? ParentSectionId { get; set; }
+
+        [ForeignKey("ParentSectionId")]
+        [InverseProperty("SubSections")]
+        [JsonIgnore]
+        public Section? ParentSection { get; set; }
+
+        [InverseProperty("ParentSection")]
+        public List<Section> SubSections { get; set; } = [];
     }
 }

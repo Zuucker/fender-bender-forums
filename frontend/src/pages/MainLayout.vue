@@ -3,6 +3,7 @@
 	import NavbarProfileComponent from '../components/NavbarProfileComponent.vue'
 	import SearchComponent from '../components/SearchComponent.vue'
 	import { goToPage } from '../setup/Router'
+	import SideMenuComponent from '../components/SideMenuComponent.vue'
 
 	const route = useRoute()
 </script>
@@ -28,11 +29,7 @@
 			<div
 				class="side-menu d-flex flex-column align-items-center col-3 bg-blight"
 				style="height: 90dvh">
-				<div class="side-menu-select col-10">car type</div>
-				<div class="side-menu-select col-10">history</div>
-				<div class="side-menu-select col-10">DIY</div>
-				<div class="side-menu-select col-10">MarketPlace</div>
-				<div class="side-menu-select col-10">Race results</div>
+				<SideMenuComponent />
 			</div>
 			<div class="content col-9 bg-blight" style="height: 90dvh">
 				<RouterView />

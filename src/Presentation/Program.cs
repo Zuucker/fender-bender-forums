@@ -115,6 +115,7 @@ builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
+builder.Services.AddScoped<ISectionService, SectionService>();
 builder.Services.AddScoped<IAuthenticatorService, AuthenticatorService>();
 
 var app = builder.Build();

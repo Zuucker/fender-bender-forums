@@ -1,15 +1,30 @@
 <template>
 	<div class="col d-flex justify-content-between align-items-center">
 		<div class="sort-component col-6">
-			<v-select
-				label=""
-				:items="sortOptions"
-				variant="outlined"
-				density="compact"
-				bg-color="white"
-				hide-details="auto"
-				v-model="selectedSort"
-				class="small-select"></v-select>
+			<v-list v-model:opened="isOpen" class="col-10 p-0 m-0 bg-blight">
+				<template v-for="section in sections" :key="section.SectionId">
+					<v-list-group :value="section.Name" class="side-menu-main-item">
+						<template v-slot:activator="{ props }">
+							<v-list-item
+								v-bind="props"
+								:title="section.Name"
+								density="compact"
+								style="min-height: 28px"></v-list-item>
+						</template>
+
+						<v-list-item
+							v-for="sub in section.SubSections"
+							:key="sub.SectionId"
+							:title="sub.Name"
+							:value="sub.Name"
+							class="side-menu-item"
+							density="compact"
+							style="min-height: 25px"
+							:onclick="() => handleSortChange(sub.Name)">
+						</v-list-item>
+					</v-list-group>
+				</template>
+			</v-list>
 		</div>
 		<div class="profile-button me-4">
 			<v-btn
@@ -99,11 +114,21 @@
 	import { GetUserData } from '../setup/Endpoints'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { goToPage } from '../setup/Router'
+	import { ISection } from '../Intefaces'
 
-	const sortOptions = ['Sort by new', 'Sort by price']
-	const selectedSort = sortOptions[0]
 	const userStore = useUserStore()
 	const snackBarStore = useSnackBarStore()
+
+	const isOpen = ref([])
+	const sections = ref<ISection[]>([
+		{
+			Name: 'Sort Options',
+			SubSections: [{ Name: 'Sort by new' }, { Name: 'Sort by price' }],
+		} as ISection,
+	])
+
+	// the value in main section is the chosen one
+	const selectedSort = ref(sections.value[0].Name)
 
 	const showDialogs = ref<ILoginDialogProps>({
 		showLogin: false,
@@ -143,6 +168,13 @@
 
 		goToPage('/')
 	}
+
+	const handleSortChange = (value: string) => {
+		selectedSort.value = value
+
+		// the value in main section is the chosen one
+		sections.value[0].Name = value
+	}
 </script>
 
 <style>
@@ -180,6 +212,14 @@
 		border: 2px solid var(--black);
 		border-radius: 4px;
 	}
+
+	.v-list-item__append {
+		width: 0px;
+		display: none !important;
+	}
+	.mdi-chevron-down {
+		display: none !important;
+	}
 </style>
 
 <style scoped>
@@ -187,5 +227,47 @@
 		border: 2px solid var(--black);
 		border-radius: 0px !important;
 		min-width: 40dvw;
+	}
+
+	.side-menu-item {
+		background-color: var(--white);
+		border-width: 1px 0px 0px 0px;
+		border-color: var(--black);
+
+		&:hover > span {
+			opacity: 0.1;
+		}
+	}
+
+	.side-menu-item.v-list-item.v-list-item--link.v-theme--light.v-list-item--density-compact.v-list-item--one-line.v-list-item--variant-text {
+		padding-inline-start: 2px !important;
+		padding: auto !important;
+		margin: auto !important;
+		text-align: center;
+	}
+	.side-menu-main-item {
+		background-color: var(--white);
+		border: 2px solid var(--black);
+		padding-inline-start: 2px;
+		margin: 0px !important;
+		padding: 0px !important;
+	}
+
+	.sort-component {
+		position: relative;
+		height: 30px;
+	}
+
+	.v-list.v-theme--light.v-list--density-default {
+		position: absolute;
+		z-index: 10;
+	}
+
+	/* .v-list.v-theme--light.v-list--density-default > * {
+		min-height: 20px;
+	} */
+
+	.v-list-item {
+		height: 20px;
 	}
 </style>
