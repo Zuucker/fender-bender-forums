@@ -1,5 +1,4 @@
 using System.Text;
-using System.Text.Json;
 using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
 using Application.Services;
@@ -137,3 +136,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+public partial class Program { }

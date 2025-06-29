@@ -35,7 +35,7 @@ namespace Infrastructure.Persistance.DataRepositories
             try
             {
                 return _context.Users
-                    .FirstOrDefault(u => u.Id == id);
+                   .FirstOrDefault(u => u.Id == id);
             }
             catch (Exception e)
             {

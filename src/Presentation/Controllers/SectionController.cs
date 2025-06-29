@@ -24,9 +24,6 @@ namespace Presentation.Controllers
         {
             try
             {
-                var userId = User.FindFirst(Constants.ClaimsConstants.UserIdClaim)?.Value;
-
-
                 var getResult = _sectionService.GetSections();
 
                 if (getResult.HasFailed())

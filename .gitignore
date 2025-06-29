@@ -90,6 +90,8 @@ src/Infrastructure/obj
 src/Infrastructure/src/obj
 src/Presentation/obj
 src/Presentation/src/obj
+Tests/bin
+Tests/obj
 
 /obj
 *.json

@@ -6,7 +6,7 @@ import { api } from './Axios'
 export const Register = async (data: IRegisterData): Promise<null> => {
 	const response = await api.post<IApiResponse<string>>('/auth/register', data)
 
-	return null // There is not response
+	return null // There is no response
 }
 
 export const Login = async (data: ILoginData): Promise<string> => {
