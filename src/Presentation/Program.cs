@@ -1,9 +1,11 @@
 using System.Text;
+using Application.Interfaces;
 using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
 using Application.Services;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.DataRepositories;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -97,6 +99,12 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+var settingsFilePath = builder.Configuration["FileStorage:BasePath"] 
+    ?? throw new Exception("No file storage defined!");
+
+var RawFilesPath = Path.Combine(builder.Environment.ContentRootPath, settingsFilePath);
+var filesPath = Path.GetFullPath(RawFilesPath);
+
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
@@ -116,6 +124,7 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<ISectionService, SectionService>();
 builder.Services.AddScoped<IAuthenticatorService, AuthenticatorService>();
+builder.Services.AddScoped<IFileStorage>(_ => new LocalFileStorage(filesPath));
 
 var app = builder.Build();
 

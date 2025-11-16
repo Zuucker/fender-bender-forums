@@ -7,6 +7,7 @@ namespace Domain.Models
     public class Content
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContentId { get; set; }
 
         [ForeignKey("Post")]
@@ -23,18 +24,20 @@ namespace Domain.Models
         public string TextContent { get; set; } = string.Empty;
 
         [Required]
-        public int Position { get; set; }
-
-        public int? GalleryPosition { get; set; }
+        [StringLength(400)]
+        public string SubTitle { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(100)]
-        public string Path { get; set; } = string.Empty;
+        public int Position { get; set; }
 
         [JsonIgnore]
         public virtual Offer? Offer { get; set; }
 
         [JsonIgnore]
         public virtual Post? Post { get; set; }
+
+        [InverseProperty("Content")]
+        [JsonIgnore]
+        public virtual ICollection<GalleryElement> GalleryElements { get; set; } = [];
     }
 }

@@ -17,6 +17,8 @@ namespace Infrastructure.Persistance
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<GalleryElement> GalleryElements { get; set; }
+
         public DbSet<Like> Likes { get; set; }
 
         public DbSet<Offer> Offers { get; set; }

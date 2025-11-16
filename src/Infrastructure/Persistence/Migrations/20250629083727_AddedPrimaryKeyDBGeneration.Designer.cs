@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250629083727_AddedPrimaryKeyDBGeneration")]
+    partial class AddedPrimaryKeyDBGeneration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,19 +199,22 @@ namespace Infrastructure.Persistance.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ContentId"));
 
+                    b.Property<int?>("GalleryPosition")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("OfferId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("Position")
                         .HasColumnType("integer");
 
                     b.Property<int?>("PostId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("SubTitle")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
 
                     b.Property<string>("TextContent")
                         .IsRequired()
@@ -225,31 +231,6 @@ namespace Infrastructure.Persistance.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Contents");
-                });
-
-            modelBuilder.Entity("Domain.Models.GalleryElement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ContentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("GalleryPosition")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContentId");
-
-                    b.ToTable("GalleryElements");
                 });
 
             modelBuilder.Entity("Domain.Models.Like", b =>
@@ -624,17 +605,6 @@ namespace Infrastructure.Persistance.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("Domain.Models.GalleryElement", b =>
-                {
-                    b.HasOne("Domain.Models.Content", "Content")
-                        .WithMany("GalleryElements")
-                        .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Content");
-                });
-
             modelBuilder.Entity("Domain.Models.Like", b =>
                 {
                     b.HasOne("Domain.Models.Comment", "Comment")
@@ -791,11 +761,6 @@ namespace Infrastructure.Persistance.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Models.Content", b =>
-                {
-                    b.Navigation("GalleryElements");
                 });
 
             modelBuilder.Entity("Domain.Models.Offer", b =>

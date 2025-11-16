@@ -101,9 +101,10 @@
 			<div class="col-4 d-flex flex-column hide-scrollbar">
 				<div class="flex-fill overflow-auto">
 					<VirtualList
-						:dataList="mockPosts"
+						:dataList="userPosts"
 						:component="PostItemComponent"
-						:small="true" />
+						:small="true"
+						empty-message="This user has no posts yet!" />
 				</div>
 			</div>
 		</div>
@@ -126,7 +127,7 @@
 		IUser,
 	} from '../Intefaces'
 	import { useUserStore } from '../setup/stores/UserStore'
-	import { EditUser, GetUserData } from '../setup/Endpoints'
+	import { EditUser, GetUserData, GetUserTopPosts } from '../setup/Endpoints'
 	import { useRoute } from 'vue-router'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
@@ -144,6 +145,7 @@
 	const userData = reactive<IUser>({} as IUser)
 	const newUserData = reactive<IUser>({} as IUser)
 	const userNotFound = ref(false)
+	const userPosts = ref<IPost[]>([])
 
 	onMounted(async () => {
 		await GetUserData(userId)
@@ -161,7 +163,22 @@
 				}
 
 				snackBarStore.addMessage({
-					text: 'Server error! Please try again!',
+					text: 'Server error! Please try again later!',
+					color: 'error',
+					timeout: 2000,
+				})
+			})
+
+		await GetUserTopPosts(userId)
+			.then((postResponse) => {
+				if (postResponse) {
+					userPosts.value = postResponse
+				}
+			})
+			.catch((error) => {
+				console.log(error)
+				snackBarStore.addMessage({
+					text: 'Server error! Please try again later!',
 					color: 'error',
 					timeout: 2000,
 				})
@@ -216,7 +233,7 @@
 		CreationDate: new Date(`2023-06-${(i + 1).toString()}`),
 		Content: i * 10,
 		Tags: `tag${i + 1},tag${i + 2}`,
-		Contents: {} as IContent,
+		Contents: [],
 		Author: { UserName: `User ${i + 1}` } as IUser,
 		Section: {} as ISection,
 	}))

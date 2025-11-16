@@ -6,6 +6,7 @@ namespace Domain.Models
     public class Like
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LikeId { get; set; }
 
         [Required]

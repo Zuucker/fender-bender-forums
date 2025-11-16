@@ -8,6 +8,12 @@
 				:small="props.small" />
 		</template>
 	</v-virtual-scroll>
+
+	<div
+		v-if="!props.dataList || props.dataList.length === 0"
+		class="d-flex justify-content-center">
+		{{ props.emptyMessage ?? 'The list is empty' }}
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +23,7 @@
 		dataList: Object[]
 		component: Component
 		small?: boolean
+		emptyMessage?: string
 	}
 
 	const props = defineProps<VirtualListProps>()

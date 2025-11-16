@@ -88,6 +88,7 @@ src/Domain/obj
 src/Domain/src/obj
 src/Infrastructure/obj
 src/Infrastructure/src/obj
+src/Infrastructure/Persistence/Images
 src/Presentation/obj
 src/Presentation/src/obj
 Tests/bin

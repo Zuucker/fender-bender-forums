@@ -10,7 +10,7 @@ export interface IPost {
 	CreationDate: Date
 	Content: number
 	Tags: string
-	Contents: IContent
+	Contents: IContent[]
 	Author: IUser
 	Section: ISection
 }

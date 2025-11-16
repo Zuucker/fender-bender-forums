@@ -12,11 +12,14 @@ namespace Application.Dtos.ModelDtos
             CreationDate = org.CreationDate;
             Content = org.Content;
             Tags = org.Tags;
-            AdditionalContents = org.Contents;
+            Contents = org.Contents
+                .Select(c => new ContentDto(c))
+                .ToList();
             Author = new UserDto(org.User);
+            Section = org.Section;
         }
 
-        public int PostId { get; set; }
+        public int Id { get; set; }
 
         public string AuthorId { get; set; } = string.Empty;
 
@@ -30,10 +33,10 @@ namespace Application.Dtos.ModelDtos
 
         public string Tags { get; set; } = string.Empty;
 
-        public int AdditionalContentId { get; set; }
-
         public UserDto Author { get; set; }
 
-        public virtual ICollection<Content> AdditionalContents { get; set; } = [];
+        public Section Section { get; set; }
+
+        public virtual ICollection<ContentDto> Contents { get; set; } = [];
     }
 }

@@ -8,6 +8,7 @@ import {
 	faThumbsUp,
 	faMessage,
 	faStar as faStarR,
+	faTrashCan,
 } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome/index'
 import './styles/Main.css'
@@ -15,6 +16,8 @@ import './styles/SideMenu.css'
 import './styles/Offers.css'
 import './styles/Content.css'
 import {
+	faArrowLeft,
+	faArrowRight,
 	faMagnifyingGlass,
 	faStar,
 	faStarHalfStroke,
@@ -26,10 +29,21 @@ import * as components from 'vuetify/lib/components/index'
 import * as directives from 'vuetify/lib/directives/index'
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persistedstate'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+
+import VueFileAgentNext from '@boindil/vue-file-agent-next'
+import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 
 const vuetify = createVuetify({
 	components,
 	directives,
+	icons: {
+		defaultSet: 'mdi',
+		aliases,
+		sets: {
+			mdi,
+		},
+	},
 })
 
 // Add specific icons
@@ -39,7 +53,10 @@ library.add(
 	faMagnifyingGlass,
 	faStar,
 	faStarR,
-	faStarHalfStroke
+	faStarHalfStroke,
+	faTrashCan,
+	faArrowLeft,
+	faArrowRight
 )
 
 const app = createApp(App)
@@ -47,4 +64,5 @@ app.use(createPinia().use(piniaPersist))
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(vuetify)
 app.use(router)
+app.use(VueFileAgentNext)
 app.mount('#app')

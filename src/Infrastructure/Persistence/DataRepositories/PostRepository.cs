@@ -50,9 +50,10 @@ namespace Infrastructure.Persistance.DataRepositories
             try
             {
                 return _context.Posts
-                    .Include(p=>p.User)
-                    .Include(p=>p.Contents)
-                    .Include(p=>p.Section)
+                    .Include(p => p.User)
+                    .Include(p => p.Contents)
+                        .ThenInclude(c => c.GalleryElements)
+                    .Include(p => p.Section)
                     .ToList();
             }
             catch (Exception e)
@@ -92,5 +93,23 @@ namespace Infrastructure.Persistance.DataRepositories
         }
 
         #endregion
+
+        public IEnumerable<Post> GetUsersPosts(Guid userId)
+        {
+            try
+            {
+                return _context.Posts
+                    .Where(p => p.AuthorId == userId.ToString())
+                    .Include(p => p.User)
+                    .Include(p => p.Contents)
+                    .Include(p => p.Section)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

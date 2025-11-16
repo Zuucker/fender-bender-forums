@@ -7,6 +7,7 @@ namespace Domain.Models
     public class Section
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SectionId { get; set; }
 
         [Required]

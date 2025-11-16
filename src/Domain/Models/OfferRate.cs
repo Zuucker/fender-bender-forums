@@ -6,6 +6,7 @@ namespace Domain.Models
     public class OfferRate
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OfferRateId { get; set; }
 
         [Required]

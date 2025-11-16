@@ -15,7 +15,7 @@ namespace Application.Factories
                 CreationDate = request.CreationDate,
                 Content = request.Content,
                 Tags = request.Tags,
-                Contents = request.AdditionalContents
+                Contents = request.Contents
                     .Select(ac => ContentFactory.Create(ac))
                     .ToList()
             };

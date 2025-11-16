@@ -13,9 +13,10 @@ namespace Application.Factories
                 OfferId = request.OfferId,
                 Type = request.Type,
                 TextContent = request.TextContent,
-                Path = request.Path,
                 Position = request.Position,
-                GalleryPosition = request.GalleryPosition
+                GalleryElements = request.GalleryElements
+                    .Select(ge => GalleryElementFactory.Create(ge))
+                    .ToList(),
             };
         }
     }
