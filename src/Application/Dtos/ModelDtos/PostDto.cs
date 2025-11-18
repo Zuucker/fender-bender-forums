@@ -19,6 +19,8 @@ namespace Application.Dtos.ModelDtos
             Section = org.Section;
         }
 
+        public PostDto() { }
+
         public int Id { get; set; }
 
         public string AuthorId { get; set; } = string.Empty;
@@ -33,9 +35,9 @@ namespace Application.Dtos.ModelDtos
 
         public string Tags { get; set; } = string.Empty;
 
-        public UserDto Author { get; set; }
+        public UserDto? Author { get; set; }
 
-        public Section Section { get; set; }
+        public Section? Section { get; set; }
 
         public virtual ICollection<ContentDto> Contents { get; set; } = [];
     }
