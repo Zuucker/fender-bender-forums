@@ -101,7 +101,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-var settingsFilePath = builder.Configuration["FileStorage:BasePath"] 
+var settingsFilePath = builder.Configuration["FileStorage:BasePath"]
     ?? throw new Exception("No file storage defined!");
 
 var RawFilesPath = Path.Combine(builder.Environment.ContentRootPath, settingsFilePath);
@@ -129,6 +129,24 @@ builder.Services.AddScoped<IAuthenticatorService, AuthenticatorService>();
 builder.Services.AddScoped<IFileStorage>(_ => new LocalFileStorage(filesPath));
 
 var app = builder.Build();
+
+
+//Seed Cars if needed
+
+bool seedDbFlag = builder.Configuration.GetValue<bool>("SeedDb");
+
+if (seedDbFlag)
+{
+    DbSeeder dbSeeder = new();
+
+    using var scope = app.Services.CreateScope();
+
+    var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+    await dbSeeder.SeedAsync(dbContext);
+}
+
+
 
 app.UseCors(MyAllowSpecificOrigins);
 
