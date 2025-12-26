@@ -10,24 +10,33 @@ namespace Domain.Models
         public int LikeId { get; set; }
 
         [Required]
-        [ForeignKey("ApplicationUser")]
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; } = string.Empty;
+
+        public int? OfferId { get; set; }
+
+        public int? PostId { get; set; }
+
+        public int? CommentId { get; set; }
 
         [Required]
-        [ForeignKey("Offer")]
-        public int OfferId { get; set; }
+        public bool Up { get; set; } // Up or Down - voted
 
-        [Required]
-        [ForeignKey("Post")]
-        public int PostId { get; set; }
+        [ForeignKey("AuthorId")]
+        [InverseProperty("Likes")]
+        public virtual ApplicationUser? User { get; set; }
 
-        [Required]
-        [ForeignKey("Comment")]
-        public int CommentId { get; set; }
+        [ForeignKey("PostId")]
+        [InverseProperty("Likes")]
+        public virtual Post? Post { get; set; }
 
-        public virtual ApplicationUser User { get; set; } = null!;
-        public virtual Post Post { get; set; } = null!;
-        public virtual Offer Offer { get; set; } = null!;
-        public virtual Comment Comment { get; set; } = null!;
+        [ForeignKey("OfferId")]
+        [InverseProperty("Likes")]
+        public virtual Offer? Offer { get; set; }
+
+        [ForeignKey("CommentId")]
+        [InverseProperty("Likes")]
+        public virtual Comment? Comment { get; set; }
+
+
     }
 }

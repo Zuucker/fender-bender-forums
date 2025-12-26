@@ -16,13 +16,18 @@ import './styles/SideMenu.css'
 import './styles/Offers.css'
 import './styles/Content.css'
 import {
+	faArrowDown,
 	faArrowLeft,
 	faArrowRight,
+	faArrowUp,
+	faChevronLeft,
+	faChevronRight,
 	faMagnifyingGlass,
 	faStar,
 	faStarHalfStroke,
 } from '@fortawesome/free-solid-svg-icons'
-import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
+
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify/dist/vuetify'
 import * as components from 'vuetify/lib/components/index'
@@ -56,7 +61,11 @@ library.add(
 	faStarHalfStroke,
 	faTrashCan,
 	faArrowLeft,
-	faArrowRight
+	faArrowRight,
+	faChevronRight,
+	faChevronLeft,
+	faArrowUp,
+	faArrowDown
 )
 
 const app = createApp(App)

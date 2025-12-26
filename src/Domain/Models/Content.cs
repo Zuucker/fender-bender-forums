@@ -10,10 +10,8 @@ namespace Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContentId { get; set; }
 
-        [ForeignKey("Post")]
         public int? PostId { get; set; }
 
-        [ForeignKey("Offer")]
         public int? OfferId { get; set; }
 
         [Required]
@@ -31,13 +29,17 @@ namespace Domain.Models
         public int Position { get; set; }
 
         [JsonIgnore]
+        [ForeignKey("OfferId")]
+        [InverseProperty("Contents")]
         public virtual Offer? Offer { get; set; }
 
         [JsonIgnore]
+        [ForeignKey("PostId")]
+        [InverseProperty("Contents")]
         public virtual Post? Post { get; set; }
 
-        [InverseProperty("Content")]
         [JsonIgnore]
+        [InverseProperty("Content")]
         public virtual ICollection<GalleryElement> GalleryElements { get; set; } = [];
     }
 }

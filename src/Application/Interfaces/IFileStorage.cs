@@ -4,6 +4,6 @@
     {
         public string WriteImageFile(string base64);
 
-        public string ReadImageFile(string path);
+        public Byte[] ReadImageFile(Guid fileId);
     }
 }

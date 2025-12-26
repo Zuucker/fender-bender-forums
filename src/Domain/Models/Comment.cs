@@ -16,18 +16,38 @@ namespace Domain.Models
         [Required]
         public int Upvotes { get; set; }
 
+        public string AuthorId { get; set; } = string.Empty;
+
         public int? ParentId { get; set; }
 
-        [Required]
-        [ForeignKey("Post")]
-        public int PostId { get; set; }
+        public int? PostId { get; set; }
+
+        public int? OfferId { get; set; }
 
         [Required]
-        [ForeignKey("Offer")]
-        public int OfferId { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public virtual Post Post { get; set; } = null!;
+        [ForeignKey("AuthorId")]
+        [InverseProperty("Comments")]
+        public virtual ApplicationUser? User { get; set; }
 
-        public virtual Offer Offer { get; set; } = null!;
+        [ForeignKey("PostId")]
+        [InverseProperty("Comments")]
+        public virtual Post? Post { get; set; }
+
+        [ForeignKey("OfferId")]
+        [InverseProperty("Comments")]
+        public virtual Offer? Offer { get; set; }
+
+        [InverseProperty("Comment")]
+        public virtual ICollection<Like> Likes { get; set; } = [];
+
+        [ForeignKey("ParentId")]
+        [InverseProperty("SubComments")]
+        public virtual Comment? ParentComment { get; set; }
+
+        [InverseProperty("ParentComment")]
+        public virtual ICollection<Comment> SubComments { get; set; } = [];
+
     }
 }

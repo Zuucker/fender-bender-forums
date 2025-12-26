@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, ref, watch } from 'vue'
+	import { onMounted, ref } from 'vue'
 	import { IContent, IPost, ISection } from '../Intefaces'
 	import Draggable from 'vuedraggable'
 	import Content from '../components/Content.vue'

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Common;
 using Domain.Errors;
 using Presentation.Responses;
+using Application.Services;
+using System.Linq;
 
 namespace Presentation.Controllers
 {
@@ -13,12 +15,15 @@ namespace Presentation.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticatorService _authenticatorService;
+        private readonly IPostService _postService;
 
         public UserController(IUserService userService,
-                              IAuthenticatorService authenticatorService)
+                              IAuthenticatorService authenticatorService,
+                              IPostService postService)
         {
             _userService = userService;
             _authenticatorService = authenticatorService;
+            _postService = postService;
         }
 
         [HttpGet("get/{userId?}")]
@@ -95,6 +100,37 @@ namespace Presentation.Controllers
             {
                 Console.WriteLine($"GetOffers {ex.Message}");
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("{userId}/posts")]
+        public IActionResult GetUsersPosts([FromRoute] Guid userId)
+        {
+            try
+            {
+                var getUserResult = _userService.GetUserById(userId.ToString());
+
+                if (getUserResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getUserResult);
+
+
+                var getPostsResult = _postService.GetUsersPosts(userId);
+
+                if (getPostsResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getPostsResult);
+
+
+                var posts = getPostsResult.Data;
+
+                var postDtos = posts
+                    .Select(p => new PostDto(p, getUserResult.Data));
+
+                return ResponseHelper.PrepareResponse(postDtos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetUserPosts {ex.Message}");
+                return BadRequest(ex.Message);
             }
         }
     }

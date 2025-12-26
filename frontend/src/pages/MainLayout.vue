@@ -31,7 +31,9 @@
 				style="height: 90dvh">
 				<SideMenuComponent />
 			</div>
-			<div class="content col-9 bg-blight" style="height: 90dvh">
+			<div
+				class="content col-9 bg-blight"
+				style="height: 90dvh; overflow-y: auto; scrollbar-width: none">
 				<RouterView />
 			</div>
 		</div>

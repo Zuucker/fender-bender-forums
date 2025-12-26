@@ -19,7 +19,7 @@ namespace Application.Factories
                 Mileage = request.Mileage,
                 Price = request.Price,
                 Tags = request.Tags,
-                AdditionalContents = request.AdditionalContents
+                Contents = request.AdditionalContents
                     .Select(ac => ContentFactory.Create(ac))
                     .ToList()
             };

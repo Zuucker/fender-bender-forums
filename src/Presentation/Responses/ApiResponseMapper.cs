@@ -13,6 +13,8 @@ namespace Presentation.Responses
             ApiErrors.UsernameAlreadyInUse => HttpStatusCode.BadRequest,
             ApiErrors.PasswordsDontMatch => HttpStatusCode.BadRequest,
             ApiErrors.Unauthorized => HttpStatusCode.Unauthorized,
+            ApiErrors.FileNotFound => HttpStatusCode.NotFound,
+            ApiErrors.WrongInteraction => HttpStatusCode.Conflict,
 
             _ => HttpStatusCode.InternalServerError
         };

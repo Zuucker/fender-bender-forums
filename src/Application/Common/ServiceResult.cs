@@ -31,7 +31,7 @@ namespace Application.Common
         [MemberNotNullWhen(false, nameof(Data))]
         public bool HasFailed()
         {
-            return Error.HasValue || Data == null;
+            return Error.HasValue;
         }
 
         public bool HasError(ApiErrors error)

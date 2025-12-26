@@ -73,7 +73,15 @@
 			v-if="userData.Id === userstore?.getUser?.value?.Id"
 			class="col-2 ms-auto me-4 d-flex flex-column justify-content-center align-items-center py-3">
 			<v-btn class="col-12 mb-4 text-dark">Add Offer</v-btn>
-			<v-btn class="col-12 text-dark">Add Post</v-btn>
+			<v-btn
+				class="col-12 text-dark"
+				:onclick="
+					() => {
+						goToPage('/post/add')
+					}
+				"
+				>Add Post</v-btn
+			>
 		</div>
 	</div>
 	<div
@@ -112,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, reactive, ref, watch } from 'vue'
+	import { onMounted, reactive, ref } from 'vue'
 	import RatingComponent from '../components/RatingComponent.vue'
 	import VirtualList from '../components/VirtualList.vue'
 	import {
@@ -123,7 +131,6 @@
 		IOffer,
 		IOfferRate,
 		IPost,
-		ISection,
 		IUser,
 	} from '../Intefaces'
 	import { useUserStore } from '../setup/stores/UserStore'
@@ -133,6 +140,7 @@
 	import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 	import OfferItemComponent from '../components/OfferItemComponent.vue'
 	import PostItemComponent from '../components/PostItemComponent.vue'
+	import { goToPage } from '../setup/Router'
 
 	const userstore = useUserStore()
 	const snackBarStore = useSnackBarStore()
@@ -224,19 +232,6 @@
 	const cancelUserChanges = () => {
 		Object.assign(newUserData, userData)
 	}
-
-	const mockPosts: IPost[] = Array.from({ length: 10 }, (_, i) => ({
-		Id: i + 1,
-		AuthorId: `author${i + 1}`,
-		SectionId: 200 + i,
-		Title: `Post Title ${i + 1}`,
-		CreationDate: new Date(`2023-06-${(i + 1).toString()}`),
-		Content: i * 10,
-		Tags: `tag${i + 1},tag${i + 2}`,
-		Contents: [],
-		Author: { UserName: `User ${i + 1}` } as IUser,
-		Section: {} as ISection,
-	}))
 
 	const mockOffers: IOffer[] = Array.from({ length: 10 }, (_, i) => ({
 		OfferId: `offer${i + 1}`,

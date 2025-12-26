@@ -12,5 +12,13 @@ namespace Application.Interfaces.ServiceInterfaces
         public ServiceResult<IEnumerable<Post>> GetAllPosts();
 
         public ServiceResult<IEnumerable<Post>> GetUsersPosts(Guid userId);
+
+        public ServiceResult<Post> GetById(int postId);
+
+        public ServiceResult<Comment> AddComment(AddCommentRequest commentRequest);
+
+        public ServiceResult<Like> InteractWithPost(InteractWithPostRequest interactionRequest, ApplicationUser user);
+
+        public ServiceResult<Like> InteractWithComment(InteractWithCommentRequest interactionRequest, ApplicationUser user);
     }
 }

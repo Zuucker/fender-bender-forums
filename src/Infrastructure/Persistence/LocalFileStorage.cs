@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using System.Buffers.Text;
 
 namespace Infrastructure.Persistence
 {
@@ -50,9 +51,22 @@ namespace Infrastructure.Persistence
             }
         }
 
-        public string ReadImageFile(string path)
+        public byte[] ReadImageFile(Guid fileId)
         {
-            throw new NotImplementedException();
+
+
+            try
+            {
+                var path = Path.Combine(_basePath, $"{fileId}.webp");
+                var bytes = File.ReadAllBytes(path);
+
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }

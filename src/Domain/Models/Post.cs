@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
@@ -10,11 +11,9 @@ namespace Domain.Models
         public int Id { get; set; }
 
         [Required]
-        [ForeignKey("User")]
         public string AuthorId { get; set; } = string.Empty;
 
         [Required]
-        [ForeignKey("Section")]
         public int SectionId { get; set; }
 
         [Required]
@@ -32,10 +31,21 @@ namespace Domain.Models
         [StringLength(100)]
         public string Tags { get; set; } = string.Empty;
 
-        public virtual ICollection<Content> Contents { get; set; } = [];
+        [InverseProperty("Post")]
+        public ICollection<Content> Contents { get; set; } = [];
 
-        public virtual ApplicationUser User { get; set; } = null!;
+        [ForeignKey("AuthorId")]
+        [InverseProperty("Posts")]
+        public ApplicationUser? User { get; set; }
 
-        public virtual Section Section { get; set; } = null!;
+        [ForeignKey("SectionId")]
+        [InverseProperty("Posts")]
+        public Section? Section { get; set; }
+
+        [InverseProperty("Post")]
+        public ICollection<Comment> Comments { get; set; } = [];
+
+        [InverseProperty("Post")]
+        public ICollection<Like> Likes { get; set; } = [];
     }
 }

@@ -1,6 +1,7 @@
-import { IApiResponse, IPost, ISection, IUser } from '../Intefaces'
+import { IApiResponse, IComment, IPost, ISection, IUser } from '../Intefaces'
 import ILoginData from '../Intefaces/ComponentInterfaces/ILoginData'
 import IRegisterData from '../Intefaces/ComponentInterfaces/IRegisterData'
+import { ILike } from '../Intefaces/Models/ILike'
 import { api } from './Axios'
 
 export const Register = async (data: IRegisterData): Promise<null> => {
@@ -44,7 +45,42 @@ export const AddPost = async (data: IPost): Promise<IPost[]> => {
 
 export const GetUserTopPosts = async (userId: string): Promise<IPost[]> => {
 	const response = await api.get<IApiResponse<IPost[]>>(
-		`/posts/get/${userId ?? ''}`
+		`/user/${userId ?? ''}/posts`
+	)
+
+	return response.data.Data
+}
+
+export const GetPost = async (postId: string): Promise<IPost> => {
+	const response = await api.get<IApiResponse<IPost>>(`/posts/get/${postId}`)
+
+	return response.data.Data
+}
+
+export const AddComment = async (comment: IComment): Promise<IComment> => {
+	const response = await api.post<IApiResponse<IComment>>(
+		'/posts/comment/add',
+		comment
+	)
+
+	return response.data.Data
+}
+
+export const InteractWithPost = async (interaction: ILike): Promise<ILike> => {
+	const response = await api.post<IApiResponse<ILike>>(
+		'/posts/interact',
+		interaction
+	)
+
+	return response.data.Data
+}
+
+export const InteractWithComment = async (
+	interaction: ILike
+): Promise<ILike> => {
+	const response = await api.post<IApiResponse<ILike>>(
+		'/posts/comment/interact',
+		interaction
 	)
 
 	return response.data.Data

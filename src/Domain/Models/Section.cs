@@ -20,12 +20,16 @@ namespace Domain.Models
 
         public int? ParentSectionId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("ParentSectionId")]
         [InverseProperty("SubSections")]
-        [JsonIgnore]
         public Section? ParentSection { get; set; }
 
         [InverseProperty("ParentSection")]
-        public List<Section> SubSections { get; set; } = [];
+        public ICollection<Section> SubSections { get; set; } = [];
+
+        [JsonIgnore]
+        [InverseProperty("Section")]
+        public ICollection<Post> Posts { get; set; } = [];
     }
 }

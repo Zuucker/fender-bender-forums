@@ -14,6 +14,7 @@ namespace Application.Factories
                 Type = request.Type,
                 TextContent = request.TextContent,
                 Position = request.Position,
+                SubTitle = request.SubTitle,
                 GalleryElements = request.GalleryElements
                     .Select(ge => GalleryElementFactory.Create(ge))
                     .ToList(),

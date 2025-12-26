@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251213141651_AddedUserToComments")]
+    partial class AddedUserToComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,9 +174,6 @@ namespace Infrastructure.Persistance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int?>("OfferId")
                         .HasColumnType("integer");
 
@@ -191,8 +191,6 @@ namespace Infrastructure.Persistance.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("OfferId");
-
-                    b.HasIndex("ParentId");
 
                     b.HasIndex("PostId");
 
@@ -275,17 +273,14 @@ namespace Infrastructure.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("CommentId")
+                    b.Property<int>("CommentId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("OfferId")
+                    b.Property<int>("OfferId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("Up")
-                        .HasColumnType("boolean");
 
                     b.HasKey("LikeId");
 
@@ -614,17 +609,11 @@ namespace Infrastructure.Persistance.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("OfferId");
 
-                    b.HasOne("Domain.Models.Comment", "ParentComment")
-                        .WithMany("SubComments")
-                        .HasForeignKey("ParentId");
-
                     b.HasOne("Domain.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId");
 
                     b.Navigation("Offer");
-
-                    b.Navigation("ParentComment");
 
                     b.Navigation("Post");
 
@@ -667,15 +656,21 @@ namespace Infrastructure.Persistance.Migrations
 
                     b.HasOne("Domain.Models.Comment", "Comment")
                         .WithMany("Likes")
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Offer", "Offer")
                         .WithMany("Likes")
-                        .HasForeignKey("OfferId");
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Post", "Post")
                         .WithMany("Likes")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Comment");
 
@@ -823,8 +818,6 @@ namespace Infrastructure.Persistance.Migrations
             modelBuilder.Entity("Domain.Models.Comment", b =>
                 {
                     b.Navigation("Likes");
-
-                    b.Navigation("SubComments");
                 });
 
             modelBuilder.Entity("Domain.Models.Content", b =>

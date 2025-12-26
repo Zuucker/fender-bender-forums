@@ -36,6 +36,57 @@ namespace Infrastructure.Persistance.DataRepositories
             try
             {
                 return _context.Posts
+                    .Include(p => p.Contents)
+                        .ThenInclude(c => c.GalleryElements)
+                    .Include(p => p.Section)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(sc => sc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(sc => sc.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(scc => scc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(scc => scc.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(sccc => sccc.SubComments)
+                                        .ThenInclude(sccc => sccc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(sccc => sccc.SubComments)
+                                        .ThenInclude(sccc => sccc.Likes)
+
+                    .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .FirstOrDefault(p => p.Id == id);
             }
             catch (Exception e)

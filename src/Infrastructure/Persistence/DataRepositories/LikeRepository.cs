@@ -88,5 +88,34 @@ namespace Infrastructure.Persistance.DataRepositories
         }
 
         #endregion
+
+
+        public Like? GetByPostAndUser(int postId, string userId)
+        {
+            try
+            {
+                return _context.Likes
+                    .FirstOrDefault(l => l.PostId == postId && l.AuthorId == userId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public Like? GetByCommentAndUser(int commentId, string userId)
+        {
+            try
+            {
+                return _context.Likes
+                    .FirstOrDefault(l => l.CommentId == commentId && l.AuthorId == userId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

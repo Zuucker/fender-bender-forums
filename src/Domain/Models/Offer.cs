@@ -53,14 +53,21 @@ namespace Domain.Models
         [Required]
         public string Title { get; set; } = string.Empty;
 
-        public virtual Car Car { get; set; } = null!;
+        public virtual Car? Car { get; set; }
 
-        public virtual ApplicationUser Owner { get; set; } = null!;
+        public virtual ApplicationUser? Owner { get; set; }
 
-        public virtual City City { get; set; } = null!;
+        public virtual City? City { get; set; }
 
-        public virtual ICollection<Content> AdditionalContents { get; set; } = [];
+        [InverseProperty("Offer")]
+        public virtual ICollection<Content> Contents { get; set; } = [];
 
         public virtual ICollection<OfferRate> Ratings { get; set; } = [];
+
+        [InverseProperty("Offer")]
+        public virtual ICollection<Comment> Comments { get; set; } = [];
+
+        [InverseProperty("Offer")]
+        public virtual ICollection<Like> Likes { get; set; } = [];
     }
 }

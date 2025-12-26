@@ -22,7 +22,7 @@ namespace Application.Dtos.ModelDtos
             Rating = original.Rating;
             RatingCount = original.RatingCount;
             Author = new UserDto(original.Owner);
-            Contents = original.AdditionalContents;
+            Contents = original.Contents;
             Ratings = original.Ratings
                 .Select(r => new OfferRateDto(r))
                 .OrderBy(r => r.CreatedAt)

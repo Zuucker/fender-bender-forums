@@ -10,5 +10,8 @@
         UsernameAlreadyInUse = 5,
         Unauthorized = 6,
         EmptyList = 7,
+        PostNotFound = 8,
+        FileNotFound = 9,
+        WrongInteraction = 10,
     }
 }
