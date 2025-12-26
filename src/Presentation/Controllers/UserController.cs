@@ -111,7 +111,7 @@ namespace Presentation.Controllers
                 var getUserResult = _userService.GetUserById(userId.ToString());
 
                 if (getUserResult.HasFailed())
-                    return ResponseHelper.PrepareResponse(getUserResult);
+                    return ResponseHelper.PrepareResponse(new List<PostDto>());
 
 
                 var getPostsResult = _postService.GetUsersPosts(userId);
@@ -123,7 +123,8 @@ namespace Presentation.Controllers
                 var posts = getPostsResult.Data;
 
                 var postDtos = posts
-                    .Select(p => new PostDto(p, getUserResult.Data));
+                    .Select(p => new PostDto(p, getUserResult.Data))
+                    .ToList();
 
                 return ResponseHelper.PrepareResponse(postDtos);
             }
