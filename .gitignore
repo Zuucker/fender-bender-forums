@@ -37,7 +37,63 @@ frontend/coverage
 frontend/libpeerconnection.log
 frontend/testem.log
 frontend/typings
+frontend/.vite/
 
 # System files
 .DS_Store
 Thumbs.db
+
+.DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+# clean arch
+src/Application/bin
+src/Domain/bin
+src/Infrastructure/bin
+src/Presentation/bin
+src/Application/obj
+src/Application/src/obj
+src/Domain/obj
+src/Domain/src/obj
+src/Infrastructure/obj
+src/Infrastructure/src/obj
+src/Infrastructure/Persistence/Images
+src/Presentation/obj
+src/Presentation/src/obj
+Tests/bin
+Tests/obj
+
+/obj
+*.json
