@@ -1,0 +1,50 @@
+:root {
+	--blazy: #fc6424;
+	--blight: #d9d9d9;
+	--white: #ffff;
+	--black: #000000;
+	--tag-blue: #00757c;
+
+	--nav-act-height: 30px;
+}
+
+.bg-blazy {
+	background-color: var(--blazy);
+}
+
+.bg-blight {
+	background-color: var(--blight);
+}
+
+.round-image {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+html,
+body {
+	overflow-y: hidden !important;
+}
+
+.v-field {
+	background-color: white;
+	padding-left: 5px;
+}
+
+.hide-scrollbar > * {
+	overflow: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar > * {
+	display: none;
+}
+
+.thicc-border {
+	background-color: var(--white);
+	border: 2px solid var(--black);
+	margin-bottom: 1rem;
+}

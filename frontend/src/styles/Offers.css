@@ -1,0 +1,6 @@
+.offer-item {
+	background-color: var(--white);
+	border: 3px solid var(--black);
+	margin-bottom: 1rem;
+	padding: 0.5rem;
+}
