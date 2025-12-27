@@ -1,10 +1,10 @@
 ﻿using System.IO.Compression;
 using Domain.Models;
-using Microsoft.Extensions.Configuration;
 using CsvHelper;
 using Infrastructure.Persistance;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace Infrastructure.Persistence
@@ -18,9 +18,18 @@ namespace Infrastructure.Persistence
         {
             if (!context.Cars.Any())
             {
-                var cars = await GetCarsFromKaggle();
+                List<Car> cars = await GetCarsFromDataset();
 
                 context.Cars.AddRange(cars);
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.Cities.Any())
+            {
+                List<City> cities = await GetCitiesFromDataset();
+
+                context.Cities.AddRange(cities);
 
                 await context.SaveChangesAsync();
             }
@@ -47,7 +56,7 @@ namespace Infrastructure.Persistence
             return null;
         }
 
-        private async Task<List<Car>> GetCarsFromKaggle()
+        private async Task<List<Car>> GetCarsFromDataset()
         {
             var cars = new List<Car>();
 
@@ -73,7 +82,7 @@ namespace Infrastructure.Persistence
 
             try
             {
-                string path = Path.Combine(folderPath, $"dataset.zip");
+                string path = Path.Combine(folderPath, $"dataset1.zip");
 
                 byte[] fileBytes = await httpClient.GetByteArrayAsync(url);
 
@@ -92,21 +101,21 @@ namespace Infrastructure.Persistence
 
                 files.ForEach(f =>
                 {
-                    cars = cars.Concat(ParseCSV(f))
+                    cars = cars.Concat(ParseCarCSV(f))
                    .ToList();
                 });
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error downloading file: {ex.Message}");
+                Console.WriteLine($"Error seeding Cars: {ex.Message}");
             }
 
 
             return cars;
         }
 
-        private List<Car> ParseCSV(string filePath)
+        private List<Car> ParseCarCSV(string filePath)
         {
             var cars = new List<Car>();
 
@@ -171,6 +180,117 @@ namespace Infrastructure.Persistence
             }
 
             return cars;
+        }
+
+
+        private async Task<List<City>> GetCitiesFromDataset()
+        {
+            List<City> cities = [];
+
+            string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datasets");
+
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            else
+            {
+                Directory.Delete(folderPath, true);
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string url =
+                 "https://raw.githubusercontent.com/lutangar/cities.json/master/cities.json";
+
+
+            using HttpClient httpClient = new();
+
+
+            try
+            {
+                string path = Path.Combine(folderPath, $"dataset2.json");
+
+                byte[] fileBytes = await httpClient.GetByteArrayAsync(url);
+
+                await File.WriteAllBytesAsync(path, fileBytes);
+
+                await using var stream = File.OpenRead(path);
+
+                var dtoList = await JsonSerializer
+                    .DeserializeAsync<List<CityJsonDto>>(stream) ?? [];
+
+                cities = dtoList
+                    .Select(c =>
+                    {
+                        double.TryParse(c.Lng, NumberStyles.Float, CultureInfo.InvariantCulture, out double alt);
+                        double.TryParse(c.Lat, NumberStyles.Float, CultureInfo.InvariantCulture, out double lat);
+
+                        return new City()
+                        {
+                            Name = c.Name,
+                            Altitude = alt,
+                            Latitude = lat,
+                            Country = c.Country
+                        };
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error seeding cities: {ex.Message}");
+            }
+
+
+            return cities;
+        }
+
+        private List<City> ParseCityCSV(string filePath)
+        {
+            var cities = new List<City>();
+
+            using (var reader = new StreamReader(filePath))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csv.Read();
+                csv.ReadHeader();
+                var header = csv.HeaderRecord ?? [];
+
+                var records = csv.GetRecords<dynamic>().ToList();
+
+
+                cities.AddRange(
+                    records.Select(r => new City()
+                    {
+                        Name = GetValueFromRecord(r, header, "city_ascii"),
+                        Latitude = GetValueFromRecord(r, header, "lat"),
+                        Altitude = GetValueFromRecord(r, header, "lng")
+                    }));
+            }
+
+            return cities;
+        }
+
+
+        private class CityJsonDto
+        {
+            [JsonPropertyName("name")]
+            public string Name { get; init; } = string.Empty;
+
+            [JsonPropertyName("country")]
+            public string Country { get; init; } = string.Empty;
+
+            [JsonPropertyName("lat")]
+            public string Lat { get; init; } = string.Empty;
+
+            [JsonPropertyName("lng")]
+            public string Lng { get; init; } = string.Empty;
+
+            [JsonPropertyName("admin1")]
+            public string Admin1 { get; init; } = string.Empty;
+
+            [JsonPropertyName("admin2")]
+            public string Admin2 { get; init; } = string.Empty;
         }
     }
 }

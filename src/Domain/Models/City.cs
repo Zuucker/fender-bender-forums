@@ -12,11 +12,15 @@ namespace Domain.Models
         [Required]
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(100)]
+        public string Country { get; set; } = string.Empty;
 
         [Required]
-        public float Altitude { get; set; }
+        public double Altitude { get; set; }
 
         [Required]
-        public float Latitude { get; set; }
+        public double Latitude { get; set; }
     }
 }
