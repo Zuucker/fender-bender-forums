@@ -20,6 +20,8 @@ namespace Application.Dtos.RequestDtos
 
         public string Tags { get; set; } = string.Empty;
 
+        public int? CarId { get; set; }
+
         [Required]
         public List<ContentDto> Contents { get; set; } = [];
     }

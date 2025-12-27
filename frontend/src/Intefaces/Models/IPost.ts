@@ -1,3 +1,4 @@
+import { ICar } from './ICar'
 import { IComment } from './IComment'
 import { IContent } from './IContent'
 import { ISection } from './ISection'
@@ -17,5 +18,7 @@ export interface IPost {
 	Contents: IContent[]
 	Author: IUser
 	Section: ISection
+	CarId: number
+	Car: ICar
 	Comments: IComment[]
 }

@@ -8,7 +8,14 @@
 				</div>
 			</div>
 			<div class="d-flex col-12">
-				<TagChip v-for="tag in postData.Tags.split(' ')" :text="tag" />
+				<TagChip
+					v-for="tag in [
+						postData.Car.Manufacturer,
+						postData.Car.Model,
+						postData.Car.Type,
+						...postData.Tags.split(' '),
+					]"
+					:text="tag" />
 			</div>
 			<div
 				class="d-flex flex-column h-100 col-12 justify-content-between"
@@ -97,7 +104,9 @@
 						:data="comment"
 						:addCommentCallback="handleAddSubComment" />
 
-					<div v-if="!postData.Comments || postData.Comments.length === 0">
+					<div
+						v-if="!postData.Comments || postData.Comments.length === 0"
+						class="ps-2">
 						There are no comments yet
 					</div>
 				</div>

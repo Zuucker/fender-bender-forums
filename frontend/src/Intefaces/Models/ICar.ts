@@ -1,5 +1,8 @@
 export interface ICar {
-	Id: number
-	Model: string
+	CarId: number
 	Manufacturer: string
+	Model: string
+	Year: Date
+	Generation: string
+	Type: string
 }

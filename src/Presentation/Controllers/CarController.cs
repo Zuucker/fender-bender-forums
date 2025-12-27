@@ -1,6 +1,8 @@
-﻿using Application.Dtos.RequestDtos;
+﻿using Application.Dtos.ModelDtos;
+using Application.Dtos.RequestDtos;
 using Application.Interfaces.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Responses;
 
 namespace Presentation.Controllers
 {
@@ -20,9 +22,16 @@ namespace Presentation.Controllers
         {
             try
             {
-                var cars = _carService.GetAllCars();
+                var getResult = _carService.GetAllCars();
 
-                return Ok(cars);
+                if (getResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getResult);
+
+                var carDtos = getResult.Data
+                    .Select(c => new CarDto(c))
+                    .ToList();
+
+                return ResponseHelper.PrepareResponse(carDtos);
             }
             catch (Exception ex)
             {

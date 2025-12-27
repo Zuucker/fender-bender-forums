@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
@@ -30,6 +29,8 @@ namespace Domain.Models
         [Required]
         [StringLength(100)]
         public string Tags { get; set; } = string.Empty;
+        
+        public int? CarId { get; set; }
 
         [InverseProperty("Post")]
         public ICollection<Content> Contents { get; set; } = [];
@@ -41,6 +42,10 @@ namespace Domain.Models
         [ForeignKey("SectionId")]
         [InverseProperty("Posts")]
         public Section? Section { get; set; }
+        
+        [ForeignKey("CarId")]
+        [InverseProperty("Posts")]
+        public Car? Car { get; set; }
 
         [InverseProperty("Post")]
         public ICollection<Comment> Comments { get; set; } = [];

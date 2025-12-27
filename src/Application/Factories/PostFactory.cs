@@ -15,6 +15,7 @@ namespace Application.Factories
                 CreationDate = request.CreationDate,
                 Content = request.Content,
                 Tags = request.Tags,
+                CarId = request.CarId,
                 Contents = request.Contents
                     .Select(ac => ContentFactory.Create(ac))
                     .ToList()

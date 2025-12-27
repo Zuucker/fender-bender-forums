@@ -1,4 +1,11 @@
-import { IApiResponse, IComment, IPost, ISection, IUser } from '../Intefaces'
+import {
+	IApiResponse,
+	ICar,
+	IComment,
+	IPost,
+	ISection,
+	IUser,
+} from '../Intefaces'
 import ILoginData from '../Intefaces/ComponentInterfaces/ILoginData'
 import IRegisterData from '../Intefaces/ComponentInterfaces/IRegisterData'
 import { ILike } from '../Intefaces/Models/ILike'
@@ -82,6 +89,20 @@ export const InteractWithComment = async (
 		'/posts/comment/interact',
 		interaction
 	)
+
+	return response.data.Data
+}
+
+export const GetCars = async (
+	searchString: string,
+	pageSize: number
+): Promise<ICar[]> => {
+	const response = await api.get<IApiResponse<ICar[]>>('/car/get', {
+		params: {
+			searchString,
+			pageSize,
+		},
+	})
 
 	return response.data.Data
 }

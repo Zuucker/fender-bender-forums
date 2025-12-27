@@ -87,6 +87,7 @@ namespace Infrastructure.Persistance.DataRepositories
 
                     .Include(p => p.Likes)
                     .Include(p => p.User)
+                    .Include(p => p.Car)
                     .FirstOrDefault(p => p.Id == id);
             }
             catch (Exception e)

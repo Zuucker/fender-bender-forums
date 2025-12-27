@@ -49,6 +49,10 @@ namespace Infrastructure.Persistance.DataRepositories
             try
             {
                 return _context.Cars
+                    .OrderBy(c => c.Manufacturer)
+                        .ThenBy(c => c.Model)
+                            .ThenBy(c => c.Type)
+                                .ThenBy(c => c.Year)
                     .ToList();
             }
             catch (Exception e)

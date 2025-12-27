@@ -20,6 +20,9 @@ namespace Application.Dtos.ModelDtos
                 .ToList();
             Author = new UserDto(org.User);
             Section = org.Section;
+            Car = org.Car != null
+                ? new CarDto(org.Car)
+                : null;
             Comments = org.Comments
                 .OrderByDescending(c => c.CreatedAt)
                 .Select(c => new CommentDto(c, user))
@@ -56,9 +59,10 @@ namespace Application.Dtos.ModelDtos
 
         public Section? Section { get; set; }
 
+        public CarDto? Car { get; set; }
+
         public ICollection<ContentDto> Contents { get; set; } = [];
 
         public ICollection<CommentDto> Comments { get; set; } = [];
-
     }
 }

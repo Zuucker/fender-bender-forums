@@ -11,6 +11,24 @@
 					:error-messages="getErrorMessage('Title')" />
 			</div>
 			<div class="col-12">
+				<v-autocomplete
+					class="col-12"
+					label="Select Car"
+					:items="cars.map((s) => getCarName(s))"
+					density="compact"
+					variant="outlined"
+					v-model:opened="isCarSelectOpen"
+					v-model="selectedCar"
+					@update:model-value="handleChangeCar"
+					:error-messages="getErrorMessage('CarId')">
+					<template #item="{ item, props }">
+						<div v-bind="props" class="select-item px-4">
+							{{ item.title }}
+						</div>
+					</template>
+				</v-autocomplete>
+			</div>
+			<div class="col-12">
 				<v-text-field
 					label="Tags"
 					variant="outlined"
@@ -118,11 +136,11 @@
 
 <script setup lang="ts">
 	import { onMounted, ref } from 'vue'
-	import { IContent, IPost, ISection } from '../Intefaces'
+	import { ICar, IContent, IPost, ISection } from '../Intefaces'
 	import Draggable from 'vuedraggable'
 	import Content from '../components/Content.vue'
 	import { ContentTypeEnum } from '../constants/ContentTypeEnum'
-	import { AddPost, GetMenuSections } from '../setup/Endpoints'
+	import { AddPost, GetCars, GetMenuSections } from '../setup/Endpoints'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { goToPage } from '../setup/Router'
 	import { useUserStore } from '../setup/stores/UserStore'
@@ -132,9 +150,13 @@
 	const userStore = useUserStore()
 
 	const sections = ref<ISection[]>([])
+	const cars = ref<ICar[]>([])
 	const isSectionSelectOpen = ref([])
+	const isCarSelectOpen = ref([])
 	const errors = ref<Record<string, string>>({})
 	const selectedSection = ref<string | null>(null)
+	const selectedCar = ref<string | null>(null)
+	const carSearchString = ref<string>('')
 
 	const postData = ref<IPost>({
 		Contents: [
@@ -242,6 +264,22 @@
 		isSectionSelectOpen.value = []
 	}
 
+	const handleChangeCar = (carName: string) => {
+		const car = cars.value.find((s) => getCarName(s) === carName)
+
+		selectedCar.value = getCarName(car)
+
+		postData.value.CarId = car.CarId
+
+		isCarSelectOpen.value = []
+	}
+
+	const getCarName = (car: ICar) => {
+		return `${car.Manufacturer} ${car.Model} ${car.Type} ${new Date(
+			car.Year
+		).getUTCFullYear()}`
+	}
+
 	const addPostValidationSchema = yup.object({
 		Title: yup.string().required('Title is required'),
 		SectionId: yup.number().required('Section is required'),
@@ -296,6 +334,14 @@
 		await GetMenuSections()
 			.then((response) => {
 				sections.value = response
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+
+		await GetCars(carSearchString.value, 10)
+			.then((response) => {
+				cars.value = response
 			})
 			.catch((error) => {
 				console.log(error)
@@ -356,5 +402,11 @@
 
 	.select-item:hover {
 		background-color: var(--blight);
+	}
+</style>
+
+<style>
+	span.v-select__selection-text {
+		left: 0px !important;
 	}
 </style>

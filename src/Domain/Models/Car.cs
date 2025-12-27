@@ -27,5 +27,8 @@ namespace Domain.Models
         [Required]
         [StringLength(150)]
         public string Type { get; set; } = string.Empty;
+
+        [InverseProperty("Car")]
+        public ICollection<Post> Posts { get; set; } = [];
     }
 }
