@@ -9,7 +9,7 @@
 	import {
 		ICar,
 		ICity,
-		IContent,
+		IComment,
 		IOffer,
 		IOfferRate,
 		IUser,
@@ -17,7 +17,7 @@
 
 	const exampleOffer = {
 		Title: 'title1',
-		Rating: 23,
+		Points: 23,
 		Ratings: [] as IOfferRate[],
 		Author: {
 			Id: 'id1',
@@ -29,18 +29,20 @@
 		CityId: 1,
 		City: {} as ICity,
 		Color: 'red',
-		Condition: 1,
+		Condition: 'ok',
 		Date: new Date(),
 		AuthorId: '1',
-		Contents: {} as IContent,
-		Fuel: 1,
+		Fuel: 'Diesel',
 		Mileage: 23,
 		Price: 41,
-		RatingCount: 51,
 		Tags: 'sa,dsa,fa,gasa',
 		OfferId: '1',
-		Comments: [{}, {}],
-	}
+		Comments: [{} as IComment, {} as IComment],
+		Contents: [],
+		UpVoted: false,
+		DownVoted: true,
+		Type: 'car',
+	} as IOffer
 
 	const offers = [exampleOffer, exampleOffer, exampleOffer] as IOffer[]
 </script>

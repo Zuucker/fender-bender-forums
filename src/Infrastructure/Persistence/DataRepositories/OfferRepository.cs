@@ -50,11 +50,12 @@ namespace Infrastructure.Persistance.DataRepositories
             try
             {
                 return _context.Offers
-                    .Include(o => o.Owner)
+                    .Include(o => o.User)
                     .Include(o => o.Car)
                     .Include(o => o.City)
                     .Include(o => o.Contents)
-                    .Include(o => o.Ratings)
+                        .ThenInclude(c => c.GalleryElements)
+                    .Include(o => o.Comments)
                     .ToList();
             }
             catch (Exception e)

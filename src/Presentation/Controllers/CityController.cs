@@ -1,6 +1,8 @@
-﻿using Application.Dtos.RequestDtos;
+﻿using Application.Dtos.ModelDtos;
+using Application.Dtos.RequestDtos;
 using Application.Interfaces.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Responses;
 
 namespace Presentation.Controllers
 {
@@ -20,9 +22,17 @@ namespace Presentation.Controllers
         {
             try
             {
-                var cities = _cityService.GettAllCities();
+                var getCitiesResult = _cityService.GettAllCities();
 
-                return Ok(cities);
+                if (getCitiesResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getCitiesResult);
+
+                var cityDtos = getCitiesResult.Data
+                    .OrderBy(c => c.Name)
+                    .Select(c => new CityDto(c))
+                    .ToList();
+
+                return ResponseHelper.PrepareResponse(cityDtos);
             }
             catch (Exception ex)
             {

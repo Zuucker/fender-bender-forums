@@ -1,7 +1,9 @@
 import {
 	IApiResponse,
 	ICar,
+	ICity,
 	IComment,
+	IOffer,
 	IPost,
 	ISection,
 	IUser,
@@ -103,6 +105,18 @@ export const GetCars = async (
 			pageSize,
 		},
 	})
+
+	return response.data.Data
+}
+
+export const AddOffer = async (data: IOffer): Promise<IOffer[]> => {
+	const response = await api.post<IApiResponse<IOffer[]>>('/offers/add', data)
+
+	return response.data.Data
+}
+
+export const GetCities = async (): Promise<ICity[]> => {
+	const response = await api.get<IApiResponse<ICity[]>>('/city/get')
 
 	return response.data.Data
 }

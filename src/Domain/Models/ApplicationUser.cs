@@ -14,6 +14,9 @@ namespace Domain.Models
 
         [InverseProperty("User")]
         public ICollection<Post> Posts { get; set; } = [];
+        
+        [InverseProperty("User")]
+        public ICollection<Offer> Offers { get; set; } = [];
 
         [InverseProperty("User")]
         public ICollection<Like> Likes { get; set; } = [];

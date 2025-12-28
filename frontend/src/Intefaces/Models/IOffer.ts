@@ -2,7 +2,6 @@ import { ICar } from './ICar'
 import { ICity } from './ICity'
 import { IComment } from './IComment'
 import { IContent } from './IContent'
-import { IOfferRate } from './IRating'
 import { IUser } from './IUser'
 
 export interface IOffer {
@@ -13,17 +12,20 @@ export interface IOffer {
 	CityId: number
 	AuthorId: string
 	Date: Date
-	Condition: number
-	Fuel: number
-	Color: string
-	Mileage: number
+	Condition: string
+	Fuel?: string
+	Color?: string
+	Mileage?: number
 	Tags: string
-	Rating: number
-	RatingCount: number
 	Car: ICar
 	City: ICity
+	Points: number
+	VIN?: number
+	PartNumber?: string
+	Type: string
 	Author: IUser
-	Ratings: IOfferRate[]
-	Contents: IContent
+	Contents: IContent[]
 	Comments: IComment[]
+	UpVoted: boolean
+	DownVoted: boolean
 }

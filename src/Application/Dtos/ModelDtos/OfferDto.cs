@@ -4,34 +4,47 @@ namespace Application.Dtos.ModelDtos
 {
     public class OfferDto
     {
-        public OfferDto(Offer original)
+        public OfferDto(Offer org, ApplicationUser user)
         {
-            OfferId = original.OfferId;
-            Price = original.Price;
-            CarId = original.CarId;
-            CityId = original.CityId;
-            AuthorId = original.AuthorId;
-            Date = original.Date;
-            Condition = original.Condition;
-            Fuel = original.Fuel;
-            Color = original.Color;
-            Mileage = original.Mileage;
-            Tags = original.Tags;
-            Car = original.Car;
-            City = original.City;
-            Rating = original.Rating;
-            RatingCount = original.RatingCount;
-            Author = new UserDto(original.Owner);
-            Contents = original.Contents;
-            Ratings = original.Ratings
-                .Select(r => new OfferRateDto(r))
-                .OrderBy(r => r.CreatedAt)
+            OfferId = org.OfferId;
+            Title = org.Title;
+            Price = org.Price;
+            CarId = org.CarId;
+            CityId = org.CityId;
+            AuthorId = org.AuthorId;
+            Date = org.Date;
+            Condition = org.Condition;
+            Fuel = org.Fuel;
+            Color = org.Color;
+            Mileage = org.Mileage;
+            Tags = org.Tags;
+            Car = org.Car != null
+                ? new CarDto(org.Car)
+                : null;
+            City = org.City;
+            Points = org.Likes
+                .Sum(l => l.Up ? 1 : -1);
+            VIN = org.VIN;
+            PartNumber = org.PartNumber;
+            Author = new UserDto(org.User);
+            Contents = org.Contents
+                .Select(c => new ContentDto(c))
                 .ToList();
+            Comments = org.Comments
+                .OrderByDescending(c => c.CreatedAt)
+                .Select(c => new CommentDto(c, user))
+                .ToList();
+            UpVoted = org.Likes
+                .Any(l => l.AuthorId == user.Id && l.Up);
+            DownVoted = org.Likes
+                .Any(l => l.AuthorId == user.Id && !l.Up);
         }
 
         public int OfferId { get; set; }
 
-        public float Price { get; set; }
+        public string Title { get; set; }
+
+        public decimal Price { get; set; }
 
         public int CarId { get; set; }
 
@@ -41,28 +54,36 @@ namespace Application.Dtos.ModelDtos
 
         public DateTime Date { get; set; }
 
-        public int Condition { get; set; }
+        public string Condition { get; set; }
 
-        public int Fuel { get; set; }
+        public string? Fuel { get; set; }
 
-        public string Color { get; set; } = string.Empty;
+        public string? Color { get; set; }
 
-        public int Mileage { get; set; }
+        public int? Mileage { get; set; }
 
         public string Tags { get; set; } = string.Empty;
 
-        public float Rating { get; set; }
+        public float Points { get; set; }
 
-        public int RatingCount { get; set; }    
+        public string? VIN { get; set; }
 
-        public virtual Car Car { get; set; } = null!;
+        public string? PartNumber { get; set; }
 
-        public virtual UserDto Author { get; set; } = null!;
+        public string Type { get; set; } = string.Empty;
 
-        public virtual City City { get; set; } = null!;
+        public bool UpVoted { get; set; }
 
-        public virtual ICollection<Content> Contents { get; set; } = [];
+        public bool DownVoted { get; set; }
 
-        public virtual ICollection<OfferRateDto> Ratings { get; set; } = [];
+        public CarDto? Car { get; set; }
+
+        public UserDto? Author { get; set; }
+
+        public City? City { get; set; }
+
+        public ICollection<ContentDto> Contents { get; set; } = [];
+
+        public ICollection<CommentDto> Comments { get; set; } = [];
     }
 }

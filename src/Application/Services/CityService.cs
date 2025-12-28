@@ -18,7 +18,9 @@ namespace Application.Services
         //TODO add filtering
         public ServiceResult<IEnumerable<City>> GettAllCities()
         {
-            return ServiceResult<IEnumerable<City>>.Success(_cityRepository.GetAll());
+            var cities = _cityRepository.GetFromCountry("PL");
+
+            return ServiceResult<IEnumerable<City>>.Success(cities);
         }
 
         public ServiceResult<City> AddCity(AddCityRequest cityRequest)

@@ -12,14 +12,18 @@ namespace Application.Factories
                 AuthorId = request.AuthorId,
                 CarId = request.CarId,
                 CityId = request.CityId,
+                Title = request.Title,
                 Color = request.Color,
                 Condition = request.Condition,
-                Date = request.Date,
+                Date = DateTime.UtcNow,
                 Fuel = request.Fuel,
                 Mileage = request.Mileage,
+                VIN = request.VIN,
                 Price = request.Price,
+                PartNumber = request.PartNumber,
                 Tags = request.Tags,
-                Contents = request.AdditionalContents
+                Type = request.Type,
+                Contents = request.Contents
                     .Select(ac => ContentFactory.Create(ac))
                     .ToList()
             };

@@ -1,6 +1,11 @@
+using Application.Common;
+using Application.Dtos.ModelDtos;
 using Application.Dtos.RequestDtos;
 using Application.Interfaces.ServiceInterfaces;
+using Domain.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Responses;
 
 namespace Presentation.Controllers
 {
@@ -9,10 +14,13 @@ namespace Presentation.Controllers
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;
+        private readonly IUserService _userService;
 
-        public OfferController(IOfferService offerService)
+        public OfferController(IOfferService offerService,
+            IUserService userService)
         {
             _offerService = offerService;
+            _userService = userService;
         }
 
         [HttpGet("get")]
@@ -31,15 +39,31 @@ namespace Presentation.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("add")]
         public IActionResult AddOffer([FromBody] AddOfferRequest requestDto)
         {
             try
             {
-                _offerService.AddOffer(requestDto);
+                var userId = User.FindFirst(Constants.ClaimsConstants.UserIdClaim)?.Value;
 
-                return Ok();
+                if (string.IsNullOrEmpty(userId))
+                    return ResponseHelper.PrepareResponse(ApiErrors.UserNotFound);
+
+                var getUserResult = _userService.GetUserById(userId);
+
+                if (getUserResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getUserResult);
+
+
+                var addResult = _offerService.AddOffer(requestDto);
+
+                if (addResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(addResult);
+
+
+
+                return ResponseHelper.PrepareResponse(new OfferDto(addResult.Data, getUserResult.Data));
             }
             catch (Exception ex)
             {

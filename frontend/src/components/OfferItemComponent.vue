@@ -17,7 +17,7 @@
 							class="me-2"
 							style="font-size: 1.5em" />
 						<span class="fs-3" style="height: fit-content">
-							{{ offer?.Rating }}
+							{{ offer?.Points }}
 						</span>
 					</div>
 				</div>

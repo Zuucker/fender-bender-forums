@@ -10,35 +10,38 @@ namespace Domain.Models
         public int OfferId { get; set; }
 
         [Required]
-        public float Price { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required]
-        [ForeignKey("Car")]
+        public decimal Price { get; set; }
+
+        [Required]
         public int CarId { get; set; }
 
         [Required]
-        [ForeignKey("City")]
         public int CityId { get; set; }
 
         [Required]
-        [ForeignKey("Owner")]
         public string AuthorId { get; set; } = string.Empty;
 
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         [Required]
-        public int Condition { get; set; }
+        public string Condition { get; set; } = string.Empty;
 
-        [Required]
-        public int Fuel { get; set; }
+        public string? Fuel { get; set; }
 
-        [Required]
         [StringLength(100)]
-        public string Color { get; set; } = string.Empty;
+        public string? Color { get; set; }
 
-        [Required]
-        public int Mileage { get; set; }
+        public int? Mileage { get; set; }
+
+        public string? VIN { get; set; }
+
+        public string? PartNumber { get; set; }
+
+        public string Type { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
@@ -50,24 +53,25 @@ namespace Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int RatingCount { get; private set; }//db should manage it
 
-        [Required]
-        public string Title { get; set; } = string.Empty;
+        [InverseProperty("Offer")]
+        public ICollection<Content> Contents { get; set; } = [];
 
-        public virtual Car? Car { get; set; }
+        [ForeignKey("AuthorId")]
+        [InverseProperty("Offers")]
+        public ApplicationUser? User { get; set; }
+        
+        [ForeignKey("CityId")]
+        [InverseProperty("Offers")]
+        public City? City { get; set; }
 
-        public virtual ApplicationUser? Owner { get; set; }
-
-        public virtual City? City { get; set; }
+        [ForeignKey("CarId")]
+        [InverseProperty("Offers")]
+        public Car? Car { get; set; }
 
         [InverseProperty("Offer")]
-        public virtual ICollection<Content> Contents { get; set; } = [];
-
-        public virtual ICollection<OfferRate> Ratings { get; set; } = [];
+        public ICollection<Comment> Comments { get; set; } = [];
 
         [InverseProperty("Offer")]
-        public virtual ICollection<Comment> Comments { get; set; } = [];
-
-        [InverseProperty("Offer")]
-        public virtual ICollection<Like> Likes { get; set; } = [];
+        public ICollection<Like> Likes { get; set; } = [];
     }
 }

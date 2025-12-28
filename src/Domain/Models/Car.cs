@@ -30,5 +30,8 @@ namespace Domain.Models
 
         [InverseProperty("Car")]
         public ICollection<Post> Posts { get; set; } = [];
+        
+        [InverseProperty("Car")]
+        public ICollection<Offer> Offers { get; set; } = [];
     }
 }

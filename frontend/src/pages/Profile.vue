@@ -72,7 +72,15 @@
 		<div
 			v-if="userData.Id === userstore?.getUser?.value?.Id"
 			class="col-2 ms-auto me-4 d-flex flex-column justify-content-center align-items-center py-3">
-			<v-btn class="col-12 mb-4 text-dark">Add Offer</v-btn>
+			<v-btn
+				class="col-12 mb-4 text-dark"
+				:onclick="
+					() => {
+						goToPage('/offer/add')
+					}
+				"
+				>Add Offer</v-btn
+			>
 			<v-btn
 				class="col-12 text-dark"
 				:onclick="
@@ -141,6 +149,8 @@
 	import OfferItemComponent from '../components/OfferItemComponent.vue'
 	import PostItemComponent from '../components/PostItemComponent.vue'
 	import { goToPage } from '../setup/Router'
+	import { Condition } from '../constants/ConditionEnum'
+	import { FuelType } from '../constants/FuelEnum'
 
 	const userstore = useUserStore()
 	const snackBarStore = useSnackBarStore()
@@ -241,8 +251,8 @@
 		CityId: 100 + i,
 		AuthorId: `user${i + 1}`,
 		Date: new Date(`2023-05-${(i + 1).toString()}`),
-		Condition: (i % 5) + 1,
-		Fuel: i % 3,
+		Condition: Condition[Condition.HeavilyUsed],
+		Fuel: FuelType[FuelType.Diesel],
 		Color: ['Red', 'Blue', 'Green', 'Black', 'White'][i % 5],
 		Mileage: 10000 + i * 1000,
 		Tags: `tag${i + 1},tag${i + 2}`,
@@ -252,7 +262,11 @@
 		City: {} as ICity,
 		Author: { UserName: `User ${i + 1}` } as IUser,
 		Ratings: [] as IOfferRate[],
-		Contents: {} as IContent,
+		Contents: [] as IContent[],
 		Comments: [] as IComment[],
+		Points: 12,
+		Type: 'car',
+		UpVoted: true,
+		DownVoted: false,
 	}))
 </script>

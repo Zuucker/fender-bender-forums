@@ -88,5 +88,21 @@ namespace Infrastructure.Persistance.DataRepositories
         }
 
         #endregion
+
+
+        public IEnumerable<City> GetFromCountry(string countryCode)
+        {
+            try
+            {
+                return _context.Cities
+                    .Where(c => c.Country == countryCode)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

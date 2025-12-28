@@ -1,29 +1,44 @@
 ﻿using Application.Dtos.ModelDtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Dtos.RequestDtos
 {
     public class AddOfferRequest
     {
-        public float Price { get; set; }
+        [Required]
+        public decimal Price { get; set; }
 
+        [Required]
+        public string Title { get; set; } = string.Empty;
+
+        [Required]
         public int CarId { get; set; }
 
+        [Required]
         public int CityId { get; set; }
 
+        [Required]
         public string AuthorId { get; set; } = string.Empty;
 
-        public DateTime Date { get; set; }
+        [Required]
+        public string Condition { get; set; } = string.Empty;
 
-        public int Condition { get; set; }
+        public string? Fuel { get; set; }
 
-        public int Fuel { get; set; }
+        public string? Color { get; set; }
 
-        public string Color { get; set; } = string.Empty;
+        public int? Mileage { get; set; }
+        
+        public string? VIN { get; set; }
 
-        public int Mileage { get; set; }
+        [Required]
+        public string Type { get; set; } = string.Empty;
+
+        public string? PartNumber { get; set; }
 
         public string Tags { get; set; } = string.Empty;
 
-        public List<ContentDto> AdditionalContents { get; set; } = [];
+        [Required]
+        public List<ContentDto> Contents { get; set; } = [];
     }
 }

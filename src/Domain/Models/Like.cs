@@ -36,7 +36,5 @@ namespace Domain.Models
         [ForeignKey("CommentId")]
         [InverseProperty("Likes")]
         public virtual Comment? Comment { get; set; }
-
-
     }
 }

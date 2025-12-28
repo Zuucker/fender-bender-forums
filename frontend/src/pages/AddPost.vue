@@ -330,10 +330,28 @@
 		return Object.keys(result).length > 0 ? result : null
 	}
 
+	const flattenSections = (sections: ISection[]): ISection[] => {
+		const result: ISection[] = []
+
+		for (const section of sections) {
+			result.push(section)
+
+			if (section.SubSections) {
+				result.push(...flattenSections(section.SubSections))
+			}
+		}
+
+		return result
+	}
+
 	onMounted(async () => {
 		await GetMenuSections()
 			.then((response) => {
-				sections.value = response
+				const responseSections = flattenSections(response).filter((s) =>
+					response.some((r) => r.Name !== s.Name)
+				)
+
+				sections.value = responseSections
 			})
 			.catch((error) => {
 				console.log(error)

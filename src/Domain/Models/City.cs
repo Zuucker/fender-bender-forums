@@ -22,5 +22,8 @@ namespace Domain.Models
 
         [Required]
         public double Latitude { get; set; }
+
+        [InverseProperty("City")]
+        public ICollection<Offer> Offers { get; set; } = [];
     }
 }
