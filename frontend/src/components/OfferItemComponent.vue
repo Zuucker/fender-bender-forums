@@ -1,7 +1,9 @@
 <template>
 	<div class="offer-item d-flex col-12">
 		<div
-			class="offer-left-part d-flex flex-column justify-content-between col-10">
+			class="offer-left-part d-flex flex-column justify-content-between col-10"
+			style="cursor: pointer"
+			@click="handleClick">
 			<h4>
 				<b>{{ offer?.Title }}</b>
 			</h4>
@@ -54,9 +56,16 @@
 </template>
 
 <script setup lang="ts">
+	import { useRouter } from 'vue-router'
 	import { IOffer } from '../Intefaces'
 
 	const { data: offer } = defineProps<{
 		data: IOffer
 	}>()
+
+	const router = useRouter()
+
+	const handleClick = () => {
+		router.push(`/offer/${offer.OfferId}`)
+	}
 </script>

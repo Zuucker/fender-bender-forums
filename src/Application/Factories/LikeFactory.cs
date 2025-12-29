@@ -14,6 +14,15 @@ namespace Application.Factories
                 Up = request.Upvoted && !request.DownVoted
             };
         }
+        public static Like Create(InteractWithOfferRequest request)
+        {
+            return new Like()
+            {
+                AuthorId = request.AuthorId,
+                OfferId = request.OfferId,
+                Up = request.Upvoted && !request.DownVoted
+            };
+        }
 
         public static Like Create(InteractWithCommentRequest request)
         {
@@ -23,6 +32,6 @@ namespace Application.Factories
                 CommentId = request.CommentId,
                 Up = request.Upvoted && !request.DownVoted
             };
-        } 
+        }
     }
 }

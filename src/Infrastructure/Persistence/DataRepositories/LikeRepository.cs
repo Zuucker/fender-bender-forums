@@ -104,6 +104,20 @@ namespace Infrastructure.Persistance.DataRepositories
             }
         }
 
+        public Like? GetByOfferAndUser(int offerId, string userId)
+        {
+            try
+            {
+                return _context.Likes
+                    .FirstOrDefault(l => l.OfferId == offerId && l.AuthorId == userId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         public Like? GetByCommentAndUser(int commentId, string userId)
         {
             try

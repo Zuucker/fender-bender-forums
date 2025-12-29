@@ -1,9 +1,9 @@
 export interface ILike {
-	Id: number
+	Id?: number
 	AuthorId: string
-	PostId: number
-	CommentId: number
-	OfferId: number
+	PostId?: number
+	CommentId?: number
+	OfferId?: number
 	Upvoted: boolean
 	DownVoted: boolean
 }

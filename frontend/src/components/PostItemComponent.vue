@@ -21,6 +21,7 @@
 		data: IPost
 		small?: boolean
 	}
+
 	const router = useRouter()
 
 	const { data: post, small } = defineProps<PostItemComponentProps>()

@@ -36,7 +36,59 @@ namespace Infrastructure.Persistance.DataRepositories
             try
             {
                 return _context.Offers
-                    .FirstOrDefault(o => o.OfferId == id);
+                    .Include(p => p.Contents)
+                        .ThenInclude(c => c.GalleryElements)
+ 
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(sc => sc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(sc => sc.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(scc => scc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(scc => scc.Likes)
+
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(sccc => sccc.SubComments)
+                                        .ThenInclude(sccc => sccc.User)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.SubComments)
+                            .ThenInclude(sc => sc.SubComments)
+                                .ThenInclude(scc => scc.SubComments)
+                                    .ThenInclude(sccc => sccc.SubComments)
+                                        .ThenInclude(sccc => sccc.Likes)
+
+                    .Include(p => p.Likes)
+                    .Include(p => p.User)
+                    .Include(p => p.Car)
+                    .Include(p => p.City)
+                    .FirstOrDefault(p => p.OfferId == id);
             }
             catch (Exception e)
             {
@@ -95,5 +147,23 @@ namespace Infrastructure.Persistance.DataRepositories
         }
 
         #endregion
+
+
+        public IEnumerable<Offer> GetUsersOffers(Guid userId)
+        {
+            try
+            {
+                return _context.Offers
+                    .Where(p => p.AuthorId == userId.ToString())
+                    .Include(p => p.User)
+                    .Include(p => p.Contents)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

@@ -13,5 +13,6 @@
         PostNotFound = 8,
         FileNotFound = 9,
         WrongInteraction = 10,
+        OfferNotFound = 11,
     }
 }

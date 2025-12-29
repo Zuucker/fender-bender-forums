@@ -14,6 +14,7 @@ const routes = [
 	{ path: '/post/add', component: AddPost, meta: { layout: 'FullLayout' } },
 	{ path: '/post/:id', component: Post },
 	{ path: '/offer/add', component: AddOffer, meta: { layout: 'FullLayout' } },
+	{ path: '/offer/:id', component: Offer },
 ]
 
 export const router = createRouter({

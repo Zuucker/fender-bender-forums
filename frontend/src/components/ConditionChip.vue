@@ -6,13 +6,14 @@
 			maxWidth: 'fit-content',
 			height: 'fit-content',
 		}"
-		class="d-flex justify-content-center px-2 me-1">
+		class="d-flex justify-content-center px-2 me-1 ms-1">
 		{{ props.text }}
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { onMounted, ref } from 'vue'
+	import { Condition } from '../constants/ConditionEnum'
 
 	const props = defineProps<{
 		text: string
@@ -20,11 +21,16 @@
 
 	const color = ref<string>('')
 
-	onMounted(() => {
-		const hue = Math.floor(Math.random() * 360)
-		const saturation = 85 + Math.random() * 15
-		const lightness = 50 + Math.random() * 10
+	const colorMap: Record<keyof typeof Condition, string> = {
+		New: 'lime',
+		Used: 'lightblue',
+		HeavilyUsed: 'peachpuff',
+		Refurbished: 'plum',
+		Damaged: 'salmon',
+		Unknown: 'lightgrey',
+	}
 
-		color.value = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+	onMounted(() => {
+		color.value = colorMap[props.text]
 	})
 </script>

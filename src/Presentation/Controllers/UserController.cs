@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Common;
 using Domain.Errors;
 using Presentation.Responses;
-using Application.Services;
-using System.Linq;
 
 namespace Presentation.Controllers
 {
@@ -13,17 +11,20 @@ namespace Presentation.Controllers
     [Route("api/user")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IAuthenticatorService _authenticatorService;
+        private readonly IOfferService _offerService;
         private readonly IPostService _postService;
+        private readonly IUserService _userService;
 
-        public UserController(IUserService userService,
-                              IAuthenticatorService authenticatorService,
-                              IPostService postService)
+        public UserController(IAuthenticatorService authenticatorService,
+            IOfferService offerService,
+            IPostService postService,
+            IUserService userService)
         {
-            _userService = userService;
             _authenticatorService = authenticatorService;
+            _offerService = offerService;
             _postService = postService;
+            _userService = userService;
         }
 
         [HttpGet("get/{userId?}")]
@@ -120,13 +121,43 @@ namespace Presentation.Controllers
                     return ResponseHelper.PrepareResponse(getPostsResult);
 
 
-                var posts = getPostsResult.Data;
-
-                var postDtos = posts
+                var postDtos = getPostsResult.Data
+                    .Take(10)
                     .Select(p => new PostDto(p, getUserResult.Data))
                     .ToList();
 
                 return ResponseHelper.PrepareResponse(postDtos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetUserPosts {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{userId}/offers")]
+        public IActionResult GetUsersOffers([FromRoute] Guid userId)
+        {
+            try
+            {
+                var getUserResult = _userService.GetUserById(userId.ToString());
+
+                if (getUserResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(new List<PostDto>());
+
+
+                var getOffersResult = _offerService.GetUsersOffers(userId);
+
+                if (getOffersResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getOffersResult);
+
+
+                var offersDtos = getOffersResult.Data
+                    .Take(10)
+                    .Select(o => new OfferDto(o, getUserResult.Data))
+                    .ToList();
+
+                return ResponseHelper.PrepareResponse(offersDtos);
             }
             catch (Exception ex)
             {

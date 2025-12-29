@@ -221,7 +221,8 @@ namespace Presentation.Controllers
                     return ResponseHelper.PrepareResponse(getUserResult);
 
 
-                var interactionResult = _postService.InteractWithComment(requestDto, getUserResult.Data);
+                var interactionResult = _postService
+                    .InteractWithComment(requestDto, getUserResult.Data);
 
                 if (interactionResult.HasFailed())
                     return ResponseHelper.PrepareResponse(interactionResult);

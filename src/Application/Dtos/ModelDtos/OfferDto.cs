@@ -21,11 +21,14 @@ namespace Application.Dtos.ModelDtos
             Car = org.Car != null
                 ? new CarDto(org.Car)
                 : null;
-            City = org.City;
+            City = org.City != null
+                ? new CityDto(org.City)
+                : null;
             Points = org.Likes
                 .Sum(l => l.Up ? 1 : -1);
             VIN = org.VIN;
             PartNumber = org.PartNumber;
+            Type = org.Type;
             Author = new UserDto(org.User);
             Contents = org.Contents
                 .Select(c => new ContentDto(c))
@@ -80,7 +83,7 @@ namespace Application.Dtos.ModelDtos
 
         public UserDto? Author { get; set; }
 
-        public City? City { get; set; }
+        public CityDto? City { get; set; }
 
         public ICollection<ContentDto> Contents { get; set; } = [];
 

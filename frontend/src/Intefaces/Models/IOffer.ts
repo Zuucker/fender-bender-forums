@@ -5,7 +5,7 @@ import { IContent } from './IContent'
 import { IUser } from './IUser'
 
 export interface IOffer {
-	OfferId: string
+	OfferId: number
 	Title: string
 	Price: number
 	CarId: number

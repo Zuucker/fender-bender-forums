@@ -111,7 +111,10 @@
 		<div class="d-flex flex-grow-1 overflow-hidden">
 			<div class="col-8 d-flex flex-column hide-scrollbar">
 				<div class="flex-fill overflow-auto">
-					<VirtualList :dataList="mockOffers" :component="OfferItemComponent" />
+					<VirtualList
+						:dataList="userOffers"
+						:component="OfferItemComponent"
+						empty-message="This user has no offers yet!" />
 				</div>
 			</div>
 			<div class="col-4 d-flex flex-column hide-scrollbar">
@@ -131,26 +134,20 @@
 	import { onMounted, reactive, ref } from 'vue'
 	import RatingComponent from '../components/RatingComponent.vue'
 	import VirtualList from '../components/VirtualList.vue'
-	import {
-		ICar,
-		ICity,
-		IComment,
-		IContent,
-		IOffer,
-		IOfferRate,
-		IPost,
-		IUser,
-	} from '../Intefaces'
+	import { IOffer, IPost, IUser } from '../Intefaces'
 	import { useUserStore } from '../setup/stores/UserStore'
-	import { EditUser, GetUserData, GetUserTopPosts } from '../setup/Endpoints'
+	import {
+		EditUser,
+		GetUserData,
+		GetUserTopOffers,
+		GetUserTopPosts,
+	} from '../setup/Endpoints'
 	import { useRoute } from 'vue-router'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 	import OfferItemComponent from '../components/OfferItemComponent.vue'
 	import PostItemComponent from '../components/PostItemComponent.vue'
 	import { goToPage } from '../setup/Router'
-	import { Condition } from '../constants/ConditionEnum'
-	import { FuelType } from '../constants/FuelEnum'
 
 	const userstore = useUserStore()
 	const snackBarStore = useSnackBarStore()
@@ -164,6 +161,7 @@
 	const newUserData = reactive<IUser>({} as IUser)
 	const userNotFound = ref(false)
 	const userPosts = ref<IPost[]>([])
+	const userOffers = ref<IOffer[]>([])
 
 	onMounted(async () => {
 		await GetUserData(userId)
@@ -191,6 +189,21 @@
 			.then((postResponse) => {
 				if (postResponse) {
 					userPosts.value = postResponse
+				}
+			})
+			.catch((error) => {
+				console.log(error)
+				snackBarStore.addMessage({
+					text: 'Server error! Please try again later!',
+					color: 'error',
+					timeout: 2000,
+				})
+			})
+
+		await GetUserTopOffers(userId)
+			.then((offerResponse) => {
+				if (offerResponse) {
+					userOffers.value = offerResponse
 				}
 			})
 			.catch((error) => {
@@ -242,31 +255,4 @@
 	const cancelUserChanges = () => {
 		Object.assign(newUserData, userData)
 	}
-
-	const mockOffers: IOffer[] = Array.from({ length: 10 }, (_, i) => ({
-		OfferId: `offer${i + 1}`,
-		Title: `Offer Title ${i + 1}`,
-		Price: 10000 + i * 500,
-		CarId: i + 1,
-		CityId: 100 + i,
-		AuthorId: `user${i + 1}`,
-		Date: new Date(`2023-05-${(i + 1).toString()}`),
-		Condition: Condition[Condition.HeavilyUsed],
-		Fuel: FuelType[FuelType.Diesel],
-		Color: ['Red', 'Blue', 'Green', 'Black', 'White'][i % 5],
-		Mileage: 10000 + i * 1000,
-		Tags: `tag${i + 1},tag${i + 2}`,
-		Rating: 3.5 + (i % 2),
-		RatingCount: 5 + i,
-		Car: {} as ICar,
-		City: {} as ICity,
-		Author: { UserName: `User ${i + 1}` } as IUser,
-		Ratings: [] as IOfferRate[],
-		Contents: [] as IContent[],
-		Comments: [] as IComment[],
-		Points: 12,
-		Type: 'car',
-		UpVoted: true,
-		DownVoted: false,
-	}))
 </script>

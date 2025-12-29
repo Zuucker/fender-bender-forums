@@ -60,8 +60,22 @@ export const GetUserTopPosts = async (userId: string): Promise<IPost[]> => {
 	return response.data.Data
 }
 
+export const GetUserTopOffers = async (userId: string): Promise<IOffer[]> => {
+	const response = await api.get<IApiResponse<IOffer[]>>(
+		`/user/${userId ?? ''}/offers`
+	)
+
+	return response.data.Data
+}
+
 export const GetPost = async (postId: string): Promise<IPost> => {
 	const response = await api.get<IApiResponse<IPost>>(`/posts/get/${postId}`)
+
+	return response.data.Data
+}
+
+export const GetOffer = async (offerId: string): Promise<IOffer> => {
+	const response = await api.get<IApiResponse<IOffer>>(`/offers/get/${offerId}`)
 
 	return response.data.Data
 }
@@ -78,6 +92,15 @@ export const AddComment = async (comment: IComment): Promise<IComment> => {
 export const InteractWithPost = async (interaction: ILike): Promise<ILike> => {
 	const response = await api.post<IApiResponse<ILike>>(
 		'/posts/interact',
+		interaction
+	)
+
+	return response.data.Data
+}
+
+export const InteractWithOffer = async (interaction: ILike): Promise<ILike> => {
+	const response = await api.post<IApiResponse<ILike>>(
+		'/offers/interact',
 		interaction
 	)
 

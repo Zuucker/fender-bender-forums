@@ -5,6 +5,7 @@ using Application.Factories;
 using Application.Interfaces;
 using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
+using Domain.Errors;
 using Domain.Models;
 using System.Transactions;
 
@@ -14,15 +15,18 @@ namespace Application.Services
     {
         private readonly IOfferRateRepository _offerRateRepository;
         private readonly IOfferRepository _offerRepository;
+        private readonly ILikeRepository _likeRepository;
         private readonly IFileStorage _fileStorage;
 
 
         public OfferService(IOfferRepository offerRepository,
             IOfferRateRepository offerRateRepository,
+            ILikeRepository likeRepository,
             IFileStorage fileStorage)
         {
             _offerRateRepository = offerRateRepository;
             _offerRepository = offerRepository;
+            _likeRepository = likeRepository;
             _fileStorage = fileStorage;
         }
 
@@ -70,6 +74,82 @@ namespace Application.Services
             _offerRateRepository.Add(newRating);
 
             return ServiceResult<OfferRate>.Success(newRating);
+        }
+
+        public ServiceResult<IEnumerable<Offer>> GetUsersOffers(Guid userId)
+        {
+            var offers = _offerRepository
+                .GetUsersOffers(userId);
+
+            return ServiceResult<IEnumerable<Offer>>.Success(offers);
+        }
+
+        public ServiceResult<Offer> GetById(int postId)
+        {
+            var offer = _offerRepository
+                .GetById(postId);
+
+            if (offer == null)
+                return ServiceResult<Offer>.Fail(ApiErrors.OfferNotFound);
+
+            return ServiceResult<Offer>.Success(offer);
+        }
+
+        public ServiceResult<Like> InteractWithOffer(InteractWithOfferRequest interactionRequest, ApplicationUser user)
+        {
+            using var scope = new TransactionScope();
+
+            try
+            {
+                var exisitingInteraction = _likeRepository
+                    .GetByOfferAndUser(interactionRequest.OfferId, user.Id);
+
+                if (exisitingInteraction == null)
+                {
+
+                    Like newLike = LikeFactory.Create(interactionRequest);
+
+                    _likeRepository.Add(newLike);
+
+                    scope.Complete();
+
+                    return ServiceResult<Like>.Success(newLike);
+                }
+                else
+                {
+                    switch ((interactionRequest.Upvoted, interactionRequest.DownVoted))
+                    {
+                        case (false, false):
+                            _likeRepository.Delete(exisitingInteraction);
+                            scope.Complete();
+
+                            return ServiceResult<Like>.Success(null!);
+
+                        case (true, false):
+                            exisitingInteraction.Up = true;
+                            _likeRepository.Update(exisitingInteraction);
+
+                            break;
+
+                        case (false, true):
+                            exisitingInteraction.Up = false;
+                            _likeRepository.Update(exisitingInteraction);
+
+                            break;
+
+                        case (true, true):
+                            return ServiceResult<Like>.Fail(ApiErrors.WrongInteraction);
+                    }
+
+                    scope.Complete();
+                    return ServiceResult<Like>.Success(exisitingInteraction);
+                }
+            }
+            catch
+            {
+                scope.Dispose();
+                throw;
+            }
         }
     }
 }
