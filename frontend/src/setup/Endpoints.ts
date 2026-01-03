@@ -10,6 +10,9 @@ import {
 } from '../Intefaces'
 import ILoginData from '../Intefaces/ComponentInterfaces/ILoginData'
 import IRegisterData from '../Intefaces/ComponentInterfaces/IRegisterData'
+import { IFilter } from '../Intefaces/IFilter'
+import { IOfferPage } from '../Intefaces/IOfferPage'
+import { IPostPage } from '../Intefaces/IPostPage'
 import { ILike } from '../Intefaces/Models/ILike'
 import { api } from './Axios'
 
@@ -140,6 +143,34 @@ export const AddOffer = async (data: IOffer): Promise<IOffer[]> => {
 
 export const GetCities = async (): Promise<ICity[]> => {
 	const response = await api.get<IApiResponse<ICity[]>>('/city/get')
+
+	return response.data.Data
+}
+
+export const GetFilteredOffers = async (
+	filters: IFilter,
+	cursor?: string
+): Promise<IOfferPage> => {
+	const response = await api.get<IApiResponse<IOfferPage>>(`/offers/filter`, {
+		params: {
+			...filters,
+			cursor,
+		},
+	})
+
+	return response.data.Data
+}
+
+export const GetFilteredPosts = async (
+	filters: IFilter,
+	cursor?: string
+): Promise<IPostPage> => {
+	const response = await api.get<IApiResponse<IPostPage>>(`/posts/filter`, {
+		params: {
+			...filters,
+			cursor,
+		},
+	})
 
 	return response.data.Data
 }

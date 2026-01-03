@@ -4,7 +4,7 @@ namespace Application.Dtos.ModelDtos
 {
     public class PostDto
     {
-        public PostDto(Post org, ApplicationUser user)
+        public PostDto(Post org, ApplicationUser? user)
         {
             Id = org.Id;
             AuthorId = org.AuthorId;
@@ -27,9 +27,11 @@ namespace Application.Dtos.ModelDtos
                 .OrderByDescending(c => c.CreatedAt)
                 .Select(c => new CommentDto(c, user))
                 .ToList();
-            UpVoted = org.Likes
+            UpVoted = user != null
+                && org.Likes
                 .Any(l => l.AuthorId == user.Id && l.Up);
-            DownVoted = org.Likes
+            DownVoted = user != null
+                && org.Likes
                 .Any(l => l.AuthorId == user.Id && !l.Up);
         }
 

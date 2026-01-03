@@ -363,8 +363,6 @@
 				AuthorId: userStore.getUser.value.Id,
 			} as IOffer
 
-			console.log(newOfferData)
-
 			await addOfferValidationSchema.validate(newOfferData, {
 				abortEarly: false,
 			})

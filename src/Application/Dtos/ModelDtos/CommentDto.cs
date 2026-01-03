@@ -7,7 +7,7 @@ namespace Application.Dtos.ModelDtos
     {
         public CommentDto() { }
 
-        public CommentDto(Comment org, ApplicationUser user)
+        public CommentDto(Comment org, ApplicationUser? user)
         {
             CommentId = org.CommentId;
             Content = org.Content;
@@ -20,11 +20,13 @@ namespace Application.Dtos.ModelDtos
                 .Sum(l => l.Up ? 1 : -1);
             Author = new UserDto(org.User);
             SubComments = org.SubComments
-                .Select(sc => new CommentDto(sc, sc.User!))
+                .Select(sc => new CommentDto(sc, user))
                 .ToList();
-            UpVoted = org.Likes
-                .Any(l => l.AuthorId == user.Id && l.Up);
-            DownVoted = org.Likes
+            UpVoted = user != null
+                && org.Likes
+                    .Any(l => l.AuthorId == user.Id && l.Up);
+            DownVoted = user != null
+                && org.Likes
                 .Any(l => l.AuthorId == user.Id && !l.Up);
         }
 

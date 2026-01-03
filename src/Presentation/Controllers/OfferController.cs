@@ -1,4 +1,5 @@
 using Application.Common;
+using Application.Dtos;
 using Application.Dtos.ModelDtos;
 using Application.Dtos.RequestDtos;
 using Application.Interfaces.ServiceInterfaces;
@@ -35,7 +36,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"GetOffers {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -68,7 +69,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"AddOffer {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -84,7 +85,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"AddOfferRating {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -127,7 +128,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"GetPosts {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -164,7 +165,36 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"AddPost {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [HttpGet("filter")]
+        public IActionResult GetOffers([FromQuery] FiltersDto filters, [FromQuery] string? cursor = null)
+        {
+            try
+            {
+                var getOffersResult = _offerService.GetFilteredOffers(filters, cursor);
+
+                if (getOffersResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getOffersResult);
+
+
+                var pageDto = new OffersPageDto()
+                {
+                    Offers = getOffersResult.Data.Item1
+                            .Select(o => new OfferDto(o, null))
+                            .ToList(),
+                    NextCursor = getOffersResult.Data.Item2
+                };
+
+                return ResponseHelper.PrepareResponse(pageDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetOffers {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
     }

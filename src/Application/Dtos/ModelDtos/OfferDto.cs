@@ -4,7 +4,7 @@ namespace Application.Dtos.ModelDtos
 {
     public class OfferDto
     {
-        public OfferDto(Offer org, ApplicationUser user)
+        public OfferDto(Offer org, ApplicationUser? user)
         {
             OfferId = org.OfferId;
             Title = org.Title;
@@ -37,10 +37,13 @@ namespace Application.Dtos.ModelDtos
                 .OrderByDescending(c => c.CreatedAt)
                 .Select(c => new CommentDto(c, user))
                 .ToList();
-            UpVoted = org.Likes
-                .Any(l => l.AuthorId == user.Id && l.Up);
-            DownVoted = org.Likes
-                .Any(l => l.AuthorId == user.Id && !l.Up);
+            NumberOfComments = org.Comments.Count;
+            UpVoted = user != null
+                && org.Likes
+                    .Any(l => l.AuthorId == user.Id && l.Up);
+            DownVoted = user != null
+                && org.Likes
+                    .Any(l => l.AuthorId == user.Id && !l.Up);
         }
 
         public int OfferId { get; set; }
@@ -78,6 +81,8 @@ namespace Application.Dtos.ModelDtos
         public bool UpVoted { get; set; }
 
         public bool DownVoted { get; set; }
+
+        public int NumberOfComments { get; set; }
 
         public CarDto? Car { get; set; }
 

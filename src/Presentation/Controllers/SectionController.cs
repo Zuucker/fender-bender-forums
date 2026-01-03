@@ -1,7 +1,4 @@
-﻿using Application.Common;
-using Application.Dtos.ModelDtos;
-using Application.Interfaces.ServiceInterfaces;
-using Domain.Errors;
+﻿using Application.Interfaces.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Responses;
 
@@ -29,9 +26,10 @@ namespace Presentation.Controllers
                 if (getResult.HasFailed())
                     return ResponseHelper.PrepareResponse(getResult);
 
+                var mainSections = getResult.Data
+                    .Where(s=>s.ParentSectionId == null).ToList();
 
-
-                return ResponseHelper.PrepareResponse(getResult.Data);
+                return ResponseHelper.PrepareResponse(mainSections);
             }
             catch (Exception ex)
             {

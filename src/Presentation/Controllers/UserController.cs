@@ -53,7 +53,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"GetOffers {ex.Message}");
+                Console.WriteLine($"GetUserData {ex.Message}");
                 return StatusCode(500, ex.Message);
             }
         }
@@ -99,7 +99,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"GetOffers {ex.Message}");
+                Console.WriteLine($"EditUser {ex.Message}");
                 return StatusCode(500, ex.Message);
             }
         }
@@ -130,8 +130,8 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"GetUserPosts {ex.Message}");
-                return BadRequest(ex.Message);
+                Console.WriteLine($"GetUsersPosts {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -153,6 +153,7 @@ namespace Presentation.Controllers
 
 
                 var offersDtos = getOffersResult.Data
+                    .OrderBy(o => o.Date)
                     .Take(10)
                     .Select(o => new OfferDto(o, getUserResult.Data))
                     .ToList();
@@ -161,8 +162,8 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"GetUserPosts {ex.Message}");
-                return BadRequest(ex.Message);
+                Console.WriteLine($"GetUsersOffers {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
     }

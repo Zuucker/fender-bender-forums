@@ -6,5 +6,4 @@ export enum FuelType {
 	LPG = 5,
 	CNG = 6,
 	Hydrogen = 7,
-	Unknown = 8,
 }

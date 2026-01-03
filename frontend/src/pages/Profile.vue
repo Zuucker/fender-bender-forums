@@ -114,6 +114,7 @@
 					<VirtualList
 						:dataList="userOffers"
 						:component="OfferItemComponent"
+						:fetch-callback="() => {}"
 						empty-message="This user has no offers yet!" />
 				</div>
 			</div>
@@ -123,6 +124,7 @@
 						:dataList="userPosts"
 						:component="PostItemComponent"
 						:small="true"
+						:fetch-callback="() => {}"
 						empty-message="This user has no posts yet!" />
 				</div>
 			</div>

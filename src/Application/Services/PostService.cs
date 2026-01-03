@@ -7,6 +7,7 @@ using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
 using Domain.Errors;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 
 namespace Application.Services
@@ -16,17 +17,21 @@ namespace Application.Services
         private readonly ICommentRepository _commentRepository;
         private readonly ILikeRepository _likeRepository;
         private readonly IPostRepository _postRepository;
+        private readonly ICursorService _cursorService;
         private readonly IFileStorage _fileStorage;
+        private readonly int _defaultPageSize = 10;
 
         public PostService(
             ICommentRepository commentRepository,
             ILikeRepository likeRepository,
             IPostRepository repository,
+            ICursorService cursorService,
             IFileStorage fileStorage)
         {
             _commentRepository = commentRepository;
             _likeRepository = likeRepository;
             _postRepository = repository;
+            _cursorService = cursorService;
             _fileStorage = fileStorage;
         }
 
@@ -139,7 +144,7 @@ namespace Application.Services
                             scope.Complete();
 
                             return ServiceResult<Like>.Success(null!);
- 
+
                         case (true, false):
                             exisitingInteraction.Up = true;
                             _likeRepository.Update(exisitingInteraction);
@@ -166,7 +171,7 @@ namespace Application.Services
                 throw;
             }
         }
-        
+
         public ServiceResult<Like> InteractWithComment(InteractWithCommentRequest interactionRequest, ApplicationUser user)
         {
             using var scope = new TransactionScope();
@@ -196,7 +201,7 @@ namespace Application.Services
                             scope.Complete();
 
                             return ServiceResult<Like>.Success(null!);
- 
+
                         case (true, false):
                             exisitingInteraction.Up = true;
                             _likeRepository.Update(exisitingInteraction);
@@ -216,6 +221,90 @@ namespace Application.Services
                     scope.Complete();
                     return ServiceResult<Like>.Success(exisitingInteraction);
                 }
+            }
+            catch
+            {
+                scope.Dispose();
+                throw;
+            }
+        }
+
+        public ServiceResult<(IEnumerable<Post>, string?)> GetFilteredPosts(FiltersDto filters, string? cursor)
+        {
+            using var scope = new TransactionScope();
+
+            try
+            {
+                var query = _postRepository
+                    .GetPostsQuery();
+
+
+                // Filtering
+                if (!string.IsNullOrWhiteSpace(filters.Title))
+                    query = query.Where(x => x.Post.Title.Contains(filters.Title));
+
+                if (filters.CarId.HasValue)
+                    query = query.Where(x => x.Post.CarId == filters.CarId.Value);
+
+                if (!string.IsNullOrWhiteSpace(filters.AuthorId))
+                    query = query.Where(x => x.Post.AuthorId == filters.AuthorId);
+
+                if (!string.IsNullOrWhiteSpace(filters.Tags))
+                    query = query.Where(x =>
+                        x.Post.Tags.Contains(filters.Tags)
+                        || (x.Post.Car != null &&
+                            (x.Post.Car.Model.Contains(filters.Tags)
+                            || x.Post.Car.Manufacturer.Contains(filters.Tags)
+                            || x.Post.Car.Type.Contains(filters.Tags)
+                        )));
+
+                if (filters.SectionId.HasValue)
+                    query = query.Where(x => x.Post.SectionId == filters.SectionId.Value);
+
+                if (filters.CreationDate.HasValue)
+                    query = query.Where(x => x.Post.CreationDate >= filters.CreationDate.Value);
+
+
+
+                var decodedCursor =
+                    _cursorService.DecodeCursor(cursor);
+
+                query = query
+                    .OrderByDescending(x => x.Post.CreationDate)
+                    .ThenByDescending(o => o.LikeCount)
+                    .ThenByDescending(x => x.Post.Id);
+
+                if (decodedCursor != null)
+                {
+                    query = query.Where(x =>
+                       x.Post.CreationDate < decodedCursor.CreatedAt
+                       || (x.Post.CreationDate == decodedCursor.CreatedAt && x.LikeCount < decodedCursor.LikeCount)
+                       || (x.Post.CreationDate == decodedCursor.CreatedAt
+                           && x.LikeCount == decodedCursor.LikeCount
+                           && x.Post.Id < decodedCursor.PostId)
+                   );
+                }
+
+                var items = query
+                    .Take(decodedCursor?.Take ?? _defaultPageSize)
+                    .AsNoTracking()
+                    .ToList();
+
+                var nextCursor = items.Count == (decodedCursor?.Take ?? _defaultPageSize)
+                    ? _cursorService.EncodeCursor(new OfferCursorDto
+                    {
+                        CreatedAt = items[^1].Post.CreationDate,
+                        LikeCount = items[^1].LikeCount,
+                        PostId = items[^1].Post.Id
+                    })
+                    : null;
+
+
+                var posts = items
+                    .Select(i => i.Post);
+
+
+                return ServiceResult<(IEnumerable<Post>, string?)>.Success((posts, nextCursor));
             }
             catch
             {

@@ -19,5 +19,7 @@ namespace Application.Interfaces.ServiceInterfaces
         public ServiceResult<Like> InteractWithPost(InteractWithPostRequest interactionRequest, ApplicationUser user);
 
         public ServiceResult<Like> InteractWithComment(InteractWithCommentRequest interactionRequest, ApplicationUser user);
+
+        public ServiceResult<(IEnumerable<Post>, string?)> GetFilteredPosts(FiltersDto filters, string? cursor);
     }
 }

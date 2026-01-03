@@ -10,11 +10,11 @@
 			<div class="d-flex col-12">
 				<TagChip
 					v-for="tag in [
-						postData.Car.Manufacturer,
-						postData.Car.Model,
-						postData.Car.Type,
+						postData.Car?.Manufacturer,
+						postData.Car?.Model,
+						postData.Car?.Type,
 						...postData.Tags.split(' '),
-					]"
+					].filter((f) => f)"
 					:text="tag" />
 			</div>
 			<div

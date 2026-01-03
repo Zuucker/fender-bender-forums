@@ -126,6 +126,7 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<ISectionService, SectionService>();
 builder.Services.AddScoped<IAuthenticatorService, AuthenticatorService>();
+builder.Services.AddScoped<ICursorService, CursorService>();
 builder.Services.AddScoped<IFileStorage>(_ => new LocalFileStorage(filesPath));
 
 var app = builder.Build();

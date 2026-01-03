@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.RepositoryInterfaces;
+﻿using Application.Dtos;
+using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -130,6 +131,7 @@ namespace Infrastructure.Persistance.DataRepositories
                 throw;
             }
         }
+
         public void Delete(Post post)
         {
             try
@@ -156,6 +158,30 @@ namespace Infrastructure.Persistance.DataRepositories
                     .Include(p => p.Contents)
                     .Include(p => p.Section)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public IQueryable<PostQuery> GetPostsQuery()
+        {
+            try
+            {
+                var query = _context.Posts
+                    .Include(p => p.Comments)
+                    .Include(p => p.Likes)
+                    .Include(p => p.Car)
+                    .Include(p => p.User)
+                    .Select(p => new PostQuery()
+                    {
+                        Post = p,
+                        LikeCount = p.Likes.Count()
+                    });
+
+                return query;
             }
             catch (Exception e)
             {

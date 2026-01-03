@@ -7,7 +7,16 @@
 			<h4>
 				<b>{{ offer?.Title }}</b>
 			</h4>
-			<span>{{ offer?.Tags }}</span>
+			<div class="d-flex">
+				<TagChip
+					v-for="tag in [
+						offer.Car.Model,
+						offer.Car.Type,
+						...offer.Tags.split(' '),
+					]"
+					:text="tag" />
+				<h4 class="ms-auto me-4">{{ offer.Price }} $</h4>
+			</div>
 		</div>
 		<div class="offer-right-part d-flex flex-column col-1">
 			<div
@@ -31,7 +40,7 @@
 							style="font-size: 1.5em" />
 					</div>
 					<span class="fs-3" style="height: fit-content">{{
-						offer?.Comments?.length ?? 0
+						offer?.NumberOfComments ?? 0
 					}}</span>
 				</div>
 			</div>
@@ -58,6 +67,7 @@
 <script setup lang="ts">
 	import { useRouter } from 'vue-router'
 	import { IOffer } from '../Intefaces'
+	import TagChip from './TagChip.vue'
 
 	const { data: offer } = defineProps<{
 		data: IOffer

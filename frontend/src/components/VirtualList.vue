@@ -1,11 +1,15 @@
 <template class="">
 	<v-virtual-scroll :height="'flex-fill'" :items="props.dataList" class="p-2">
-		<template v-slot:default="{ item }">
+		<template v-slot:default="{ item, index }">
 			<component
-				:itemKey="item"
+				:key="item.Id"
 				:data="item"
 				:is="props.component"
 				:small="props.small" />
+			<div
+				v-if="index === props.dataList.length - 1"
+				v-intersect="onIntersect"
+				style="height: 1px"></div>
 		</template>
 	</v-virtual-scroll>
 
@@ -17,14 +21,21 @@
 </template>
 
 <script setup lang="ts">
-	import { type Component } from 'vue'
+	import { watch, type Component } from 'vue'
 
 	type VirtualListProps = {
 		dataList: Object[]
 		component: Component
+		fetchCallback: () => void
 		small?: boolean
 		emptyMessage?: string
 	}
 
 	const props = defineProps<VirtualListProps>()
+
+	function onIntersect(isIntersecting: boolean) {
+		if (!isIntersecting) return
+
+		props.fetchCallback()
+	}
 </script>

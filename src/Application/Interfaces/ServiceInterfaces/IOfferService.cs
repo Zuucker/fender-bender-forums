@@ -17,5 +17,7 @@ namespace Application.Interfaces.ServiceInterfaces
         public ServiceResult<Offer> GetById(int postId);
 
         public ServiceResult<Like> InteractWithOffer(InteractWithOfferRequest interactionRequest, ApplicationUser user);
+
+        public ServiceResult<(IEnumerable<Offer>, string?)> GetFilteredOffers(FiltersDto filters, string? cursor);
     }
 }

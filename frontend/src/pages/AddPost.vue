@@ -223,7 +223,7 @@
 						timeout: 2000,
 					})
 
-					goToPage('/')
+					goToPage('/forum')
 				})
 				.catch(() => {
 					snackBarStore.addMessage({
@@ -347,11 +347,7 @@
 	onMounted(async () => {
 		await GetMenuSections()
 			.then((response) => {
-				const responseSections = flattenSections(response).filter((s) =>
-					response.some((r) => r.Name !== s.Name)
-				)
-
-				sections.value = responseSections
+				sections.value = response
 			})
 			.catch((error) => {
 				console.log(error)

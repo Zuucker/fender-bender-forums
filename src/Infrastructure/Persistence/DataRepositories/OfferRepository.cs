@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.RepositoryInterfaces;
+﻿using Application.Dtos;
+using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,7 @@ namespace Infrastructure.Persistance.DataRepositories
                 return _context.Offers
                     .Include(p => p.Contents)
                         .ThenInclude(c => c.GalleryElements)
- 
+
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.User)
                     .Include(p => p.Comments)
@@ -157,7 +158,34 @@ namespace Infrastructure.Persistance.DataRepositories
                     .Where(p => p.AuthorId == userId.ToString())
                     .Include(p => p.User)
                     .Include(p => p.Contents)
+                    .Include(p => p.Comments)
+                    .Include(p => p.Likes)
+                    .Include(p => p.Car)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public IQueryable<OfferQuery> GetOffersQuery()
+        {
+            try
+            {
+                var query = _context.Offers
+                    .Include(o => o.Comments)
+                    .Include(o => o.Likes)
+                    .Include(o => o.Car)
+                    .Include(o => o.User)
+                    .Select(o => new OfferQuery()
+                    {
+                        Offer = o,
+                        LikeCount = o.Likes.Count()
+                    });
+
+                return query;
             }
             catch (Exception e)
             {

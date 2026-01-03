@@ -1,48 +1,77 @@
 <template>
 	<div class="d-flex flex-column justify-content-center align-items-center">
-		<OfferItemComponent v-for="o in offers" :key="o.OfferId" :data="o" />
+		<div class="col-12 flex-fill overflow-auto">
+			<VirtualList
+				:key="offers.length"
+				:dataList="offers"
+				:component="OfferItemComponent"
+				:fetch-callback="fetchOffers"
+				empty-message="No Posts found :(" />
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+	import { inject, onMounted, ref, watch } from 'vue'
 	import OfferItemComponent from '../components/OfferItemComponent.vue'
-	import {
-		ICar,
-		ICity,
-		IComment,
-		IOffer,
-		IOfferRate,
-		IUser,
-	} from '../Intefaces'
+	import { IOffer } from '../Intefaces'
+	import { GetFilteredOffers } from '../setup/Endpoints'
+	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
+	import VirtualList from '../components/VirtualList.vue'
+	import { FiltersContextKey } from '../scripts/FiltersContextKey'
+	import { IFilter } from '../Intefaces/IFilter'
 
-	const exampleOffer = {
-		Title: 'title1',
-		Points: 23,
-		Ratings: [] as IOfferRate[],
-		Author: {
-			Id: 'id1',
-			UserName: 'user1',
-			Email: 'user1@gmail.com',
-		} as IUser,
-		CarId: 1,
-		Car: {} as ICar,
-		CityId: 1,
-		City: {} as ICity,
-		Color: 'red',
-		Condition: 'ok',
-		Date: new Date(),
-		AuthorId: '1',
-		Fuel: 'Diesel',
-		Mileage: 23,
-		Price: 41,
-		Tags: 'sa,dsa,fa,gasa',
-		OfferId: '1',
-		Comments: [{} as IComment, {} as IComment],
-		Contents: [],
-		UpVoted: false,
-		DownVoted: true,
-		Type: 'car',
-	} as IOffer
+	const snackBarStore = useSnackBarStore()
 
-	const offers = [exampleOffer, exampleOffer, exampleOffer] as IOffer[]
+	const offers = ref<IOffer[]>([])
+	const nextCursor = ref<string | null>(null)
+	const fetchedAll = ref<boolean>(false)
+
+	const filters = inject(FiltersContextKey)!
+	const isMounted = ref(false)
+
+	onMounted(async () => {
+		isMounted.value = true
+		nextCursor.value = null
+		await fetchOffers(false)
+	})
+
+	watch(
+		() => filters.value,
+		() => {
+			if (isMounted.value) {
+				offers.value = []
+				fetchedAll.value = false
+
+				fetchOffers()
+			}
+		}
+	)
+
+	const fetchOffers = async (useCursor?: boolean) => {
+		if (fetchedAll.value) return
+
+		const newFilters = {
+			...filters.value,
+			SortBy: 'asc',
+			OrderBy: 'CreatedAt',
+		} as IFilter
+
+		await GetFilteredOffers(newFilters, useCursor ? nextCursor.value : null)
+			.then((offerResponse) => {
+				if (offerResponse) {
+					offers.value.push(...offerResponse.Offers)
+					nextCursor.value = offerResponse.NextCursor
+					if (!offerResponse.NextCursor) fetchedAll.value = true
+				}
+			})
+			.catch((error) => {
+				console.log(error)
+				snackBarStore.addMessage({
+					text: 'Server error! Please try again later!',
+					color: 'error',
+					timeout: 2000,
+				})
+			})
+	}
 </script>

@@ -28,4 +28,5 @@ export interface IOffer {
 	Comments: IComment[]
 	UpVoted: boolean
 	DownVoted: boolean
+	NumberOfComments?: number
 }

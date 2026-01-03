@@ -27,7 +27,6 @@
 		HeavilyUsed: 'peachpuff',
 		Refurbished: 'plum',
 		Damaged: 'salmon',
-		Unknown: 'lightgrey',
 	}
 
 	onMounted(() => {

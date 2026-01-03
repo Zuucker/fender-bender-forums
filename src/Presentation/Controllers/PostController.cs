@@ -1,7 +1,9 @@
 ﻿using Application.Common;
+using Application.Dtos;
 using Application.Dtos.ModelDtos;
 using Application.Dtos.RequestDtos;
 using Application.Interfaces.ServiceInterfaces;
+using Application.Services;
 using Domain.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +58,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"GetPosts {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -89,7 +91,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"AddPost {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -132,7 +134,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"GetPosts {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -164,7 +166,7 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"AddPost {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -191,16 +193,16 @@ namespace Presentation.Controllers
                     return ResponseHelper.PrepareResponse(interactionResult);
 
 
-                var likeDto = interactionResult.Data != null 
-                    ? new LikeDto(interactionResult.Data) 
+                var likeDto = interactionResult.Data != null
+                    ? new LikeDto(interactionResult.Data)
                     : null;
 
-                 return ResponseHelper.PrepareResponse(likeDto);
+                return ResponseHelper.PrepareResponse(likeDto);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"AddPost {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -237,7 +239,35 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"AddPost {ex.Message}");
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("filter")]
+        public IActionResult GetPosts([FromQuery] FiltersDto filters, [FromQuery] string? cursor = null)
+        {
+            try
+            {
+                var getPostsResult = _postService.GetFilteredPosts(filters, cursor);
+
+                if (getPostsResult.HasFailed())
+                    return ResponseHelper.PrepareResponse(getPostsResult);
+
+
+                var pageDto = new PostPageDto()
+                {
+                    Posts = getPostsResult.Data.Item1
+                            .Select(o => new PostDto(o, null))
+                            .ToList(),
+                    NextCursor = getPostsResult.Data.Item2
+                };
+
+                return ResponseHelper.PrepareResponse(pageDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetPosts {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
     }

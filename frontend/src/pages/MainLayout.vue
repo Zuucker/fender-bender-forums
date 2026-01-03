@@ -4,8 +4,17 @@
 	import SearchComponent from '../components/SearchComponent.vue'
 	import { goToPage } from '../setup/Router'
 	import SideMenuComponent from '../components/SideMenuComponent.vue'
+	import { provide, ref } from 'vue'
+	import { IFilter } from '../Intefaces/IFilter'
+	import { FiltersContextKey } from '../scripts/FiltersContextKey'
 
 	const route = useRoute()
+
+	const filters = ref<IFilter>({
+		Type: 'car',
+	} as IFilter)
+
+	provide(FiltersContextKey, filters)
 </script>
 
 <template>
@@ -28,7 +37,7 @@
 		<div v-if="route.meta.layout === undefined" class="mid-section d-flex">
 			<div
 				class="side-menu d-flex flex-column align-items-center col-3 bg-blight"
-				style="height: 90dvh">
+				style="height: 90dvh; overflow-y: auto; scrollbar-width: none">
 				<SideMenuComponent />
 			</div>
 			<div
