@@ -134,7 +134,8 @@ var app = builder.Build();
 
 //Seed Cars if needed
 
-bool seedDbFlag = builder.Configuration.GetValue<bool>("SeedDb");
+bool seedDbFlag = !builder.Environment.IsEnvironment("Testing") 
+    && builder.Configuration.GetValue<bool>("SeedDb");
 
 if (seedDbFlag)
 {

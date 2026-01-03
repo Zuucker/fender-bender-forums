@@ -30,6 +30,8 @@ namespace Tests.TestUtils
                     options.UseInMemoryDatabase(_databaseName));
             });
 
+            builder.UseEnvironment("Testing");
+
             var host = base.CreateHost(builder);
 
             using (var scope = host.Services.CreateScope())
