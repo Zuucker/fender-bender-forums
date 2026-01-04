@@ -91,5 +91,15 @@ namespace Application.Services
 
             return ServiceResult<bool>.Success(false);
         }
+
+        public ServiceResult<ApplicationUser> GetUserByIdWithPoints(string userId)
+        {
+            var user = _userRepository.GetByIdWithPoints(userId);
+
+            if (user == null)
+                return ServiceResult<ApplicationUser>.Fail(ApiErrors.UserNotFound);
+
+            return ServiceResult<ApplicationUser>.Success(user);
+        }
     }
 }

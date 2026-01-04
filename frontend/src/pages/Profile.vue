@@ -1,5 +1,9 @@
 <template>
-	<div class="d-flex" v-if="userData.UserName" style="max-height: 40dvh">
+	<div
+		ref="profileInfoRef"
+		class="d-flex"
+		v-if="userData.UserName"
+		style="max-height: 40dvh">
 		<div class="col-2 d-flex justify-content-center align-items-center">
 			<img :src="userData.Avatar" style="height: 80px" />
 		</div>
@@ -107,7 +111,7 @@
 	<div
 		v-if="userData.UserName"
 		class="d-flex flex-column py-3"
-		style="max-height: 60dvh">
+		:style="{ maxHeight: `${maxHeight}px` }">
 		<div class="d-flex flex-grow-1 overflow-hidden">
 			<div class="col-8 d-flex flex-column hide-scrollbar">
 				<div class="flex-fill overflow-auto">
@@ -133,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, reactive, ref } from 'vue'
+	import { nextTick, onMounted, reactive, ref } from 'vue'
 	import RatingComponent from '../components/RatingComponent.vue'
 	import VirtualList from '../components/VirtualList.vue'
 	import { IOffer, IPost, IUser } from '../Intefaces'
@@ -164,6 +168,9 @@
 	const userNotFound = ref(false)
 	const userPosts = ref<IPost[]>([])
 	const userOffers = ref<IOffer[]>([])
+
+	const profileInfoRef = ref<HTMLDivElement | null>(null)
+	const maxHeight = ref<number>(0)
 
 	onMounted(async () => {
 		await GetUserData(userId)
@@ -216,6 +223,12 @@
 					timeout: 2000,
 				})
 			})
+
+		await nextTick()
+		maxHeight.value =
+			window.innerHeight * 0.9 -
+			(profileInfoRef.value?.getBoundingClientRect().height ?? 0) +
+			16
 	})
 
 	const saveUserChanges = async () => {

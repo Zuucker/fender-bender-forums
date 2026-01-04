@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.RepositoryInterfaces;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistance.DataRepositories
 {
@@ -112,6 +113,24 @@ namespace Infrastructure.Persistance.DataRepositories
             {
                 return _context.Users
                     .FirstOrDefault(u => u.Email == email);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public ApplicationUser? GetByIdWithPoints(string id)
+        {
+            try
+            {
+                return _context.Users
+                    .Include(u => u.Offers)
+                        .ThenInclude(o => o.Likes)
+                    .Include(u => u.Posts)
+                        .ThenInclude(o => o.Likes)
+                   .FirstOrDefault(u => u.Id == id);
             }
             catch (Exception e)
             {

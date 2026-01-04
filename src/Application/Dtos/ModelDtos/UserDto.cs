@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Application.Dtos.ModelDtos
 {
@@ -30,6 +31,14 @@ namespace Application.Dtos.ModelDtos
             Email = user?.Email ?? string.Empty;
             Id = user?.Id ?? string.Empty;
             Avatar = "/src/assets/vue.svg" ?? user.AvatarUrl;
+
+
+            IEnumerable<Like> likes = user?.Posts.SelectMany(p => p.Likes)
+                .Concat(user?.Offers.SelectMany(o => o.Likes) ?? []) ?? [];
+
+            Rating = likes.Any()
+                ? (float)(likes.Count(l => l.Up) * 5.0 / likes.Count())
+                : 3f;
         }
     }
 }

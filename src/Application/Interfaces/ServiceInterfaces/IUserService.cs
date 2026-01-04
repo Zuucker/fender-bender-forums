@@ -11,5 +11,7 @@ namespace Application.Interfaces.ServiceInterfaces
         ServiceResult<ApplicationUser> UpdateUser(ApplicationUser user, UserDto userDto);
 
         ServiceResult<ApplicationUser> GetUserById(string userId);
+
+        ServiceResult<ApplicationUser> GetUserByIdWithPoints(string userId);
     }
 }

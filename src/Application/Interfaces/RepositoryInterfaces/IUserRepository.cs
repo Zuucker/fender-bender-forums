@@ -7,5 +7,7 @@ namespace Application.Interfaces.RepositoryInterfaces
         ApplicationUser? GetByUserName(string userName);
 
         ApplicationUser? GetByEmail(string email);
+
+        public ApplicationUser? GetByIdWithPoints(string id);
     }
 }

@@ -42,11 +42,10 @@ namespace Presentation.Controllers
 
 
 
-                var getResult = _userService.GetUserById(userId ?? string.Empty);
+                var getResult = _userService.GetUserByIdWithPoints(userId ?? string.Empty);
 
                 if (getResult.HasFailed())
                     return ResponseHelper.PrepareResponse(getResult);
-
 
 
                 return ResponseHelper.PrepareResponse(new UserDto(getResult.Data));
