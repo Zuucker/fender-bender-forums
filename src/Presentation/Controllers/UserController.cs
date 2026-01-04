@@ -121,6 +121,7 @@ namespace Presentation.Controllers
 
 
                 var postDtos = getPostsResult.Data
+                    .OrderByDescending(p => p.CreationDate)
                     .Take(10)
                     .Select(p => new PostDto(p, getUserResult.Data))
                     .ToList();
@@ -152,7 +153,7 @@ namespace Presentation.Controllers
 
 
                 var offersDtos = getOffersResult.Data
-                    .OrderBy(o => o.Date)
+                    .OrderByDescending(o => o.Date)
                     .Take(10)
                     .Select(o => new OfferDto(o, getUserResult.Data))
                     .ToList();

@@ -30,6 +30,7 @@
 				</div>
 				<div className="">{{ comment.Content }}</div>
 				<CommentToolbarComponent
+					v-if="userstore.getUser.value"
 					:data="comment"
 					:addCommentCallback="addCommentCallback" />
 				<div className="sub-comment" style="margin-left: '20px'">
@@ -57,11 +58,14 @@
 	import { ref } from 'vue'
 	import { IComment } from '../Intefaces'
 	import CommentToolbarComponent from './CommentToolbarComponent.vue'
+	import { useUserStore } from '../setup/stores/UserStore'
 
 	const { data: comment, addCommentCallback } = defineProps<{
 		data: IComment
 		addCommentCallback: (comment: IComment) => void
 	}>()
+
+	const userstore = useUserStore()
 
 	const displayComment = ref<boolean>(true)
 

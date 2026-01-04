@@ -71,7 +71,9 @@
 			</div>
 		</div>
 
-		<div class="d-flex flex-column thicc-border bg-white w-100 py-1">
+		<div
+			v-if="userstore.getUser.value"
+			class="d-flex flex-column thicc-border bg-white w-100 py-1">
 			<div class="d-flex justify-content-between align-items-center">
 				<img
 					class="col-1 round-image m-1 me-2 bg-dark"
