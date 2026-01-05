@@ -10,8 +10,6 @@ namespace Application.Interfaces.ServiceInterfaces
 
         public ServiceResult<IEnumerable<Offer>> GetAllOffers();
 
-        public ServiceResult<OfferRate> AddOfferRating(AddOfferRatingRequest ratingRequest);
-
         public ServiceResult<IEnumerable<Offer>> GetUsersOffers(Guid userId);
 
         public ServiceResult<Offer> GetById(int postId);

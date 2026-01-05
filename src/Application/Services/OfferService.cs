@@ -14,7 +14,6 @@ namespace Application.Services
 {
     public class OfferService : IOfferService
     {
-        private readonly IOfferRateRepository _offerRateRepository;
         private readonly IOfferRepository _offerRepository;
         private readonly ILikeRepository _likeRepository;
         private readonly ICursorService _cursorService;
@@ -23,12 +22,10 @@ namespace Application.Services
 
 
         public OfferService(IOfferRepository offerRepository,
-            IOfferRateRepository offerRateRepository,
             ILikeRepository likeRepository,
             ICursorService cursorService,
             IFileStorage fileStorage)
         {
-            _offerRateRepository = offerRateRepository;
             _offerRepository = offerRepository;
             _likeRepository = likeRepository;
             _cursorService = cursorService;
@@ -70,15 +67,6 @@ namespace Application.Services
                 .GetAll();
 
             return ServiceResult<IEnumerable<Offer>>.Success(offers);
-        }
-
-        public ServiceResult<OfferRate> AddOfferRating(AddOfferRatingRequest ratingRequest)
-        {
-            OfferRate newRating = OfferRateFactory.Create(ratingRequest);
-
-            _offerRateRepository.Add(newRating);
-
-            return ServiceResult<OfferRate>.Success(newRating);
         }
 
         public ServiceResult<IEnumerable<Offer>> GetUsersOffers(Guid userId)

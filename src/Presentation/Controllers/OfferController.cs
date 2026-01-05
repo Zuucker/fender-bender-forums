@@ -73,22 +73,6 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("rating/add")]
-        public IActionResult AddOfferRating([FromBody] AddOfferRatingRequest requestDto)
-        {
-            try
-            {
-                _offerService.AddOfferRating(requestDto);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"AddOfferRating {ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
-        }
-
         [HttpGet("get/{offerId}")]
         public IActionResult GetOffer([FromRoute] int offerId)
         {

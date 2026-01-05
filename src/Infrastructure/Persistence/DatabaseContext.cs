@@ -23,8 +23,6 @@ namespace Infrastructure.Persistance
 
         public DbSet<Offer> Offers { get; set; }
 
-        public DbSet<OfferRate> OfferRates { get; set; }
-
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<Section> Sections { get; set; }
