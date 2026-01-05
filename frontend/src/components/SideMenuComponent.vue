@@ -305,6 +305,7 @@
 			minPriceString.value = sanitized
 		} else {
 			minPriceString.value = ''
+			filters.value.MinPrice = null
 			minPriceFieldKey.value++
 		}
 	})
@@ -317,6 +318,7 @@
 			maxPriceString.value = sanitized
 		} else {
 			maxPriceString.value = ''
+			filters.value.MaxPrice = null
 			maxPriceFieldKey.value++
 		}
 	})
@@ -329,6 +331,7 @@
 			mileageString.value = sanitized
 		} else {
 			mileageString.value = ''
+			filters.value.Mileage = null
 			mileageFieldKey.value++
 		}
 	})
