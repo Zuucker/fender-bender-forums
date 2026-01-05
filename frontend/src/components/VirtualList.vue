@@ -21,12 +21,12 @@
 </template>
 
 <script setup lang="ts">
-	import { watch, type Component } from 'vue'
+	import { type Component } from 'vue'
 
 	type VirtualListProps = {
 		dataList: Object[]
 		component: Component
-		fetchCallback: () => void
+		fetchCallback: (value?: boolean) => void
 		small?: boolean
 		emptyMessage?: string
 	}
@@ -36,6 +36,6 @@
 	function onIntersect(isIntersecting: boolean) {
 		if (!isIntersecting) return
 
-		props.fetchCallback()
+		props.fetchCallback(true)
 	}
 </script>

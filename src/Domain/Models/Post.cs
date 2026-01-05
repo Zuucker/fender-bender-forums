@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
+    [Index(nameof(Tags), Name = "IX_Posts_Tags", IsUnique = false)]
     public class Post
     {
         [Key]
@@ -26,9 +28,8 @@ namespace Domain.Models
         [StringLength(100)]
         public int Content { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Tags { get; set; } = string.Empty;
+        [Column(TypeName = "jsonb")]
+        public List<TagDto> Tags { get; set; } = [];
         
         public int? CarId { get; set; }
 

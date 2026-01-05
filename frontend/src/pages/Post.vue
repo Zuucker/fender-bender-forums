@@ -10,12 +10,12 @@
 			<div class="d-flex col-12">
 				<TagChip
 					v-for="tag in [
-						postData.Car?.Manufacturer,
-						postData.Car?.Model,
-						postData.Car?.Type,
-						...postData.Tags.split(' '),
+						{Text:postData.Car?.Manufacturer, Color:'#007BFF'} as ITag,
+						{Text:postData.Car?.Model, Color:'#6420FF'} as ITag,
+						{Text:postData.Car?.Type, Color:'#9B30FF'} as ITag,
+						...postData.Tags,
 					].filter((f) => f)"
-					:text="tag" />
+					:tag="tag" />
 			</div>
 			<div
 				class="d-flex flex-column h-100 col-12 justify-content-between"
@@ -134,6 +134,7 @@
 	import { useUserStore } from '../setup/stores/UserStore'
 	import CommentComponent from '../components/CommentComponent.vue'
 	import { ILike } from '../Intefaces/Models/ILike'
+	import { ITag } from '../Intefaces/ITag'
 
 	const route = useRoute()
 	const snackBarStore = useSnackBarStore()

@@ -1,3 +1,4 @@
+import { ITag } from '../ITag'
 import { ICar } from './ICar'
 import { ICity } from './ICity'
 import { IComment } from './IComment'
@@ -16,7 +17,7 @@ export interface IOffer {
 	Fuel?: string
 	Color?: string
 	Mileage?: number
-	Tags: string
+	Tags: ITag[]
 	Car: ICar
 	City: ICity
 	Points: number

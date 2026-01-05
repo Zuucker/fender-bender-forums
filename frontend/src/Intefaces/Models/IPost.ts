@@ -1,3 +1,4 @@
+import { ITag } from '../ITag'
 import { ICar } from './ICar'
 import { IComment } from './IComment'
 import { IContent } from './IContent'
@@ -11,7 +12,7 @@ export interface IPost {
 	Title: string
 	CreationDate: Date
 	Content: number
-	Tags: string
+	Tags: ITag[]
 	UpVoted: boolean
 	DownVoted: boolean
 	Points: number

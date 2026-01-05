@@ -199,13 +199,21 @@ namespace Application.Services
                     query = query.Where(x => x.Offer.Mileage <= filters.Mileage.Value);
 
                 if (!string.IsNullOrWhiteSpace(filters.Tags))
+                {
+                    var tagTexts = filters.Tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var jsonConditions = tagTexts.Select(tag => $"[{{\"Text\":\"{tag}\"}}]").ToList();
+
                     query = query.Where(x =>
-                        x.Offer.Tags.Contains(filters.Tags)
-                        || (x.Offer.Car != null &&
-                            (x.Offer.Car.Model.Contains(filters.Tags)
-                            || x.Offer.Car.Manufacturer.Contains(filters.Tags)
-                            || x.Offer.Car.Type.Contains(filters.Tags)
-                        )));
+                        jsonConditions.Any(jsonCondition =>
+                            EF.Functions.JsonContains(x.Offer.Tags, jsonCondition)
+                        )
+                        || (x.Offer.Car != null && tagTexts.Any(tag =>
+                            x.Offer.Car.Model.Contains(tag)
+                            || x.Offer.Car.Manufacturer.Contains(tag)
+                            || x.Offer.Car.Type.Contains(tag)
+                        ))
+                    );
+                }
 
                 if (!string.IsNullOrWhiteSpace(filters.PartNumber))
                     query = query.Where(x => x.Offer.PartNumber == filters.PartNumber);

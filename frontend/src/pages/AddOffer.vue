@@ -164,7 +164,7 @@
 					<v-text-field
 						label="Tags"
 						variant="outlined"
-						v-model="offerData.Tags"
+						v-model="tagsString"
 						:error-messages="getErrorMessage('Tags')" />
 				</div>
 				<div class="col-12 d-flex justify-content-center gap-5">
@@ -263,6 +263,7 @@
 	import * as yup from 'yup'
 	import { Condition, ConditionDisplay } from '../constants/ConditionEnum'
 	import { FuelType } from '../constants/FuelEnum'
+	import { ITag } from '../Intefaces/ITag'
 
 	const snackBarStore = useSnackBarStore()
 	const userStore = useUserStore()
@@ -282,6 +283,7 @@
 	const priceFieldKey = ref<number>(0)
 	const mileageString = ref<string>('')
 	const mileageFieldKey = ref<number>(0)
+	const tagsString = ref<string>('')
 
 	const offerData = ref<IOffer>({
 		Contents: [
@@ -295,6 +297,24 @@
 		Condition: Condition[Condition.New],
 		Fuel: FuelType[FuelType.Gasoline],
 	} as IOffer)
+
+	onMounted(async () => {
+		await GetCars('', 10)
+			.then((response) => {
+				cars.value = response
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+
+		await GetCities()
+			.then((response) => {
+				cities.value = response
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	})
 
 	watch(priceString, () => {
 		const sanitized = priceString.value.replace(/[^0-9.]/g, '')
@@ -318,6 +338,15 @@
 			mileageString.value = ''
 			mileageFieldKey.value++
 		}
+	})
+
+	watch(tagsString, () => {
+		offerData.value.Tags = tagsString.value
+			.split(' ')
+			.filter((t) => t)
+			.map((t) => {
+				return { Text: t, Color: randomColor() } as ITag
+			})
 	})
 
 	const handleRemoveContent = (position: number) => {
@@ -523,23 +552,13 @@
 		return Object.keys(result).length > 0 ? result : null
 	}
 
-	onMounted(async () => {
-		await GetCars('', 10)
-			.then((response) => {
-				cars.value = response
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+	const randomColor = () => {
+		const hue = Math.floor(Math.random() * 360)
+		const saturation = 85 + Math.random() * 15
+		const lightness = 50 + Math.random() * 10
 
-		await GetCities()
-			.then((response) => {
-				cities.value = response
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-	})
+		return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+	}
 </script>
 
 <style scoped>

@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.Dtos.ModelDtos
 {
@@ -68,7 +69,7 @@ namespace Application.Dtos.ModelDtos
 
         public int? Mileage { get; set; }
 
-        public string Tags { get; set; } = string.Empty;
+        public List<TagDto> Tags { get; set; } = [];
 
         public float Points { get; set; }
 

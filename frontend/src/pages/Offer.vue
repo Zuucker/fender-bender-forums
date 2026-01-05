@@ -10,11 +10,12 @@
 			<div class="d-flex col-12">
 				<TagChip
 					v-for="tag in [
-						offerData.Car.Model,
-						offerData.Car.Type,
-						...offerData.Tags.split(' '),
-					]"
-					:text="tag" />
+						{Text:offerData.Car?.Manufacturer, Color:'#007BFF'} as ITag,
+						{Text:offerData.Car?.Model, Color:'#6420FF'} as ITag,
+						{Text:offerData.Car?.Type, Color:'#9B30FF'} as ITag,
+						...offerData.Tags,
+					].filter((f) => f)"
+					:tag="tag" />
 				<h4 class="ms-auto">{{ offerData.Price }} $</h4>
 			</div>
 			<div class="d-flex col-12">
@@ -162,6 +163,7 @@
 	import CommentComponent from '../components/CommentComponent.vue'
 	import { ILike } from '../Intefaces/Models/ILike'
 	import ConditionChip from '../components/ConditionChip.vue'
+	import { ITag } from '../Intefaces/ITag'
 
 	const route = useRoute()
 	const snackBarStore = useSnackBarStore()

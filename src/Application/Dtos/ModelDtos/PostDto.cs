@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.Dtos.ModelDtos
 {
@@ -49,7 +50,7 @@ namespace Application.Dtos.ModelDtos
 
         public int Content { get; set; }
 
-        public string Tags { get; set; } = string.Empty;
+        public List<TagDto> Tags { get; set; } = [];
 
         public bool UpVoted { get; set; }
 

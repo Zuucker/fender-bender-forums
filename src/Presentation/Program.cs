@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,9 +98,20 @@ builder.Services.AddSwaggerGen(options =>
     );
 });
 
+
+var dataSource = new NpgsqlDataSourceBuilder(
+    builder.Configuration.GetConnectionString("DefaultConnection")
+)
+.EnableDynamicJson()
+.Build();
+
+builder.Services.AddSingleton(dataSource);
+
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+{
+    options.UseNpgsql(dataSource);
+});
+
 
 var settingsFilePath = builder.Configuration["FileStorage:BasePath"]
     ?? throw new Exception("No file storage defined!");
@@ -134,7 +146,7 @@ var app = builder.Build();
 
 //Seed Cars if needed
 
-bool seedDbFlag = !builder.Environment.IsEnvironment("Testing") 
+bool seedDbFlag = !builder.Environment.IsEnvironment("Testing")
     && builder.Configuration.GetValue<bool>("SeedDb");
 
 if (seedDbFlag)

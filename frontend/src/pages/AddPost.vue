@@ -32,7 +32,7 @@
 				<v-text-field
 					label="Tags"
 					variant="outlined"
-					v-model="postData.Tags"
+					v-model="tagsString"
 					:error-messages="getErrorMessage('Tags')" />
 			</div>
 			<div class="col-12">
@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, ref } from 'vue'
+	import { onMounted, ref, watch } from 'vue'
 	import { ICar, IContent, IPost, ISection } from '../Intefaces'
 	import Draggable from 'vuedraggable'
 	import Content from '../components/Content.vue'
@@ -145,6 +145,7 @@
 	import { goToPage } from '../setup/Router'
 	import { useUserStore } from '../setup/stores/UserStore'
 	import * as yup from 'yup'
+	import { ITag } from '../Intefaces/ITag'
 
 	const snackBarStore = useSnackBarStore()
 	const userStore = useUserStore()
@@ -157,6 +158,7 @@
 	const selectedSection = ref<string | null>(null)
 	const selectedCar = ref<string | null>(null)
 	const carSearchString = ref<string>('')
+	const tagsString = ref<string>('')
 
 	const postData = ref<IPost>({
 		Contents: [
@@ -167,6 +169,33 @@
 			},
 		],
 	} as IPost)
+
+	onMounted(async () => {
+		await GetMenuSections()
+			.then((response) => {
+				sections.value = response
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+
+		await GetCars(carSearchString.value, 10)
+			.then((response) => {
+				cars.value = response
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	})
+
+	watch(tagsString, () => {
+		postData.value.Tags = tagsString.value
+			.split(' ')
+			.filter((t) => t)
+			.map((t) => {
+				return { Text: t, Color: randomColor() } as ITag
+			})
+	})
 
 	const handleRemoveContent = (position: number) => {
 		const newContents = postData.value.Contents.filter(
@@ -344,23 +373,13 @@
 		return result
 	}
 
-	onMounted(async () => {
-		await GetMenuSections()
-			.then((response) => {
-				sections.value = response
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+	const randomColor = () => {
+		const hue = Math.floor(Math.random() * 360)
+		const saturation = 85 + Math.random() * 15
+		const lightness = 50 + Math.random() * 10
 
-		await GetCars(carSearchString.value, 10)
-			.then((response) => {
-				cars.value = response
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-	})
+		return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+	}
 </script>
 
 <style scoped>

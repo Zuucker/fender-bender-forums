@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
+    [Index(nameof(Tags), Name = "IX_Offers_Tags", IsUnique = false)]
     public class Offer
     {
         [Key]
@@ -43,9 +45,8 @@ namespace Domain.Models
 
         public string Type { get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(100)]
-        public string Tags { get; set; } = string.Empty;
+        [Column(TypeName = "jsonb")]
+        public List<TagDto> Tags { get; set; } = [];
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public float Rating { get; private set; }//db should manage it

@@ -10,11 +10,11 @@
 			<div class="d-flex">
 				<TagChip
 					v-for="tag in [
-						offer.Car.Model,
-						offer.Car.Type,
-						...offer.Tags.split(' '),
-					]"
-					:text="tag" />
+ 						{Text:offer.Car?.Model, Color:'#6420FF'} as ITag,
+						{Text:offer.Car?.Type, Color:'#9B30FF'} as ITag,
+						...offer.Tags,
+					].filter((f) => f)"
+					:tag="tag" />
 				<h4 class="ms-auto me-4">{{ offer.Price }} $</h4>
 			</div>
 		</div>
@@ -68,6 +68,7 @@
 	import { useRouter } from 'vue-router'
 	import { IOffer } from '../Intefaces'
 	import TagChip from './TagChip.vue'
+	import { ITag } from '../Intefaces/ITag'
 
 	const { data: offer } = defineProps<{
 		data: IOffer

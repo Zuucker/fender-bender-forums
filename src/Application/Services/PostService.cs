@@ -250,13 +250,21 @@ namespace Application.Services
                     query = query.Where(x => x.Post.AuthorId == filters.AuthorId);
 
                 if (!string.IsNullOrWhiteSpace(filters.Tags))
+                {
+                    var tagTexts = filters.Tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var jsonConditions = tagTexts.Select(tag => $"[{{\"Text\":\"{tag}\"}}]").ToList();
+
                     query = query.Where(x =>
-                        x.Post.Tags.Contains(filters.Tags)
-                        || (x.Post.Car != null &&
-                            (x.Post.Car.Model.Contains(filters.Tags)
-                            || x.Post.Car.Manufacturer.Contains(filters.Tags)
-                            || x.Post.Car.Type.Contains(filters.Tags)
-                        )));
+                        jsonConditions.Any(jsonCondition =>
+                            EF.Functions.JsonContains(x.Post.Tags, jsonCondition)
+                        )
+                        || (x.Post.Car != null && tagTexts.Any(tag =>
+                            x.Post.Car.Model.Contains(tag)
+                            || x.Post.Car.Manufacturer.Contains(tag)
+                            || x.Post.Car.Type.Contains(tag)
+                        ))
+                    );
+                }
 
                 if (filters.SectionId.HasValue)
                     query = query.Where(x => x.Post.SectionId == filters.SectionId.Value);

@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.ModelDtos;
+using Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Dtos.RequestDtos
@@ -18,7 +19,7 @@ namespace Application.Dtos.RequestDtos
 
         public int Content { get; set; }
 
-        public string Tags { get; set; } = string.Empty;
+        public List<TagDto> Tags { get; set; } = [];
 
         public int? CarId { get; set; }
 

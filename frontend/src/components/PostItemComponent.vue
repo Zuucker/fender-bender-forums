@@ -24,11 +24,11 @@
 				<div class="d-flex">
 					<TagChip
 						v-for="tag in [
-							post.Car?.Model,
-							post.Car?.Type,
-							...post.Tags.split(' '),
-						].filter((t) => t)"
-						:text="tag" />
+ 						{Text:post.Car?.Model, Color:'#6420FF'} as ITag,
+						{Text:post.Car?.Type, Color:'#9B30FF'} as ITag,
+						...post.Tags,
+					].filter((f) => f)"
+						:tag="tag" />
 				</div>
 			</div>
 			<div class="offer-right-part d-flex flex-column col-1">
@@ -82,6 +82,7 @@
 	import { useRouter } from 'vue-router'
 	import { IPost } from '../Intefaces'
 	import TagChip from './TagChip.vue'
+	import { ITag } from '../Intefaces/ITag'
 
 	type PostItemComponentProps = {
 		data: IPost

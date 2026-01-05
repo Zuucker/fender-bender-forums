@@ -5,6 +5,7 @@ using Domain.Models;
 using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -13,9 +14,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260104151904_ReaddedTags")]
+    partial class ReaddedTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,12 +382,6 @@ namespace Infrastructure.Persistance.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("Tags");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Tags"), "gin");
-
-                    b.HasIndex(new[] { "Tags" }, "IX_Offers_Tags");
-
                     b.ToTable("Offers");
                 });
 
@@ -464,12 +461,6 @@ namespace Infrastructure.Persistance.Migrations
                     b.HasIndex("CarId");
 
                     b.HasIndex("SectionId");
-
-                    b.HasIndex("Tags");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Tags"), "gin");
-
-                    b.HasIndex(new[] { "Tags" }, "IX_Posts_Tags");
 
                     b.ToTable("Posts");
                 });

@@ -6,7 +6,7 @@
 				:dataList="offers"
 				:component="OfferItemComponent"
 				:fetch-callback="fetchOffers"
-				empty-message="No Posts found :(" />
+				empty-message="No Offers found :(" />
 		</div>
 	</div>
 </template>
