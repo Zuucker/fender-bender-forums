@@ -1,31 +1,5 @@
 <template>
-	<div class="col d-flex justify-content-between align-items-center">
-		<div class="sort-component col-6">
-			<v-list v-model:opened="isOpen" class="col-10 p-0 m-0 bg-blight">
-				<template v-for="section in sections" :key="section.SectionId">
-					<v-list-group :value="section.Name" class="side-menu-main-item">
-						<template v-slot:activator="{ props }">
-							<v-list-item
-								v-bind="props"
-								:title="section.Name"
-								density="compact"
-								style="min-height: 28px"></v-list-item>
-						</template>
-
-						<v-list-item
-							v-for="sub in section.SubSections"
-							:key="sub.SectionId"
-							:title="sub.Name"
-							:value="sub.Name"
-							class="side-menu-item"
-							density="compact"
-							style="min-height: 25px"
-							:onclick="() => handleSortChange(sub.Name)">
-						</v-list-item>
-					</v-list-group>
-				</template>
-			</v-list>
-		</div>
+	<div class="col d-flex justify-content-end align-items-center">
 		<div class="profile-button me-4">
 			<v-btn
 				v-if="user === null"
@@ -41,7 +15,12 @@
 						v-bind="props"
 						class="px-1"
 						style="min-width: 0px"
-						density="compact">
+						density="compact"
+						:onclick="
+							() => {
+								goToPage(`/user/${user.Id}`)
+							}
+						">
 						<img :src="user.Avatar" style="max-height: 20px" />
 						<span>{{ user.UserName.charAt(0) }}</span>
 						<template v-slot:append>
@@ -56,39 +35,6 @@
 						</template>
 					</v-btn>
 				</template>
-
-				<v-list
-					density="compact"
-					class="py-0 d-flex flex-column align-items-center"
-					style="border: 2px solid var(--black); border-radius: 0px">
-					<v-list-item class="p-1" style="min-height: 20px">
-						<v-btn
-							class="px-1 mx-1"
-							variant="text"
-							density="compact"
-							@click="goToPage(`/post/add`)">
-							Add Post
-						</v-btn>
-					</v-list-item>
-					<v-list-item class="p-1" style="min-height: 20px">
-						<v-btn
-							class="px-1 mx-1"
-							variant="text"
-							density="compact"
-							@click="goToPage(`/offer/add`)">
-							Add Offer
-						</v-btn>
-					</v-list-item>
-					<v-list-item class="p-1" style="min-height: 20px">
-						<v-btn
-							class="px-1 mx-1"
-							variant="text"
-							density="compact"
-							@click="goToPage(`/user/${user.Id}`)">
-							Profile
-						</v-btn>
-					</v-list-item>
-				</v-list>
 			</v-menu>
 		</div>
 	</div>
@@ -114,21 +60,9 @@
 	import { GetUserData } from '../setup/Endpoints'
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { goToPage } from '../setup/Router'
-	import { ISection } from '../Intefaces'
 
 	const userStore = useUserStore()
 	const snackBarStore = useSnackBarStore()
-
-	const isOpen = ref([])
-	const sections = ref<ISection[]>([
-		{
-			Name: 'Sort Options',
-			SubSections: [{ Name: 'Sort by new' }, { Name: 'Sort by price' }],
-		} as ISection,
-	])
-
-	// the value in main section is the chosen one
-	const selectedSort = ref(sections.value[0].Name)
 
 	const showDialogs = ref<ILoginDialogProps>({
 		showLogin: false,
@@ -169,12 +103,13 @@
 		goToPage('/')
 	}
 
-	const handleSortChange = (value: string) => {
-		selectedSort.value = value
-
-		// the value in main section is the chosen one
-		sections.value[0].Name = value
+	const handleOpenLogin = () => {
+		showDialogs.value.showLogin = true
+		showDialogs.value.showProfileMenu = false
+		showDialogs.value.showRegister = false
 	}
+
+	defineExpose({ handleOpenLogin })
 </script>
 
 <style>
@@ -245,6 +180,7 @@
 		margin: auto !important;
 		text-align: center;
 	}
+
 	.side-menu-main-item {
 		background-color: var(--white);
 		border: 2px solid var(--black);

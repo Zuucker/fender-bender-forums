@@ -52,6 +52,7 @@
 	import { useSnackBarStore } from '../setup/stores/SnackBarStore'
 	import { useUserStore } from '../setup/stores/UserStore'
 	import { ApiErrors } from '../constants'
+	import { goToPage } from '../setup/Router'
 
 	const props = defineModel<ILoginDialogProps>()
 	const loginData = ref<ILoginData>({} as ILoginData)
@@ -89,6 +90,7 @@
 						timeout: 2000,
 					})
 					props.value.showLogin = false
+					goToPage('/')
 				})
 				.catch((error) => {
 					console.log(error)
