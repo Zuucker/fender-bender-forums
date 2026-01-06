@@ -35,13 +35,10 @@
 				variant="outlined"
 				label="Text"
 				v-model="content.TextContent"
-				auto-grow
-				row-height="30"
 				rows="5"
 				hide-details="auto"
-				style="height: 100px; mask-image: none"
+				style="mask-image: none"
 				:error-messages="getErrorMessage(`TextContent`)" />
-
 			<div
 				class="col d-flex"
 				v-if="content.Type === ContentTypeEnum.Gallery"
@@ -143,5 +140,6 @@
 <style lang="css">
 	textarea.v-field__input {
 		mask-image: none !important;
+		height: 150px !important;
 	}
 </style>
