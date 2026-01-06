@@ -1,10 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
-    [Index(nameof(Tags), Name = "IX_Posts_Tags", IsUnique = false)]
     public class Post
     {
         [Key]

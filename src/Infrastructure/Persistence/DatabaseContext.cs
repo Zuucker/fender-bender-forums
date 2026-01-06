@@ -31,13 +31,15 @@ namespace Infrastructure.Persistance
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Offer>()
-                .HasIndex(o => o.Tags)
-                .HasMethod("gin");
 
-            modelBuilder.Entity<Post>()
-                .HasIndex(o => o.Tags)
-                .HasMethod("gin");
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                modelBuilder.Entity<Offer>()
+                    .Ignore(o => o.Tags);
+                
+                modelBuilder.Entity<Post>()
+                    .Ignore(o => o.Tags);
+            }
         }
     }
 }

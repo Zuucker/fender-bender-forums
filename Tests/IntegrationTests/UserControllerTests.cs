@@ -86,7 +86,7 @@ namespace Tests.IntegrationTests
                 AuthorId = "777a1777-c1de-49f1-b14f-0bddc2a02d75",
                 CreationDate = DateTime.UtcNow,
                 SectionId = exampleSection.SectionId,
-                Tags = "Tag1",
+                Tags = [new TagDto() { Text = "Tag1", Color = "red" }],
                 Title = "Example post1",
                 Contents = [
                     new Content() {
@@ -108,7 +108,7 @@ namespace Tests.IntegrationTests
                 AuthorId = "391a1bf7-c1de-49f1-b14f-0bddc2a02d73",
                 CreationDate = DateTime.UtcNow,
                 SectionId = exampleSection.SectionId,
-                Tags = "Tag1",
+                Tags = [new TagDto() { Text = "Tag1", Color = "red" }],
                 Title = "Example post2",
                 Contents = [
                     new Content() {
@@ -159,7 +159,7 @@ namespace Tests.IntegrationTests
                 AuthorId = "391a1bf7-c1de-49f1-b14f-0bddc2a02d72",
                 CreationDate = DateTime.UtcNow,
                 SectionId = exampleSection.SectionId,
-                Tags = "Tag1",
+                Tags = [new TagDto() { Text = "Tag1", Color = "red" }],
                 Title = "Example post1",
                 Contents = [
                     new Content() {

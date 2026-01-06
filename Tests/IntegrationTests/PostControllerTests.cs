@@ -39,7 +39,7 @@ namespace Tests.IntegrationTests
                 AuthorId = "391a1bf7-c1de-49f1-b14f-0bddc2a02d72",
                 CreationDate = DateTime.UtcNow,
                 SectionId = exampleSection.SectionId,
-                Tags = "Tag1",
+                Tags = [],
                 Title = "Example post",
                 Contents = [
                     new Content() {
@@ -73,7 +73,6 @@ namespace Tests.IntegrationTests
             Assert.NotNull(retrivedExamplePost);
             Assert.Equal(examplePost.Title, retrivedExamplePost.Title);
             Assert.Equal(examplePost.SectionId, retrivedExamplePost.SectionId);
-            Assert.Equal(examplePost.Tags, retrivedExamplePost.Tags);
             Assert.True(examplePost.CreationDate < DateTime.Now);
             Assert.NotEmpty(examplePost.Contents);
             Assert.Equal(examplePost.Contents.FirstOrDefault()?.SubTitle,
@@ -122,7 +121,7 @@ namespace Tests.IntegrationTests
             {
                 AuthorId = "391a1bf7-c1de-49f1-b14f-0bddc2a02d72",
                 SectionId = exampleSection.SectionId,
-                Tags = "Tag1",
+                Tags = [new TagDto() { Text = "Tag1", Color = "red" }],
                 Title = "Example post",
                 Contents = [
                     new ContentDto() {
@@ -148,7 +147,8 @@ namespace Tests.IntegrationTests
             Assert.NotNull(result?.Data);
             Assert.Equal(examplePostRequest.Title, result?.Data.Title);
             Assert.Equal(examplePostRequest.SectionId, result?.Data.SectionId);
-            Assert.Equal(examplePostRequest.Tags, result?.Data.Tags);
+            Assert.Equal(examplePostRequest.Tags.FirstOrDefault()?.Text, result?.Data.Tags.FirstOrDefault()?.Text);
+            Assert.Equal(examplePostRequest.Tags.FirstOrDefault()?.Color, result?.Data.Tags.FirstOrDefault()?.Color);
             Assert.True(examplePostRequest.CreationDate < DateTime.Now);
             Assert.NotEmpty(examplePostRequest.Contents);
             Assert.Equal(examplePostRequest.Contents.FirstOrDefault()?.SubTitle,
