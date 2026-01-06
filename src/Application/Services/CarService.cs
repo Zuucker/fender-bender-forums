@@ -3,8 +3,8 @@ using Application.Dtos.RequestDtos;
 using Application.Factories;
 using Application.Interfaces.RepositoryInterfaces;
 using Application.Interfaces.ServiceInterfaces;
- using Domain.Models;
- 
+using Domain.Models;
+
 namespace Application.Services
 {
     public class CarService : ICarService
@@ -16,7 +16,6 @@ namespace Application.Services
             _carRepository = carRepository;
         }
 
-        //TODO add filtering
         public ServiceResult<IEnumerable<Car>> GetAllCars()
         {
             return ServiceResult<IEnumerable<Car>>.Success(_carRepository.GetAll());

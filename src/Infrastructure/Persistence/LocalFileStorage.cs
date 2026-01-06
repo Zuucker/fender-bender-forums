@@ -53,8 +53,6 @@ namespace Infrastructure.Persistence
 
         public byte[] ReadImageFile(Guid fileId)
         {
-
-
             try
             {
                 var path = Path.Combine(_basePath, $"{fileId}.webp");
